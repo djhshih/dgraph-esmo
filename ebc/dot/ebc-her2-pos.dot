@@ -1,0 +1,44 @@
+digraph G {
+    a [label="HER2+ EBC"];
+    b [label="cT1 cN0"];
+    c [label=">=cT2 or cN+"];
+    d [label="Surgery and locoregional RT if indicated"];
+    e [label="pT1 pN0"];
+    f [label=">=pT2 pN0"];
+    g [label="pN+"];
+    h [label="12 weeks paclitaxel-18 cycles trastuzumab [III, B; MCBS A]"];
+    i [label="6-8 cycles ChT-trastuzumab [I, B; MCBS A]"];
+    j [label="6-8 cycles ChT-HP [I, A; MCBS A]"];
+    k [label="Complete 1 year of trastuzumab [I, A; MCBS A]\nIf HR+, adjuvant ET [I, A]"];
+    l [label="Complete 1 year of HP [I, A; MCBS A]\nIf HR+, adjuvant ET [I, A]"];
+    m [label="6-8 cycles ChT-HP [I, A; MCBS C]"];
+    n [label="Surgery and locoregional RT if indicated"];
+    o [label="pCR"];
+    p [label="Residual invasive disease"];
+    q [label="cN0 at initial diagnosis"];
+    r [label="cN+ or pN+ at initial diagnosis"];
+    s [label="Complete 1 year of trastuzumab [I, A; MCBS A]\nIf HR+, adjuvant ET [I, A]"];
+    t [label="Complete 1 year of HP [I, A; MCBS A]\nIf HR+, adjuvant ET [I, A]"];
+    u [label="T-DM1 up to 14 cycles [I, A; MCBS A]\nIf HR+, adjuvant ET [I, A]"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    d -> e;
+    d -> f;
+    d -> g;
+    e -> h;
+    f -> i;
+    g -> j;
+    i -> k;
+    j -> l;
+    c -> m;
+    m -> n;
+    n -> o;
+    n -> p;
+    o -> q;
+    o -> r;
+    q -> s;
+    r -> t;
+    p -> u;
+}
