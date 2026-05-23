@@ -20,12 +20,12 @@ digraph G {
 
   a4 [label="HER2+", shape=box];
 
-  b1 [label="CT1 N0", shape=box];
+  b1 [label="cT1 N0", shape=box];
   b2 [label=">=cT2 or cN+", shape=box];
 
   a5 [label="TNBC", shape=box];
 
-  b3 [label="CT1a or cT1b N0", shape=box];
+  b3 [label="cT1a or cT1b N0", shape=box];
   b4 [label="cT1c-4 or N+", shape=box];
 
   r -> a1;
