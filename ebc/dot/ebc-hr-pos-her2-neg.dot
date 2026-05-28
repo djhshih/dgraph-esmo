@@ -1,0 +1,40 @@
+digraph G {
+    rankdir=TB;
+    node [shape=oval];
+
+    a [label="HR+/HER2- EBC"];
+    b [label="Luminal A like"];
+    c [label="Luminal B like"];
+    d [label="Low risk"];
+    e [label="High risk"];
+    f [label="Adjuvant ET [I, A]"];
+    g [label="(Neo)adjuvant ChT followed by\nET [I, A]"];
+    h [label="Stage III or high-risk\nstage II"];
+    i [label="gBRCA1/2 status"];
+
+    j [label="gBRCA1/2-wt"];
+    k [label="gBRCA1/2m and stage III or\nhigh-risk non-pCR"];
+
+    l [label="Abemaciclib for 2 years + ET\n[I, A; MCBS A]"];
+    m [label="Olaparib for 1 year + ET\n[I, A; MCBS A; ESCAT I-A]"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    b -> e;
+    d -> f;
+    e -> g;
+    c -> g;
+    f -> h;
+    g -> h;
+
+    h -> i;
+
+    i -> j;
+    i -> k;
+
+    k -> m;
+    j -> l;
+
+    i -> l;
+}
