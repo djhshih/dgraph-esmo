@@ -1,7 +1,7 @@
 digraph G {
     a [label="gBRCA1/2 testing"];
     b [label="Early TNBC"];
-    c [label="cT1a or cT1b N0"];
+    c [label="(cT1a or cT1b) N0"];
     d [label="cT1c-T4 or N+"];
     e [label="Surgery and whole breast RT if indicated"];
     f [label="pT1a pN0"];
