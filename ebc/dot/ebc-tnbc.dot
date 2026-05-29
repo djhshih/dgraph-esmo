@@ -6,7 +6,7 @@ digraph G {
     e [label="Surgery and whole breast RT if indicated"];
     f [label="pT1a pN0"];
     g [label="pT1b pN0"];
-    h [label=">pT1b any pN"];
+    h [label=">pT1b"];
     i [label="Consider no adjuvant systemic therapy [II, B]"];
     j [label="6-8 cycles systemic ChT [I, A]"];
     k [label="6-8 cycles systemic ChT [I, A]"];
