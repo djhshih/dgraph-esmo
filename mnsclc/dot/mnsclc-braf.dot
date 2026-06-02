@@ -1,0 +1,19 @@
+digraph G {
+    a [label="Stage IV mNSCLC with BRAF V600 mutation"];
+    b [label="Dabrafenib-trametinib [III, A; MCBS 2; ESCAT I-B]"];
+    c [label="Disease progression"];
+    d [label="Oligoprogression"];
+    e [label="Systemic_progression"];
+    f [label="Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]"];
+    g [label="Systemic progression"];
+    h [label="If no smoking history: platinum-based ChT +/- immunotherapy [IV, A]\nIf smoking history: immunotherapy +/- platinum-based ChT [IV, B]\nDabrafenib-trametinib if not received in first line [III, A; MCBS 2; ESCAT I-B]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    c -> e;
+    d -> f;
+    f -> g;
+    g -> h;
+    e -> h;
+}

@@ -1,0 +1,32 @@
+digraph G {
+    a [label="Stage IV mNSCLC with ALK translocation"];
+    b [label="Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [I, A; MCBS 4; ESCAT I-A]\nLorlatinib [I, A; MCBS 4; ESCAT I-A]\nCrizotinib [I, B; MCBS 4; ESCAT I-A]\nCeritinib [I, B; MCBS 4; ESCAT I-A]"];
+    c [label="Disease progression"];
+    d [label="Oligoprogression"];
+    e [label="Systemic_progression"];
+    f [label="Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]"];
+    g [label="Systemic progression"];
+    h [label="Rebiopsy recommended (not mandatory for decision)"];
+    i [label="after_crizotinib"];
+    j [label="Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [III, A; MCBS 4; ESCAT I-A]\nCeritinib [I, A; MCBS 4; ESCAT I-A]"];
+    k [label="after_ALK_TKI_not_crizotinib"];
+    l [label="Lorlatinib [III, A; MCBS 4; ESCAT I-A]"];
+    m [label="Systemic progression"];
+    n [label="If no previous lorlatinib: Lorlatinib [III, A; MCBS 4; ESCAT I-A]\nPlatinum-pemetrexed ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    c -> e;
+    d -> f;
+    f -> g;
+    g -> h;
+    e -> h;
+    h -> i;
+    h -> k;
+    i -> j;
+    k -> l;
+    j -> m;
+    l -> m;
+    m -> n;
+}

@@ -1,0 +1,46 @@
+digraph G {
+    a [label="Stage IV mNSCLC with EGFR-activating mutation"];
+    b [label="PS 0-2 [I, A]\nPS 3-4 for all following options [III, A]"];
+    c [label="Osimertinib [I, A; MCBS 4; ESCAT I-A]\nGefitinib [I, B; MCBS 4; ESCAT I-A]\nErlotinib [I, B; MCBS 4; ESCAT I-A]\nErlotinib-bevacizumab [I, B; MCBS 2; ESCAT I-A]\nErlotinib-ramucirumab [I, B; MCBS 3; ESCAT I-A]\nAfatinib [I, B; MCBS 5; ESCAT I-A]\nDacomitinib [I, B; MCBS 3; ESCAT I-A]\nGefitinib-carboplatin-pemetrexed [I, B]"];
+    d [label="Disease progression"];
+    e [label="Oligoprogression"];
+    f [label="Systemic_progression"];
+    g [label="Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]"];
+    h [label="Systemic progression"];
+    i [label="Rebiopsy or cfDNA plasma testing (at least T790M for progression on first/second-generation TKI [I, A], NGS for progression on osimertinib [III, C], with rebiopsy if plasma test is negative)"];
+    j [label="first_line_osimertinib"];
+    k [label="first_line_first_or_second_generation_TKI"];
+    l [label="Resistance_mechanism_identified"];
+    m [label="No_resistance_mechanism_identified"];
+    n [label="Clinical trial [III, B] or refer to no resistance mechanism"];
+    o [label="Systemic progression"];
+    q [label="Exon_20_T790M_mutation_positive"];
+    r [label="Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible"];
+    s [label="Osimertinib [I, A; MCBS 4; ESCAT I-A]"];
+    t [label="Systemic progression"];
+    p [label="Platinum-based ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    d -> e;
+    d -> f;
+    e -> g;
+    g -> h;
+    h -> i;
+    f -> i;
+    i -> j;
+    i -> k;
+    j -> l;
+    j -> m;
+    l -> n;
+    n -> o;
+    o -> p;
+    m -> p;
+    k -> q;
+    k -> r;
+    q -> s;
+    s -> t;
+    t -> p;
+    r -> p;
+}

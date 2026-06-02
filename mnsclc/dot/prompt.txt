@@ -1,0 +1,102 @@
+Extract the clinical decision-tree graph from the image and export it in graph description language (DOT) format.
+
+A downstream compiler reads your DOT and builds a traversable decision graph.
+The labels on the nodes need to be normalized to support downstream conversion.
+
+## General rules
+- Preserve every node and directed edge shown; prefer omitting uncertain content over inventing any.
+- Ignore colors, layout, box styling, and footnote superscripts (trailing letters a, b, c, …).
+- ASCII only. Node ids: single lowercase letters (a, b, c, …).
+- Return only valid DOT (no commentary).
+
+## Label normalization rules
+
+**Figure out if a node is structural node or conditional node. **
+A structural node is always traversed, and a conditional node is traversed if the conditon in label is satisfied.
+
+Use following rules for *conditional node*:
+1. **Remove redundant words** — drop filler that does not change the criterion (footnote letters, "patients", "recommended" when not part of the test).
+2. **Underscores for multi-word single criteria** — join words that form one tag so spaces do not trigger implicit AND.
+3. **Explicit `or`** for alternatives inside one criterion (e.g. `surgery or RT`).
+4. **Slash-separated biomarkers** → expand to **OR** (parser does not split `/`).
+5. **Set-union "and"** — when `and` joins two alternative populations, rewrite as `or`.
+6. **Parentheses** when mixing `and`, `or`, spaces, or newlines and precedence is unclear.
+7. Add or preserve `\n` for sets of conditions, but remove `\n` that exists for formatting purposes
+7. **One line per simple branch** when possible.
+
+Use following rules for *structural nodes*:
+- Copy drug names, doses, and regimen text faithfully.
+- Keep evidence tags in brackets (e.g. `[I, A; MCBS 4; ESCAT I-A]`).
+- Replace en-dashes in combinations with ASCII hyphen.
+- Remove `(refer to Figure N)` cross-references.
+- Remove layout-only line breaks—use `\n` only between distinct list items, not mid-phrase.
+
+### Critical: split criterion from treatment
+
+If a sibling branch box shows a **criterion header plus drug names**, use two nodes: a conditional parent (criterion only) and a structural child (treatment list).
+
+Model path merges with shared downstream nodes, not duplicated subgraphs.
+
+
+## Label normalization examples
+
+### Conditional vs structural (split criterion and treatment)
+
+**Incorrect** — drug names in a conditional label (compiler treats them as conditions):
+
+```
+parent -> branch [label="After crizotinib:\nDrugA [I, A]\nDrugB [III, A]"];
+```
+
+**Correct** — criterion on the branch; drugs on a structural child:
+
+```
+parent -> branch [label="after_crizotinib"];
+branch -> branch_tx [label="DrugA [I, A; MCBS 4; ESCAT I-A]\nDrugB [III, A; MCBS 4; ESCAT I-A]"];
+```
+
+**Incorrect** — "If …:" header merged with therapy on a sibling branch:
+
+```
+parent -> branch [label="If first-line osimertinib: Osimertinib [I, A]"];
+```
+
+**Correct**:
+
+```
+parent -> branch [label="first_line_osimertinib"];
+branch -> branch_tx [label="Osimertinib [I, A; MCBS 4; ESCAT I-A]"];
+```
+
+### Conditional label text
+
+| Incorrect | Correct | Reason |
+|-----------|---------|--------|
+| `After at least 1 ALK TKI, other than crizotinib:` | `after_ALK_TKI_not_crizotinib` | criterion only; underscores; no colon |
+| `If no previous lorlatinib` | `no_previous_lorlatinib` | strip "If"; underscores |
+| `Systemic progression` (as sibling branch) | `Systemic_progression` | one tag; avoid spurious implicit AND |
+| `Oligo\nprogression` | `Oligoprogression` | no layout newline on conditional label |
+| `NTRK/HER2/EGFR ex20ins` | `NTRK or HER2 or EGFR_ex20ins` | expand `/`; parser does not split slashes |
+| `Resistance mechanism identified` + sibling `No resistance mechanism identified` | keep as two single-line sibling labels (normalize wording consistently) | siblings = conditional pair |
+
+### Structural label text
+
+| Incorrect | Correct | Reason |
+|-----------|---------|--------|
+| `Local treatment\n(surgery or RT) and continue targeted\nsystemic treatment [IV, C]` | `Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]` | structural: no layout breaks mid-sentence |
+| `Dabrafenib–trametinib [III, A]` | `Dabrafenib-trametinib [III, A; MCBS 2; ESCAT I-B]` | ASCII hyphen; keep evidence tags |
+| `EGFR mutation (refer to Figure 2)` | `EGFR mutation` | drop cross-reference |
+| `Alectinib [I, A] Brigatinib [I, A] Lorlatinib [I, A]` (stacked in one box) | `Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [I, A; MCBS 4; ESCAT I-A]\nLorlatinib [I, A; MCBS 4; ESCAT I-A]` | structural list: `\n` between distinct options |
+
+## Quality check
+
+Before responding, verify:
+
+- [ ] Every sibling group: children are **conditional** with **short normalized criterion labels** (no drug lists, no evidence brackets on conditions).
+- [ ] Criterion + treatment boxes are **split** into conditional parent + structural treatment child.
+- [ ] Linear and leaf nodes are **structural**; labels not parsed as boolean logic.
+- [ ] No layout `\n` inside a single conditional criterion.
+- [ ] Slashes in biomarker criteria expanded to `or` where appropriate.
+- [ ] No missing branches; no hallucinated nodes; ASCII only.
+
+Return only the DOT source.

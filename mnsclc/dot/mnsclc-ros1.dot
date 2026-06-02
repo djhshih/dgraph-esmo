@@ -1,0 +1,27 @@
+digraph G {
+    a [label="Stage IV mNSCLC with ROS1 translocation"];
+    b [label="Crizotinib [III, A; MCBS 3; ESCAT I-B]\nEntrectinib [III, A; MCBS 3; ESCAT I-B]\nAlternative:\nRepotrectinib [III, B; ESCAT I-B]"];
+    c [label="Disease progression"];
+    d [label="Oligoprogression"];
+    e [label="Systemic_progression"];
+    f [label="Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]"];
+    g [label="Systemic progression"];
+    h [label="Rebiopsy is recommended if ROS1 TKI received in first line"];
+    i [label="no_ROS1_TKI_received_in_first_line"];
+    j [label="Crizotinib [III, A; MCBS 3; ESCAT I-B]\nEntrectinib [III, A; MCBS 3; ESCAT I-B]\nAlternative:\nRepotrectinib [III, B; ESCAT I-B]"];
+    k [label="ROS1_TKI_received_in_first_line"];
+    l [label="alternative next-generation ROS1 TKIs if available [III, A] or platinum-based ChT [IV, A]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    c -> e;
+    d -> f;
+    f -> g;
+    g -> h;
+    e -> h;
+    h -> i;
+    i -> j;
+    h -> k;
+    k -> l;
+}
