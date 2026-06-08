@@ -1,4 +1,4 @@
-all: thyroid-dtc.jpg thyroid-tt.jpg thyroid-postop.jpg thyroid-advanced.jpg thyroid-atc.jpg thyroid-mtc.jpg thyroid-mtc-postop.jpg
+all: mel-local.jpg mel-st3-or-st4.jpg mel-itm.jpg mel-adv-st3-or-st4.jpg mel-mbm.jpg mel-follow-up.jpg
 
 mel-local.jpg:
 	../../download.sh https://www.annalsofoncology.org/cms/10.1016/j.annonc.2024.11.006/asset/dae264c2-51d1-4aca-ab70-2e10ba02edfe/main.assets/gr1_lrg.jpg $@
