@@ -1,4 +1,4 @@
-all: gist-localised.jpg gist-advanced.jpg	
+all: thyroid-dtc.jpg thyroid-tt.jpg thyroid-postop.jpg thyroid-advanced.jpg thyroid-atc.jpg thyroid-mtc.jpg thyroid-mtc-postop.jpg
 
 thyroid-dtc.jpg:
 	../../download.sh https://www.annalsofoncology.org/cms/10.1093/annonc/mdz400/asset/2ac605a6-1688-4b84-8521-c9877c4bb06e/main.assets/gr1_lrg.jpg $@
