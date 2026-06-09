@@ -1,0 +1,55 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+alternative = node('alternative next-generation ROS1 TKIs if available [III, A] or platinum-based ChT [IV, A]')
+crizotinib = node('Crizotinib [III, A; MCBS 3; ESCAT I-B]\nEntrectinib [III, A; MCBS 3; ESCAT I-B]\nAlternative:\nRepotrectinib [III, B; ESCAT I-B]')
+
+graph = node(
+    'Stage IV mNSCLC with ROS1 translocation',
+    node(
+        'Crizotinib [III, A; MCBS 3; ESCAT I-B]\nEntrectinib [III, A; MCBS 3; ESCAT I-B]\nAlternative:\nRepotrectinib [III, B; ESCAT I-B]',
+        node(
+            'Disease progression',
+            branch(
+                'Oligoprogression',
+                has('Oligoprogression'),
+                node(
+                    'Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]',
+                    node(
+                        'Systemic progression',
+                        node(
+                            'Rebiopsy is recommended if ROS1 TKI received in first line',
+                            branch(
+                                'no_ROS1_TKI_received_in_first_line',
+                                has('no_ROS1_TKI_received_in_first_line'),
+                                crizotinib
+                            ),
+                            branch(
+                                'ROS1_TKI_received_in_first_line',
+                                has('ROS1_TKI_received_in_first_line'),
+                                alternative
+                            )
+                        )
+                    )
+                )
+            ),
+            branch(
+                'Systemic_progression',
+                has('Systemic_progression'),
+                node(
+                    'Rebiopsy is recommended if ROS1 TKI received in first line',
+                    branch(
+                        'no_ROS1_TKI_received_in_first_line',
+                        has('no_ROS1_TKI_received_in_first_line'),
+                        crizotinib
+                    ),
+                    branch(
+                        'ROS1_TKI_received_in_first_line',
+                        has('ROS1_TKI_received_in_first_line'),
+                        alternative
+                    )
+                )
+            )
+        )
+    )
+)

@@ -1,0 +1,55 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+alectinib = chain('Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [III, A; MCBS 4; ESCAT I-A]\nCeritinib [I, A; MCBS 4; ESCAT I-A]', 'Systemic progression', 'n', 'o')
+lorlatinib = chain('Lorlatinib [III, A; MCBS 4; ESCAT I-A]', 'Systemic progression', 'n', 'o')
+
+graph = node(
+    'Stage IV mNSCLC with ALK translocation',
+    node(
+        'Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [I, A; MCBS 4; ESCAT I-A]\nLorlatinib [I, A; MCBS 4; ESCAT I-A]\nCrizotinib [I, B; MCBS 4; ESCAT I-A]\nCeritinib [I, B; MCBS 4; ESCAT I-A]',
+        node(
+            'Disease progression',
+            branch(
+                'Oligoprogression',
+                has('Oligoprogression'),
+                node(
+                    'Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]',
+                    node(
+                        'Systemic progression',
+                        node(
+                            'Rebiopsy recommended (not mandatory for decision)',
+                            branch(
+                                'after_crizotinib',
+                                has('after_crizotinib'),
+                                alectinib
+                            ),
+                            branch(
+                                'after_ALK_TKI_not_crizotinib',
+                                has('after_ALK_TKI_not_crizotinib'),
+                                lorlatinib
+                            )
+                        )
+                    )
+                )
+            ),
+            branch(
+                'Systemic_progression',
+                has('Systemic_progression'),
+                node(
+                    'Rebiopsy recommended (not mandatory for decision)',
+                    branch(
+                        'after_crizotinib',
+                        has('after_crizotinib'),
+                        alectinib
+                    ),
+                    branch(
+                        'after_ALK_TKI_not_crizotinib',
+                        has('after_ALK_TKI_not_crizotinib'),
+                        lorlatinib
+                    )
+                )
+            )
+        )
+    )
+)

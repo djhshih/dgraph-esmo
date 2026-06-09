@@ -1,0 +1,95 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+clinical = chain('Clinical trial [III, B] or refer to no resistance mechanism', 'Systemic progression', 'Platinum-based ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]')
+osimertinib = chain('Osimertinib [I, A; MCBS 4; ESCAT I-A]', 'Systemic progression', 'Platinum-based ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]')
+platinum = node('Platinum-based ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]')
+
+graph = node(
+    'Stage IV mNSCLC with EGFR-activating mutation',
+    node(
+        'PS 0-2 [I, A]\nPS 3-4 for all following options [III, A]',
+        node(
+            'Osimertinib [I, A; MCBS 4; ESCAT I-A]\nGefitinib [I, B; MCBS 4; ESCAT I-A]\nErlotinib [I, B; MCBS 4; ESCAT I-A]\nErlotinib-bevacizumab [I, B; MCBS 2; ESCAT I-A]\nErlotinib-ramucirumab [I, B; MCBS 3; ESCAT I-A]\nAfatinib [I, B; MCBS 5; ESCAT I-A]\nDacomitinib [I, B; MCBS 3; ESCAT I-A]\nGefitinib-carboplatin-pemetrexed [I, B]',
+            node(
+                'Disease progression',
+                branch(
+                    'Oligoprogression',
+                    has('Oligoprogression'),
+                    node(
+                        'Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]',
+                        node(
+                            'Systemic progression',
+                            node(
+                                'Rebiopsy or cfDNA plasma testing (at least T790M for progression on first/second-generation TKI [I, A], NGS for progression on osimertinib [III, C], with rebiopsy if plasma test is negative)',
+                                branch(
+                                    'first_line_osimertinib',
+                                    has('first_line_osimertinib'),
+                                    branch(
+                                        'Resistance_mechanism_identified',
+                                        has('Resistance_mechanism_identified'),
+                                        clinical
+                                    ),
+                                    branch(
+                                        'No_resistance_mechanism_identified',
+                                        has('No_resistance_mechanism_identified'),
+                                        platinum
+                                    )
+                                ),
+                                branch(
+                                    'first_line_first_or_second_generation_TKI',
+                                    has('first_line_first_or_second_generation_TKI'),
+                                    branch(
+                                        'Exon_20_T790M_mutation_positive',
+                                        has('Exon_20_T790M_mutation_positive'),
+                                        osimertinib
+                                    ),
+                                    branch(
+                                        'Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible',
+                                        has('Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible'),
+                                        platinum
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                branch(
+                    'Systemic_progression',
+                    has('Systemic_progression'),
+                    node(
+                        'Rebiopsy or cfDNA plasma testing (at least T790M for progression on first/second-generation TKI [I, A], NGS for progression on osimertinib [III, C], with rebiopsy if plasma test is negative)',
+                        branch(
+                            'first_line_osimertinib',
+                            has('first_line_osimertinib'),
+                            branch(
+                                'Resistance_mechanism_identified',
+                                has('Resistance_mechanism_identified'),
+                                clinical
+                            ),
+                            branch(
+                                'No_resistance_mechanism_identified',
+                                has('No_resistance_mechanism_identified'),
+                                platinum
+                            )
+                        ),
+                        branch(
+                            'first_line_first_or_second_generation_TKI',
+                            has('first_line_first_or_second_generation_TKI'),
+                            branch(
+                                'Exon_20_T790M_mutation_positive',
+                                has('Exon_20_T790M_mutation_positive'),
+                                osimertinib
+                            ),
+                            branch(
+                                'Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible',
+                                has('Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible'),
+                                platinum
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

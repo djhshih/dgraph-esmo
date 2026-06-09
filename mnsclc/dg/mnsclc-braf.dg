@@ -1,0 +1,53 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+immunotherapy = node('immunotherapy +/- platinum-based ChT [IV, B]\nDabrafenib-trametinib if not received in first line [III, A; MCBS 2; ESCAT I-B]')
+platinum = node('platinum-based ChT +/- immunotherapy [IV, A]')
+
+graph = node(
+    'root',
+    node('node'),
+    node(
+        'Stage IV mNSCLC with BRAF V600 mutation',
+        node(
+            'Dabrafenib-trametinib [III, A; MCBS 2; ESCAT I-B]',
+            node(
+                'Disease_progression',
+                branch(
+                    'Oligoprogression',
+                    has('Oligoprogression'),
+                    node(
+                        'Local treatment (surgery or RT) and continue targeted systemic treatment [IV, C]',
+                        node(
+                            'Systemic_progression',
+                            branch(
+                                'no_smoking_history',
+                                has('no_smoking_history'),
+                                platinum
+                            ),
+                            branch(
+                                'smoking_history',
+                                has('smoking_history'),
+                                immunotherapy
+                            )
+                        )
+                    )
+                ),
+                branch(
+                    'Systemic_progression',
+                    has('Systemic_progression'),
+                    branch(
+                        'no_smoking_history',
+                        has('no_smoking_history'),
+                        platinum
+                    ),
+                    branch(
+                        'smoking_history',
+                        has('smoking_history'),
+                        immunotherapy
+                    )
+                )
+            )
+        )
+    )
+)
