@@ -12,7 +12,8 @@ digraph G {
     k [label="after_ALK_TKI_not_crizotinib"];
     l [label="Lorlatinib [III, A; MCBS 4; ESCAT I-A]"];
     m [label="Systemic progression"];
-    n [label="If no previous lorlatinib: Lorlatinib [III, A; MCBS 4; ESCAT I-A]\nPlatinum-pemetrexed ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];
+    n [label="no_lorlatinib"]
+    o [label="Lorlatinib [III, A; MCBS 4; ESCAT I-A]\nPlatinum-pemetrexed ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];
 
     a -> b;
     b -> c;
@@ -29,4 +30,5 @@ digraph G {
     j -> m;
     l -> m;
     m -> n;
+    n -> o;
 }
