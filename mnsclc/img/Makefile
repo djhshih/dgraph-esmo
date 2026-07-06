@@ -1,9 +1,9 @@
-all: mnsclc-mol-pos.jpg mnsclc-egfr.jpg mnsclc_alk.jpg mnsclc_ros1.jpg mnsclc_braf.jpg
+all: mnsclc-mol-pos.jpg mnsclc_egfr.jpg mnsclc_alk.jpg mnsclc_ros1.jpg mnsclc_braf.jpg
 
 mnsclc-mol-pos.jpg:
 	../../download.sh https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.12.009/asset/7dbc4276-e7f8-4289-b92e-1c31c514bd17/main.assets/gr1_lrg.jpg $@
 
-mnsclc-egfr.jpg:
+mnsclc_egfr.jpg:
 	../../download.sh https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.12.009/asset/5c7838c3-bed5-4e5e-b4e7-684ca71e5147/main.assets/gr2_lrg.jpg $@
 
 mnsclc_alk.jpg:
