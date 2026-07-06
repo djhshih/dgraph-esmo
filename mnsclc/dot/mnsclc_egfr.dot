@@ -15,7 +15,7 @@ digraph G {
     n [label="Clinical trial [III, B] or refer to no resistance mechanism"];
     o [label="Systemic progression"];
     q [label="Exon_20_T790M_mutation_positive"];
-    r [label="Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible"];
+    r [label="Exon_20_T790M_mutation_negative or rebiopsy_indicated_but_not_feasible"];
     s [label="Osimertinib [I, A; MCBS 4; ESCAT I-A]"];
     t [label="Systemic progression"];
     p [label="Platinum-based ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];

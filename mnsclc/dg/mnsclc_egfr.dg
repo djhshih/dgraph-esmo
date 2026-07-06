@@ -1,4 +1,4 @@
-from dgraph.condition import has
+from dgraph.condition import any_of, has
 from dgraph.graph import branch, chain, node
 
 clinical = chain('Clinical trial [III, B] or refer to no resistance mechanism', 'Systemic progression', 'Platinum-based ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]')
@@ -45,8 +45,8 @@ graph = node(
                                         osimertinib
                                     ),
                                     branch(
-                                        'Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible',
-                                        has('Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible'),
+                                        'Exon_20_T790M_mutation_negative or rebiopsy_indicated_but_not_feasible',
+                                        any_of(has('Exon_20_T790M_mutation_negative'), has('rebiopsy_indicated_but_not_feasible')),
                                         platinum
                                     )
                                 )
@@ -82,8 +82,8 @@ graph = node(
                                 osimertinib
                             ),
                             branch(
-                                'Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible',
-                                has('Exon_20_T790M_mutation_negative_or_rebiopsy_indicated_but_not_feasible'),
+                                'Exon_20_T790M_mutation_negative or rebiopsy_indicated_but_not_feasible',
+                                any_of(has('Exon_20_T790M_mutation_negative'), has('rebiopsy_indicated_but_not_feasible')),
                                 platinum
                             )
                         )
