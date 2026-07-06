@@ -1,8 +1,22 @@
 from dgraph.condition import has
-from dgraph.graph import branch, chain, node
+from dgraph.graph import branch, node
 
-alectinib = chain('Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [III, A; MCBS 4; ESCAT I-A]\nCeritinib [I, A; MCBS 4; ESCAT I-A]', 'Systemic progression', 'n', 'o')
-lorlatinib = chain('Lorlatinib [III, A; MCBS 4; ESCAT I-A]', 'Systemic progression', 'n', 'o')
+late_line = node(
+    'Lorlatinib [III, A; MCBS 4; ESCAT I-A]\nPlatinum-pemetrexed ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]'
+)
+systemic_progression_late = node(
+    'Systemic progression',
+    branch('no_lorlatinib', has('no_lorlatinib'), late_line),
+)
+
+alectinib = node(
+    'Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [III, A; MCBS 4; ESCAT I-A]\nCeritinib [I, A; MCBS 4; ESCAT I-A]',
+    systemic_progression_late,
+)
+lorlatinib = node(
+    'Lorlatinib [III, A; MCBS 4; ESCAT I-A]',
+    systemic_progression_late,
+)
 
 graph = node(
     'Stage IV mNSCLC with ALK translocation',
