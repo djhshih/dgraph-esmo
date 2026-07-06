@@ -1,6 +1,6 @@
 
 
-all: pdf/mnsclc-egfr.pdf pdf/mnsclc-alk.pdf pdf/mnsclc-ros1.pdf pdf/mnsclc-braf.pdf
+all: pdf/mnsclc-egfr.pdf pdf/mnsclc-alk.pdf pdf/mnsclc_ros1.pdf pdf/mnsclc_braf.pdf
 
 pdf/%.pdf: %.dot
 	dot -Tpdf -o $@ $<

@@ -1,6 +1,4 @@
 digraph G {
-    node [shape=box];
-
     a [label="Stage IV mNSCLC with BRAF V600 mutation"];
     b [label="Dabrafenib-trametinib [III, A; MCBS 2; ESCAT I-B]"];
     c [label="Disease_progression"];
