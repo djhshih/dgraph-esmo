@@ -1,0 +1,71 @@
+digraph G {
+    a [label="Stage IV mNSCLC molecular tests positive"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    a -> e;
+    a -> f;
+    a -> g;
+    a -> h;
+    a -> i;
+
+    b [label="EGFR_mutation"];
+    b -> b_tx;
+    b_tx [label="Osimertinib [I, A; MCBS 4; ESCAT I-A]\nGefitinib [I, B; MCBS 4; ESCAT I-A]\nErlotinib [I, B; MCBS 4; ESCAT I-A]\nErlotinib-bevacizumab [I, B; MCBS 2; ESCAT I-A]\nErlotinib-ramucirumab [I, B; MCBS 3; ESCAT I-A]\nAfatinib [I, B; MCBS 5; ESCAT I-A]\nDacomitinib [I, B; MCBS 3; ESCAT I-A]\nGefitinib-carboplatin-pemetrexed [I, B]"];
+
+    c [label="ALK_translocation"];
+    c -> c_tx;
+    c_tx [label="Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [I, A; MCBS 4; ESCAT I-A]\nLorlatinib [I, A; MCBS 4; ESCAT I-A]\nCrizotinib [I, B; MCBS 4; ESCAT I-A]\nCeritinib [I, B; MCBS 4; ESCAT I-A]"];
+
+    d [label="ROS1_translocation"];
+    d -> d_tx;
+    d_tx [label="Crizotinib [III, A; MCBS 3; ESCAT I-B]\nEntrectinib [III, A; MCBS 3; ESCAT I-B]\nRepotrectinib [III, B; ESCAT I-B]"];
+
+    e [label="BRAF_V600_mutation"];
+    e -> e_tx;
+    e_tx [label="Dabrafenib-trametinib [III, A; MCBS 2; ESCAT I-B]"];
+
+    f [label="RET_translocation"];
+    f -> f_tx;
+    f_tx [label="Pralsetinib [III, A; MCBS 3; ESCAT I-C]\nSelpercatinib [III, A; MCBS 3; ESCAT I-C]"];
+
+    g [label="NTRK_translocation or HER2_mutation or EGFR_ex20ins_mutation"];
+    g -> g_tx;
+    g_tx [label="Platinum-doublet ChT +/- ICI [IV, B]"];
+    g_tx -> g_ntrk;
+    g_tx -> g_her2;
+    g_tx -> g_ex20;
+
+    g_ntrk [label="NTRK_translocation"];
+    g_ntrk -> g_ntrk_tx;
+    g_ntrk_tx [label="Entrectinib [III, A; MCBS 3; ESCAT I-C]\nLarotrectinib [III, A; MCBS 3; ESCAT I-C]"];
+
+    g_her2 [label="HER2_mutation"];
+    g_her2 -> g_her2_tx;
+    g_her2_tx [label="Trastuzumab-deruxtecan [III, B; ESCAT II-B]"];
+
+    g_ex20 [label="EGFR_ex20ins_mutation"];
+    g_ex20 -> g_ex20_tx;
+    g_ex20_tx [label="Amivantamab [III, B; MCBS 3; ESCAT I-B]\nMobocertinib [III, C; MCBS 2; ESCAT I-B]"];
+
+    h [label="MET_ex14_skipping_mutation"];
+    h -> h_tx;
+    h_tx [label="Platinum-doublet ChT +/- ICI [IV, B]\nCapmatinib [III, A; MCBS 3; ESCAT I-B]\nTepotinib [III, A; MCBS 3; ESCAT I-B]"];
+    h_tx -> h_tx_2nd_line;
+    h_tx_2nd_line [label="Capmatinib [III, A; MCBS 3; ESCAT I-B]\nTepotinib [III, A; MCBS 3; ESCAT I-B]"];
+
+    i [label="KRAS_G12C_mutation"];
+    i -> i_tx;
+    i_tx [label="Refer to ESMO CPG on non-oncogene-addlicted mNSCLC [III, A]"];
+    i_tx -> i_cond_ici;
+    i_tx -> i_cond_no_ici;
+
+    i_cond_ici [label="if_ICI_monotherapy_given_in_first_line"];
+    i_cond_ici -> i_tx_ici;
+    i_tx_ici [label="Platinum-doublet ChT [III, A]"];
+
+    i_cond_no_ici [label="if_ICI_monotherapy_not_given_in_first_line"];
+    i_cond_no_ici -> i_tx_no_ici;
+    i_tx_no_ici [label="Sotorasib [I, B; MCBS 3; ESCAT I-B]\nAdagrasib [III, B; MCBS 2; ESCAT I-B]"];
+}

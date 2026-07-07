@@ -1,0 +1,84 @@
+from pathlib import Path
+
+from dgraph.condition import any_of, has
+from dgraph.dg_loader import load_dg
+from dgraph.graph import branch, chain, node
+
+_dir = Path(__file__).parent
+egfr_graph = load_dg(_dir / "mnsclc_egfr.dg")
+alk_graph = load_dg(_dir / "mnsclc_alk.dg")
+ros1_graph = load_dg(_dir / "mnsclc_ros1.dg")
+braf_graph = load_dg(_dir / "mnsclc_braf.dg")
+
+graph = node(
+    'Stage IV mNSCLC molecular tests positive',
+    branch(
+        'EGFR_mutation',
+        has('EGFR_mutation'),
+        egfr_graph,
+    ),
+    branch(
+        'ALK_translocation',
+        has('ALK_translocation'),
+        alk_graph,
+    ),
+    branch(
+        'ROS1_translocation',
+        has('ROS1_translocation'),
+        ros1_graph,
+    ),
+    branch(
+        'BRAF_V600_mutation',
+        has('BRAF_V600_mutation'),
+        braf_graph,
+    ),
+    branch(
+        'RET_translocation',
+        has('RET_translocation'),
+        node('Pralsetinib [III, A; MCBS 3; ESCAT I-C]\nSelpercatinib [III, A; MCBS 3; ESCAT I-C]')
+    ),
+    branch(
+        'NTRK_translocation or HER2_mutation or EGFR_ex20ins_mutation',
+        any_of(has('NTRK_translocation'), has('HER2_mutation'), has('EGFR_ex20ins_mutation')),
+        node(
+            'Platinum-doublet ChT +/- ICI [IV, B]',
+            branch(
+                'NTRK_translocation',
+                has('NTRK_translocation'),
+                node('Entrectinib [III, A; MCBS 3; ESCAT I-C]\nLarotrectinib [III, A; MCBS 3; ESCAT I-C]')
+            ),
+            branch(
+                'HER2_mutation',
+                has('HER2_mutation'),
+                node('Trastuzumab-deruxtecan [III, B; ESCAT II-B]')
+            ),
+            branch(
+                'EGFR_ex20ins_mutation',
+                has('EGFR_ex20ins_mutation'),
+                node('Amivantamab [III, B; MCBS 3; ESCAT I-B]\nMobocertinib [III, C; MCBS 2; ESCAT I-B]')
+            )
+        )
+    ),
+    branch(
+        'MET_ex14_skipping_mutation',
+        has('MET_ex14_skipping_mutation'),
+        chain('Platinum-doublet ChT +/- ICI [IV, B]\nCapmatinib [III, A; MCBS 3; ESCAT I-B]\nTepotinib [III, A; MCBS 3; ESCAT I-B]', 'Capmatinib [III, A; MCBS 3; ESCAT I-B]\nTepotinib [III, A; MCBS 3; ESCAT I-B]')
+    ),
+    branch(
+        'KRAS_G12C_mutation',
+        has('KRAS_G12C_mutation'),
+        node(
+            'Refer to ESMO CPG on non-oncogene-addicted mNSCLC [III, A]',
+            branch(
+                'if_ICI_monotherapy_given_in_first_line',
+                has('if_ICI_monotherapy_given_in_first_line'),
+                node('Platinum-doublet ChT [III, A]')
+            ),
+            branch(
+                'if_ICI_monotherapy_not_given_in_first_line',
+                has('if_ICI_monotherapy_not_given_in_first_line'),
+                node('Sotorasib [I, B; MCBS 3; ESCAT I-B]\nAdagrasib [III, B; MCBS 2; ESCAT I-B]')
+            )
+        )
+    )
+)
