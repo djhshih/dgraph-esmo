@@ -1,0 +1,108 @@
+digraph G {
+    // Structural Root
+    a [label="Resectable stage II-III NSCLC"];
+
+    // Work-up Step
+    b [label="EGFR, ALK and PD-L1 testing\nPreoperative evaluation and MDT discussion"];
+    a -> b;
+
+    // First Fan-out: Biomarker Status
+    c [label="EGFR_WT and ALK_WT"];
+    d [label="EGFR_mutation or ALK_rearrangement"];
+    b -> c;
+    b -> d;
+
+    // --- LEFT BRANCH: EGFR WT and ALK WT ---
+    e [label="ChT-ICI_ineligible"];
+    f [label="ChT-ICI_eligible"];
+    c -> e;
+    c -> f;
+
+    // ChT-ICI ineligible branch
+    g [label="Surgery [III, A]"];
+    e -> g;
+
+    h [label="R1 or R2"];
+    i [label="R0"];
+    g -> h;
+    g -> i;
+
+    j [label="MDT discussion"];
+    h -> j;
+
+    k [label="ChT_eligible"];
+    l [label="ChT_ineligible"];
+    i -> k;
+    i -> l;
+
+    m [label="Cisplatin-based ChT [I, A]"];
+    k -> m;
+
+    n [label="PD-L1_positive"];
+    o [label="PD-L1_negative"];
+    m -> n;
+    m -> o; // Corrected: Added path from Cisplatin-based ChT to PD-L1 negative
+    l -> o; 
+
+    p [label="Atezolizumab for 1 year [I, A; MCBS A (AT)]\nPembrolizumab for 1 year [I, A; MCBS A (AT)]"];
+    n -> p;
+
+    q [label="Pembrolizumab for 1 year [I, A; MCBS A (AT)]"];
+    o -> q;
+
+    // Shared Terminal Surveillance
+    z [label="Surveillance [I, A]"];
+    p -> z;
+    q -> z;
+
+    // ChT-ICI eligible branch
+    r [label="ChT-ICI [I, A]"];
+    s [label="Surgery [III, A]"];
+    t [label="Immunotherapy (selected regimens) [I, A]"];
+    f -> r;
+    r -> s;
+    s -> t;
+    t -> z;
+
+
+    // --- RIGHT BRANCH: EGFR mutation or ALK rearrangement ---
+    u [label="Surgery [III, A]"];
+    d -> u;
+
+    v [label="R1 or R2"];
+    w [label="R0"];
+    u -> v;
+    u -> w;
+
+    v -> j; 
+
+    x [label="EGFR_exon_19_deletion or L858R"];
+    y [label="ALK_rearrangement"];
+    w -> x;
+    w -> y;
+
+    // EGFR mutated branch
+    aa [label="ChT_ineligible"];
+    ab [label="ChT_eligible"];
+    x -> aa;
+    x -> ab;
+
+    ac [label="Osimertinib for 3 years [I, A; MCBS A (AT)]"];
+    aa -> ac;
+    ac -> z;
+
+    ad [label="Cisplatin-based ChT [I, A]"];
+    ab -> ad;
+
+    ae [label="Osimertinib for 3 years [I, A; MCBS A (AT)]"];
+    ad -> ae;
+    ae -> z;
+
+    // ALK rearranged branch
+    af [label="ChT [II, C]"];
+    ag [label="Alectinib for 2 years [I, A; MCBS A]"];
+    y -> af;
+    y -> ag; 
+    af -> ag;
+    ag -> z;
+}

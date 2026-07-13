@@ -1,0 +1,83 @@
+digraph G {
+    // Structural Root
+    a [label="Unresectable stage III NSCLC"];
+
+    // Work-up Step
+    b [label="EGFR and PD-L1 testing\nMDT discussion"];
+    a -> b;
+
+    // First Fan-out: Biomarker Status
+    c [label="EGFR_mutation or PD-L1 < 1%"];
+    d [label="EGFR_WT and PD-L1 >= 1%"];
+    b -> c;
+    b -> d;
+
+    // --- LEFT BRANCH: EGFR mutation or PD-L1 < 1% ---
+    e [label="Concurrent_CRT_eligible"];
+    f [label="Concurrent_CRT_ineligible"];
+    c -> e;
+    c -> f;
+
+    // Eligible path
+    g [label="Concurrent CRT [I, A]"];
+    e -> g;
+
+    // Ineligible path
+    h [label="Sequential CRT [I, A]"];
+    i [label="RT [I, A]"];
+    f -> h;
+    f -> i;
+
+    // Biomarker Mutation Criteria Siblings
+    j [label="EGFR_exon_19_deletion or L858R"];
+    j_sibling [label="no_EGFR_exon_19_deletion and no_L858R"];
+    
+    g -> j;
+    g -> j_sibling;
+    h -> j;
+    h -> j_sibling;
+
+    // EGFR Mutated Path
+    k [label="No_progression"];
+    l [label="Osimertinib [I, A; MCBS 4]"];
+    j -> k;
+    k -> l;
+
+    // Shared Terminal Surveillance
+    z [label="Surveillance [I, A]"];
+    
+    // Connections to Surveillance
+    j_sibling -> z;
+    l -> z;
+    i -> z;
+
+
+    // --- RIGHT BRANCH: EGFR WT and PD-L1 >= 1% ---
+    m [label="Concurrent_CRT_eligible"];
+    n [label="Concurrent_CRT_ineligible"];
+    d -> m;
+    d -> n;
+
+    // Eligible path
+    o [label="Concurrent CRT [I, A]"];
+    p [label="No_progression"];
+    q [label="Durvalumab for 1 year [I, A; MCBS 4]"];
+    
+    m -> o;
+    o -> p;
+    p -> q;
+    q -> z;
+
+    // Ineligible path
+    r [label="Sequential CRT [I, A]"];
+    s [label="No_progression"];
+    t [label="Durvalumab for 1 year [III, B]"];
+    u [label="RT [I, A]"];
+    
+    n -> r;
+    n -> u;
+    r -> s;
+    s -> t;
+    t -> z;
+    u -> z;
+}

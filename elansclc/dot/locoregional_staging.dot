@@ -1,0 +1,76 @@
+digraph G {
+    // Structural Root
+    a [label="Stage I NSCLC"];
+
+    // Preoperative Step
+    b [label="Preoperative evaluation and MDT discussion"];
+    a -> b;
+
+    // Medically Inoperable Path
+    c [label="Medically_inoperable"];
+    d [label="SBRT [II, A]"];
+    e [label="Surveillance"];
+    f [label="Local_progression"];
+    g [label="Salvage surgery [IV, B]"];
+    
+    b -> c;
+    c -> d;
+    d -> e;
+    e -> f;
+    f -> g;
+
+    // Shared Surveillance Node [I, A]
+    h [label="Surveillance [I, A]"];
+    g -> h;
+
+    // Medically Operable Path
+    i [label="Medically_operable"];
+    j [label="Surgery [III, A]\nSublobar resection\nLobectomy"];
+    b -> i;
+    i -> j;
+
+    // Resection Margin Sibling Criteria
+    k [label="R2"];
+    l [label="R1"];
+    m [label="R0"];
+    
+    j -> k;
+    j -> l;
+    j -> m;
+
+    // R2 Treatment
+    n [label="MDT discussion"];
+    k -> n;
+
+    // R1 Treatment
+    o [label="Definitive PORT (60 Gy in 30 fractions) [III, C]"];
+    l -> o;
+    o -> h;
+
+    // R0 Criteria Paths
+    p [label="T <3 cm and N0"];
+    q [label="T >=3 cm and T <=4 cm and N0"];
+    r [label="Higher_stage"];
+    
+    m -> p;
+    m -> q;
+    m -> r;
+
+    // T <3 cm leads directly to Surveillance
+    p -> h;
+
+    // T 3-4 cm Biomarker Mutation Criteria
+    s [label="EGFR_WT"];
+    t [label="EGFR_exon_19_deletion or L858R"];
+    
+    q -> s;
+    q -> t;
+
+    // EGFR WT leads to Surveillance
+    s -> h;
+
+    // EGFR Mutation Treatment
+    u [label="Osimertinib for 3 years [I, A; MCBS A (AT)]"];
+    t -> u;
+    u -> h;
+}
