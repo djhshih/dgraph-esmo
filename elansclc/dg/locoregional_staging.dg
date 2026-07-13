@@ -1,0 +1,61 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+surveillance = node('Surveillance [I, A]')
+
+graph = node(
+    'Stage I NSCLC',
+    node(
+        'Preoperative evaluation and MDT discussion',
+        branch(
+            'Medically_inoperable',
+            has('Medically_inoperable'),
+            chain('SBRT [II, A]', 'Surveillance', 'Local_progression', 'Salvage surgery [IV, B]', 'Surveillance [I, A]')
+        ),
+        branch(
+            'Medically_operable',
+            has('Medically_operable'),
+            node(
+                'Surgery [III, A]\nSublobar resection\nLobectomy',
+                branch(
+                    'R2',
+                    has('R2'),
+                    node('MDT discussion')
+                ),
+                branch(
+                    'R1',
+                    has('R1'),
+                    chain('Definitive PORT (60 Gy in 30 fractions) [III, C]', 'Surveillance [I, A]')
+                ),
+                branch(
+                    'R0',
+                    has('R0'),
+                    branch(
+                        '< 3 T and N0',
+                        // all_of(all_of(all_of(has('T'), has('<3')), has('cm')), has('N0')),
+                        // manual_fix
+                        all_of(lt('T', 3), has('N0')),
+                        surveillance
+                    ),
+                    branch(
+                        '< 3 T and <= 4 T and N0',
+                        // all_of(all_of(all_of(all_of(all_of(all_of(has('T'), has('>=3')), has('cm')), has('T')), has('<=4')), has('cm')), has('N0')),
+                        // manual_fix
+                        all_of(all_of(ge('T', 3), le('T', 4)), has('N0')),
+                        branch(
+                            'EGFR_WT',
+                            has('EGFR_WT'),
+                            surveillance
+                        ),
+                        branch(
+                            'EGFR_exon_19_deletion or L858R',
+                            any_of(has('EGFR_exon_19_deletion'), has('L858R')),
+                            chain('Osimertinib for 3 years [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                        )
+                    ),
+                    node('Higher_stage')
+                )
+            )
+        )
+    )
+)

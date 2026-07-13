@@ -1,0 +1,83 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+no = chain('No_progression', 'Osimertinib [I, A; MCBS 4]', 'Surveillance [I, A]')
+surveillance = node('Surveillance [I, A]')
+
+graph = node(
+    'Unresectable stage III NSCLC',
+    node(
+        'EGFR and PD-L1 testing\nMDT discussion',
+        branch(
+            'EGFR_mutation or PD-L1 < 1%',
+            // any_of(has('EGFR_mutation'), all_of(has('PD-L1'), has('<1%'))),
+            // manual_fix
+            any_of(has('EGFR_mutation'), lt('PD_L1', 1)),
+            branch(
+                'Concurrent_CRT_eligible',
+                has('Concurrent_CRT_eligible'),
+                node(
+                    'Concurrent CRT [I, A]',
+                    branch(
+                        'EGFR_exon_19_deletion or L858R',
+                        any_of(has('EGFR_exon_19_deletion'), has('L858R')),
+                        no
+                    ),
+                    branch(
+                        'no_EGFR_exon_19_deletion and no_L858R',
+                        all_of(has('no_EGFR_exon_19_deletion'), has('no_L858R')),
+                        surveillance
+                    )
+                )
+            ),
+            branch(
+                'Concurrent_CRT_ineligible',
+                has('Concurrent_CRT_ineligible'),
+                branch(
+                    'Sequential CRT [I, A]',
+                    all_of(all_of(all_of(has('Sequential'), has('CRT')), has('[I,')), has('A]')),
+                    branch(
+                        'EGFR_exon_19_deletion or L858R',
+                        any_of(has('EGFR_exon_19_deletion'), has('L858R')),
+                        no
+                    ),
+                    branch(
+                        'no_EGFR_exon_19_deletion and no_L858R',
+                        all_of(has('no_EGFR_exon_19_deletion'), has('no_L858R')),
+                        surveillance
+                    )
+                ),
+                branch(
+                    'RT [I, A]',
+                    all_of(all_of(has('RT'), has('[I,')), has('A]')),
+                    surveillance
+                )
+            )
+        ),
+        branch(
+            'EGFR_WT and PD-L1 >= 1%',
+            // all_of(all_of(has('EGFR_WT'), has('PD-L1')), has('>=1%')),
+            // manual_fix
+            all_of(has('EGFR_WT'), ge('PD-L1', 1)),
+            branch(
+                'Concurrent_CRT_eligible',
+                has('Concurrent_CRT_eligible'),
+                chain('Concurrent CRT [I, A]', 'No_progression', 'Durvalumab for 1 year [I, A; MCBS 4]', 'Surveillance [I, A]')
+            ),
+            branch(
+                'Concurrent_CRT_ineligible',
+                has('Concurrent_CRT_ineligible'),
+                branch(
+                    'Sequential CRT [I, A]',
+                    all_of(all_of(all_of(has('Sequential'), has('CRT')), has('[I,')), has('A]')),
+                    chain('No_progression', 'Durvalumab for 1 year [III, B]', 'Surveillance [I, A]')
+                ),
+                branch(
+                    'RT [I, A]',
+                    all_of(all_of(has('RT'), has('[I,')), has('A]')),
+                    surveillance
+                )
+            )
+        )
+    )
+)

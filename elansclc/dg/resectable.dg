@@ -1,0 +1,102 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+mdt = node('MDT discussion')
+
+graph = node(
+    'Resectable stage II-III NSCLC',
+    node(
+        'EGFR, ALK and PD-L1 testing\nPreoperative evaluation and MDT discussion',
+        branch(
+            'EGFR_WT and ALK_WT',
+            all_of(has('EGFR_WT'), has('ALK_WT')),
+            branch(
+                'ChT-ICI_ineligible',
+                has('ChT-ICI_ineligible'),
+                node(
+                    'Surgery [III, A]',
+                    branch(
+                        'R1 or R2',
+                        any_of(has('R1'), has('R2')),
+                        mdt
+                    ),
+                    branch(
+                        'R0',
+                        has('R0'),
+                        branch(
+                            'ChT_eligible',
+                            has('ChT_eligible'),
+                            node(
+                                'Cisplatin-based ChT [I, A]',
+                                branch(
+                                    'PD-L1_positive',
+                                    has('PD-L1_positive'),
+                                    chain('Atezolizumab for 1 year [I, A; MCBS A (AT)]\nPembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                                ),
+                                branch(
+                                    'PD-L1_negative',
+                                    has('PD-L1_negative'),
+                                    chain('Pembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                                )
+                            )
+                        ),
+                        branch(
+                            'ChT_ineligible',
+                            has('ChT_ineligible'),
+                            chain('PD-L1_negative', 'Pembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                        )
+                    )
+                )
+            ),
+            branch(
+                'ChT-ICI_eligible',
+                has('ChT-ICI_eligible'),
+                chain('ChT-ICI [I, A]', 'Surgery [III, A]', 'Immunotherapy (selected regimens) [I, A]', 'Surveillance [I, A]')
+            )
+        ),
+        branch(
+            'EGFR_mutation or ALK_rearrangement',
+            any_of(has('EGFR_mutation'), has('ALK_rearrangement')),
+            node(
+                'Surgery [III, A]',
+                branch(
+                    'R1 or R2',
+                    any_of(has('R1'), has('R2')),
+                    mdt
+                ),
+                branch(
+                    'R0',
+                    has('R0'),
+                    branch(
+                        'EGFR_exon_19_deletion or L858R',
+                        any_of(has('EGFR_exon_19_deletion'), has('L858R')),
+                        branch(
+                            'ChT_ineligible',
+                            has('ChT_ineligible'),
+                            chain('Osimertinib for 3 years [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                        ),
+                        branch(
+                            'ChT_eligible',
+                            has('ChT_eligible'),
+                            chain('Cisplatin-based ChT [I, A]', 'Osimertinib for 3 years [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                        )
+                    ),
+                    branch(
+                        'ALK_rearrangement',
+                        has('ALK_rearrangement'),
+                        branch(
+                            'ChT [II, C]',
+                            all_of(all_of(has('ChT'), has('[II,')), has('C]')),
+                            chain('Alectinib for 2 years [I, A; MCBS A]', 'Surveillance [I, A]')
+                        ),
+                        branch(
+                            'Alectinib for 2 years [I, A; MCBS A]',
+                            all_of(all_of(all_of(all_of(all_of(all_of(all_of(has('Alectinib'), has('for')), has('2')), has('years')), has('[I,')), has('A;')), has('MCBS')), has('A]')),
+                            node('Surveillance [I, A]')
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

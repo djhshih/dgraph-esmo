@@ -48,8 +48,10 @@ digraph G {
     o -> h;
 
     // R0 Criteria Paths
-    p [label="T <3 cm and N0"];
-    q [label="T >=3 cm and T <=4 cm and N0"];
+    //p [label="T <3 cm and N0"];
+    p [label="< 3 T and N0"];
+    //q [label="T >=3 cm and T <=4 cm and N0"];
+    q [label="< 3 T and <= 4 T and N0"];
     r [label="Higher_stage"];
     
     m -> p;
