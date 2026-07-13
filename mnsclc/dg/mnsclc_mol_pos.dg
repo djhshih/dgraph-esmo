@@ -4,6 +4,7 @@ from dgraph.condition import any_of, has
 from dgraph.dg_loader import load_dg
 from dgraph.graph import branch, chain, node
 
+# manually added relative paths for sub-graphs
 _dir = Path(__file__).parent
 egfr_graph = load_dg(_dir / "mnsclc_egfr.dg")
 alk_graph = load_dg(_dir / "mnsclc_alk.dg")

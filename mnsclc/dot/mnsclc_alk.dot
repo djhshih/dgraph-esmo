@@ -11,9 +11,14 @@ digraph G {
     j [label="Alectinib [I, A; MCBS 4; ESCAT I-A]\nBrigatinib [III, A; MCBS 4; ESCAT I-A]\nCeritinib [I, A; MCBS 4; ESCAT I-A]"];
     k [label="after_ALK_TKI_not_crizotinib"];
     l [label="Lorlatinib [III, A; MCBS 4; ESCAT I-A]"];
-    m [label="Systemic progression"];
-    n [label="no_lorlatinib"];
-    o [label="Lorlatinib [III, A; MCBS 4; ESCAT I-A]\nPlatinum-pemetrexed ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];
+    
+    // Split systemic progression nodes to separate the two distinct history pathways
+    m1 [label="Systemic progression"];
+    m2 [label="Systemic progression"];
+    
+    // Split final nodes based on lorlatinib prescription path
+    o1 [label="Lorlatinib [III, A; MCBS 4; ESCAT I-A]"];
+    o2 [label="Platinum-pemetrexed ChT [III, A]\nAtezolizumab-bevacizumab-paclitaxel-carboplatin [III, B; MCBS 3]"];
 
     a -> b;
     b -> c;
@@ -27,8 +32,12 @@ digraph G {
     h -> k;
     i -> j;
     k -> l;
-    j -> m;
-    l -> m;
-    m -> n;
-    n -> o;
+    
+    // Pathway 1: After Crizotinib -> Non-Lorlatinib TKIs -> Systemic Progression -> Lorlatinib
+    j -> m1;
+    m1 -> o1;
+    
+    // Pathway 2: After other TKI -> Lorlatinib -> Systemic Progression -> Chemotherapy regimens
+    l -> m2;
+    m2 -> o2;
 }
