@@ -1,4 +1,4 @@
-from dgraph.condition import all_of, any_of, has
+from dgraph.condition import all_of, any_of, ge, has, lt
 from dgraph.graph import branch, chain, node
 
 no = chain('No_progression', 'Osimertinib [I, A; MCBS 4]', 'Surveillance [I, A]')
