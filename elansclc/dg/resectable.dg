@@ -1,6 +1,8 @@
 from dgraph.condition import all_of, any_of, has
 from dgraph.graph import branch, chain, node
 
+atezolizumab = chain('Atezolizumab for 1 year [I, A; MCBS A (AT)]\nPembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+pembrolizumab = chain('Pembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
 mdt = node('MDT discussion')
 
 graph = node(
@@ -31,19 +33,28 @@ graph = node(
                                 branch(
                                     'PD-L1_positive',
                                     has('PD-L1_positive'),
-                                    chain('Atezolizumab for 1 year [I, A; MCBS A (AT)]\nPembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                                    atezolizumab
                                 ),
                                 branch(
                                     'PD-L1_negative',
                                     has('PD-L1_negative'),
-                                    chain('Pembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                                    pembrolizumab
                                 )
                             )
                         ),
                         branch(
                             'ChT_ineligible',
                             has('ChT_ineligible'),
-                            chain('PD-L1_negative', 'Pembrolizumab for 1 year [I, A; MCBS A (AT)]', 'Surveillance [I, A]')
+                            branch(
+                                'PD-L1_positive',
+                                has('PD-L1_positive'),
+                                atezolizumab
+                            ),
+                            branch(
+                                'PD-L1_negative',
+                                has('PD-L1_negative'),
+                                pembrolizumab
+                            )
                         )
                     )
                 )
@@ -84,16 +95,7 @@ graph = node(
                     branch(
                         'ALK_rearrangement',
                         has('ALK_rearrangement'),
-                        branch(
-                            'ChT [II, C]',
-                            all_of(all_of(has('ChT'), has('[II,')), has('C]')),
-                            chain('Alectinib for 2 years [I, A; MCBS A]', 'Surveillance [I, A]')
-                        ),
-                        branch(
-                            'Alectinib for 2 years [I, A; MCBS A]',
-                            all_of(all_of(all_of(all_of(all_of(all_of(all_of(has('Alectinib'), has('for')), has('2')), has('years')), has('[I,')), has('A;')), has('MCBS')), has('A]')),
-                            node('Surveillance [I, A]')
-                        )
+                        chain('ChT [II, C]', 'Alectinib for 2 years [I, A; MCBS A]', 'Surveillance [I, A]')
                     )
                 )
             )

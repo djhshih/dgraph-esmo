@@ -10,7 +10,9 @@ graph = node(
         'EGFR and PD-L1 testing\nMDT discussion',
         branch(
             'EGFR_mutation or < 1 pdl1_percent',
-            any_of(has('EGFR_mutation'), all_of(has('<1'), has('pdl1_percent'))),
+            # any_of(has('EGFR_mutation'), all_of(has('<1'), has('pdl1_percent'))),
+            # manual_fix
+            any_of(has('EGFR_mutation'), lt('pdl1_percent', 1)),
             branch(
                 'Concurrent_CRT_eligible',
                 has('Concurrent_CRT_eligible'),
@@ -54,7 +56,9 @@ graph = node(
         ),
         branch(
             'EGFR_WT and > 1 pdl1_percent',
-            all_of(all_of(has('EGFR_WT'), has('>1')), has('pdl1_percent')),
+            # all_of(all_of(has('EGFR_WT'), has('>1')), has('pdl1_percent')),
+            # manual_fix
+            all_of(has('EGFR_WT'), ge('pdl1_percent', 1)),
             branch(
                 'Concurrent_CRT_eligible',
                 has('Concurrent_CRT_eligible'),

@@ -7,15 +7,15 @@ digraph G {
     a -> b;
 
     // First Fan-out: Biomarker Status
-    c [label="EGFR_mutation or PD-L1 < 1%"];
-    d [label="EGFR_WT and PD-L1 >= 1%"];
+    c [label="EGFR_mutation or < 1 pdl1_percent"];
+    d [label="EGFR_WT and > 1 pdl1_percent"];
     b -> c;
     b -> d;
 
     // --- LEFT BRANCH: EGFR mutation or PD-L1 < 1% ---
     e [label="Concurrent_CRT_eligible"];
     f [label="Concurrent_CRT_ineligible"];
-    c -> e;
+    c -> e; 
     c -> f;
 
     // Eligible path
@@ -23,8 +23,8 @@ digraph G {
     e -> g;
 
     // Ineligible path
-    h [label="Sequential CRT [I, A]"];
-    i [label="RT [I, A]"];
+    h [label="Sequential_CRT"]; //manual change to label in order to treat this as conditional node
+    i [label="RT"]; //manual change to label in order to treat this as conditional node
     f -> h;
     f -> i;
 
@@ -69,10 +69,10 @@ digraph G {
     q -> z;
 
     // Ineligible path
-    r [label="Sequential CRT [I, A]"];
+    r [label="Sequential_CRT"]; //manual change to label in order to treat this as conditional node
     s [label="No_progression"];
     t [label="Durvalumab for 1 year [III, B]"];
-    u [label="RT [I, A]"];
+    u [label="RT"]; //manual change to label in order to treat this as conditional node
     
     n -> r;
     n -> u;

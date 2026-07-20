@@ -41,8 +41,9 @@ digraph G {
     n [label="PD-L1_positive"];
     o [label="PD-L1_negative"];
     m -> n;
-    m -> o; // Corrected: Added path from Cisplatin-based ChT to PD-L1 negative
-    l -> o; 
+    m -> o;
+    l -> n;
+    l -> o;
 
     p [label="Atezolizumab for 1 year [I, A; MCBS A (AT)]\nPembrolizumab for 1 year [I, A; MCBS A (AT)]"];
     n -> p;
@@ -98,11 +99,10 @@ digraph G {
     ad -> ae;
     ae -> z;
 
-    // ALK rearranged branch
+    // ALK rearranged branch - Chaired sequentially: y -> af -> ag -> z
     af [label="ChT [II, C]"];
     ag [label="Alectinib for 2 years [I, A; MCBS A]"];
     y -> af;
-    y -> ag; 
     af -> ag;
     ag -> z;
 }

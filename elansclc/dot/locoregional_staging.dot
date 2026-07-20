@@ -49,14 +49,17 @@ digraph G {
 
     // R0 Criteria Paths
     //p [label="T <3 cm and N0"];
-    p [label="< 3 T and N0"];
+    p [label="< 3 tumour_size_cm and N0"];
     //q [label="T >=3 cm and T <=4 cm and N0"];
-    q [label="< 3 T and <= 4 T and N0"];
+    q [label=">= 3 tumour_size_cm and <= 4 tumour_size_cm and N0"];
     r [label="Higher_stage"];
+    // Dummy terminal so Higher_stage is a conditional branch; replace later with cross-graph link
+    v [label="See Figure 3"];
     
     m -> p;
     m -> q;
     m -> r;
+    r -> v;
 
     // T <3 cm leads directly to Surveillance
     p -> h;
