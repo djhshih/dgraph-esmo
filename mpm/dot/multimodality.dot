@@ -1,0 +1,11 @@
+digraph G {
+
+    a [label="MPM staged and determined suitable for multimodality treatment"];
+    b [label="Consideration of VATS pleurodesis"];
+    c [label="Macroscopic complete resection with/without induction Platinum-pemetrexed ChT"];
+    d [label="Completion of up to 6 cycles of ChT (platinum-pemetrexed)"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+}

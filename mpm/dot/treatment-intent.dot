@@ -1,0 +1,10 @@
+digraph G {
+    a [label="Confirmed mesothelioma diagnosis"];
+    b [label="suitable_for_best_supportive_care_only"];
+    c [label="suitable_for_active_treatment but not multimodality_treatment (inoperable or comorbidities)"];
+    d [label="suitable_for_multimodality_treatment including surgery"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+}

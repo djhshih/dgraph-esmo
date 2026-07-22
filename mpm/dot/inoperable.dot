@@ -1,0 +1,101 @@
+digraph G {
+    // Level 1: Entry
+    a [label="MPM unsuitable for multimodality treatment (e.g. PS 0-1)"];
+
+    // Level 2 Branches from Entry
+    b [label=">= 0 PS <= 1 PS"];
+    c [label=">= 0 PS <= 2 PS"];
+    d [label=">= 3 PS"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+
+    // Structural node for PS 0-1 branch
+    e [label="Nivolumab-ipilimumab (up to 2 years equivalent dosing) [I, A; MCBS 3]"];
+    b -> e;
+
+    // Disease progression from Nivolumab-ipilimumab
+    f [label="Initial Disease progression check"];
+    e -> f;
+
+    // Branches from first Disease progression
+    g [label=">= 3 PS"];
+    // h [label=">= 0 PS <= 2 PS"];
+    f -> g;
+
+    // Best supportive care for PS >= 3 from first progression
+    i [label="Best supportive care"];
+    g -> i;
+
+    // Path from entry also goes to h (PS 0-2) via the main flow line
+    f -> c;
+
+    // PS 0-2 treatment structural nodes (Siblings)
+    j [label="Cisplatin-pemetrexed [I, A; MCBS 3]\nor Carboplatin-pemetrexed [I, A]\n(up to 6 cycles) followed by maintenance gemcitabine [II, C]"];
+    k [label="Cisplatin-pemetrexed-bevacizumab\n(up to 6 cycles) followed by maintenance bevacizumab [I, A]"];
+    
+    c -> j;
+    c -> k;
+
+    // Rightmost branch from entry
+    l [label="Best supportive care"];
+    d -> l;
+
+    // Disease progression after first-line chemotherapy (j and k)
+    m [label="Disease progression after 1st line chemotherapy"];
+    j -> m;
+    k -> m;
+
+    // Branches after second Disease progression
+    n [label=">= 0 PS <= 1 PS"];
+    o [label=">= 0 PS <= 2 PS"];
+    p [label=">= 3 PS"];
+    m -> n;
+    m -> o;
+    m -> p;
+
+    // PS 0-1 treatments after chemotherapy
+    q [label="Vinorelbine [II, B]\nGemcitabine [II, B]\nPemetrexed [III, C]"];
+    r [label="Nivolumab [I, A]\nPembrolizumab [II, C]\nNivolumab-ipilimumab [II, C]"];
+    s [label="Gemcitabine-ramucirumab [III, C]"];
+    t [label="Cisplatin-pemetrexed [II, B; MCBS 3]\nCarboplatin-pemetrexed [II, B]"];
+
+    n -> q;
+    n -> r;
+    n -> s;
+    n -> t;
+
+    // PS 0-2 treatments after chemotherapy
+    u [label="Vinorelbine [II, B]\nGemcitabine [II, B]\nPemetrexed [III, C]"];
+    v [label="Gemcitabine-ramucirumab [III, C]"];
+
+    o -> u;
+    o -> v;
+
+    // PS >= 3 after chemotherapy
+    w [label="Best supportive care"];
+    p -> w;
+
+    // Third Disease progression (merging from all second-line treatments)
+    x [label="Disease progression after 2nd line treatments"];
+    q -> x;
+    r -> x;
+    s -> x;
+    t -> x;
+    u -> x;
+    v -> x;
+
+    // Branches from third Disease progression
+    y [label=">= 0 PS <= 1 PS"];
+    z [label=">= 2 PS"];
+    x -> y;
+    x -> z;
+
+    // Final structural nodes
+    aa [label="Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]"];
+    ab [label="Best supportive care"];
+
+    y -> aa;
+    z -> ab;
+}
