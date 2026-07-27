@@ -1,6 +1,6 @@
 
 
-all: pdf/inoperable.pdf pdf/multimodality.pdf pdf/treatment-intent.pdf
+all: pdf/staging.pdf pdf/inoperable.pdf pdf/multimodality.pdf pdf/treatment-intent.pdf
 
 pdf/%.pdf: %.dot
 	dot -Tpdf -o $@ $<

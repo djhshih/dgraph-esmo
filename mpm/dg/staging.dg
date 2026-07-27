@@ -1,0 +1,17 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'CT thorax & upper abdomen',
+    branch(
+        'FDG-PET',
+        has('FDG-PET'),
+        node('MRI brain, thorax, liver'),
+        node('Laparoscopy/contralateral VATS')
+    ),
+    branch(
+        'EBUS/EUS',
+        has('EBUS/EUS'),
+        node('Mediastinoscopy')
+    )
+)

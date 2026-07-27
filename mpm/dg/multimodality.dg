@@ -1,0 +1,3 @@
+from dgraph.graph import branch, chain, node
+
+graph = chain('MPM staged and determined suitable for multimodality treatment', 'Consideration of VATS pleurodesis', 'Macroscopic complete resection with/without induction Platinum-pemetrexed ChT', 'Completion of up to 6 cycles of ChT (platinum-pemetrexed)')

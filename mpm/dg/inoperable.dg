@@ -1,0 +1,188 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+disease = node(
+    'Disease progression after 1st line chemotherapy',
+    branch(
+        '>= 0 PS <= 1 PS',
+        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+        branch(
+            'Vinorelbine [II, B]\nGemcitabine [II, B]\nPemetrexed [III, C]',
+            any_of(any_of(has('Vinorelbine'), has('Gemcitabine')), has('Pemetrexed')),
+            node(
+                'Disease progression after 2nd line treatments',
+                branch(
+                    '>= 0 PS <= 1 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+                    node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+                ),
+                branch(
+                    '>= 2 PS',
+                    all_of(has('>=2'), has('PS')),
+                    node('Best supportive care')
+                )
+            )
+        ),
+        branch(
+            'Nivolumab [I, A]\nPembrolizumab [II, C]\nNivolumab-ipilimumab [II, C]',
+            any_of(any_of(has('Nivolumab'), has('Pembrolizumab')), has('Nivolumab-ipilimumab')),
+            node(
+                'Disease progression after 2nd line treatments',
+                branch(
+                    '>= 0 PS <= 1 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+                    node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+                ),
+                branch(
+                    '>= 2 PS',
+                    all_of(has('>=2'), has('PS')),
+                    node('Best supportive care')
+                )
+            )
+        ),
+        branch(
+            'Gemcitabine-ramucirumab [III, C]',
+            has('Gemcitabine-ramucirumab'),
+            node(
+                'Disease progression after 2nd line treatments',
+                branch(
+                    '>= 0 PS <= 1 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+                    node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+                ),
+                branch(
+                    '>= 2 PS',
+                    all_of(has('>=2'), has('PS')),
+                    node('Best supportive care')
+                )
+            )
+        ),
+        branch(
+            'Cisplatin-pemetrexed [II, B; MCBS 3]\nCarboplatin-pemetrexed [II, B]',
+            any_of(has('Cisplatin-pemetrexed'), has('Carboplatin-pemetrexed')),
+            node(
+                'Disease progression after 2nd line treatments',
+                branch(
+                    '>= 0 PS <= 1 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+                    node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+                ),
+                branch(
+                    '>= 2 PS',
+                    all_of(has('>=2'), has('PS')),
+                    node('Best supportive care')
+                )
+            )
+        )
+    ),
+    branch(
+        '>= 0 PS <= 2 PS',
+        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+        branch(
+            'Vinorelbine [II, B]\nGemcitabine [II, B]\nPemetrexed [III, C]',
+            any_of(any_of(has('Vinorelbine'), has('Gemcitabine')), has('Pemetrexed')),
+            node(
+                'Disease progression after 2nd line treatments',
+                branch(
+                    '>= 0 PS <= 1 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+                    node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+                ),
+                branch(
+                    '>= 2 PS',
+                    all_of(has('>=2'), has('PS')),
+                    node('Best supportive care')
+                )
+            )
+        ),
+        branch(
+            'Gemcitabine-ramucirumab [III, C]',
+            has('Gemcitabine-ramucirumab'),
+            node(
+                'Disease progression after 2nd line treatments',
+                branch(
+                    '>= 0 PS <= 1 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+                    node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+                ),
+                branch(
+                    '>= 2 PS',
+                    all_of(has('>=2'), has('PS')),
+                    node('Best supportive care')
+                )
+            )
+        )
+    ),
+    branch(
+        '>= 3 PS',
+        all_of(has('>=3'), has('PS')),
+        node('Best supportive care')
+    )
+)
+disease_progression = node(
+    'Disease progression after 2nd line treatments',
+    branch(
+        '>= 0 PS <= 1 PS',
+        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+        node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+    ),
+    branch(
+        '>= 2 PS',
+        all_of(has('>=2'), has('PS')),
+        node('Best supportive care')
+    )
+)
+best = node('Best supportive care')
+nivolumab = node('Nivolumab [I, A]\nNivolumab-ipilimumab [II, C]')
+
+graph = node(
+    'MPM unsuitable for multimodality treatment (e.g. PS 0-1)',
+    branch(
+        '>= 0 PS <= 1 PS',
+        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+        node(
+            'Nivolumab-ipilimumab (up to 2 years equivalent dosing) [I, A; MCBS 3]',
+            node(
+                'Initial Disease progression check',
+                branch(
+                    '>= 3 PS',
+                    all_of(has('>=3'), has('PS')),
+                    best
+                ),
+                branch(
+                    '>= 0 PS <= 2 PS',
+                    all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+                    branch(
+                        'Cisplatin-pemetrexed [I, A; MCBS 3] or Carboplatin-pemetrexed [I, A] followed by maintenance gemcitabine [II, C]',
+                        any_of(has('Cisplatin-pemetrexed'), all_of(all_of(all_of(all_of(has('Carboplatin-pemetrexed'), has('followed')), has('by')), has('maintenance')), has('gemcitabine'))),
+                        disease
+                    ),
+                    branch(
+                        'Cisplatin-pemetrexed-bevacizumab followed by maintenance bevacizumab [I, A]',
+                        all_of(all_of(all_of(all_of(has('Cisplatin-pemetrexed-bevacizumab'), has('followed')), has('by')), has('maintenance')), has('bevacizumab')),
+                        disease
+                    )
+                )
+            )
+        )
+    ),
+    branch(
+        '>= 0 PS <= 2 PS',
+        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+        branch(
+            'Cisplatin-pemetrexed [I, A; MCBS 3] or Carboplatin-pemetrexed [I, A] followed by maintenance gemcitabine [II, C]',
+            any_of(has('Cisplatin-pemetrexed'), all_of(all_of(all_of(all_of(has('Carboplatin-pemetrexed'), has('followed')), has('by')), has('maintenance')), has('gemcitabine'))),
+            disease
+        ),
+        branch(
+            'Cisplatin-pemetrexed-bevacizumab followed by maintenance bevacizumab [I, A]',
+            all_of(all_of(all_of(all_of(has('Cisplatin-pemetrexed-bevacizumab'), has('followed')), has('by')), has('maintenance')), has('bevacizumab')),
+            disease
+        )
+    ),
+    branch(
+        '>= 3 PS',
+        all_of(has('>=3'), has('PS')),
+        best
+    )
+)

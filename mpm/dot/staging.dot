@@ -1,0 +1,14 @@
+digraph G {
+    a [label="CT thorax & upper abdomen"];
+    b [label="FDG-PET"];
+    c [label="EBUS/EUS"];
+    d [label="MRI brain, thorax, liver"];
+    e [label="Laparoscopy/contralateral VATS"];
+    f [label="Mediastinoscopy"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    b -> e;
+    c -> f;
+}

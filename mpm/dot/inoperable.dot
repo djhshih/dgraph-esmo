@@ -32,8 +32,8 @@ digraph G {
     f -> c;
 
     // PS 0-2 treatment structural nodes (Siblings)
-    j [label="Cisplatin-pemetrexed [I, A; MCBS 3]\nor Carboplatin-pemetrexed [I, A]\n(up to 6 cycles) followed by maintenance gemcitabine [II, C]"];
-    k [label="Cisplatin-pemetrexed-bevacizumab\n(up to 6 cycles) followed by maintenance bevacizumab [I, A]"];
+    j [label="Cisplatin-pemetrexed [I, A; MCBS 3] or Carboplatin-pemetrexed [I, A] followed by maintenance gemcitabine [II, C]"];
+    k [label="Cisplatin-pemetrexed-bevacizumab followed by maintenance bevacizumab [I, A]"];
     
     c -> j;
     c -> k;
