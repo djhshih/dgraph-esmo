@@ -1,0 +1,32 @@
+digraph G {
+    a [label="Stage IV NSqNSCC, molecular tests (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2) negative, with contraindication for immunotherapy"];
+    b [label="Oligometastatic"];
+    c [label="not_Oligometastatic"];
+    d [label="Systemic therapy and LRT [II, B]"];
+    e [label=">= 0 PS and <= 1 PS"];
+    f [label="= 2 PS"];
+    g [label=">= 3 PS and <= 4 PS"];
+    h [label="Platinum-doublet ChT [I, A] (pemetrexed preferred) [II, A; MCBS 4] followed by pemetrexed maintenance [I, A; MCBS 4]; if pemetrexed switch maintenance [I, B]; if 4 cycles of gemcitabine-cisplatin: gemcitabine continuation maintenance [I, C]\nPlatinum-doublet ChT [I, A] (pemetrexed preferred) [II, A; MCBS 4]\nCarboplatin-paclitaxel-bevacizumab followed by bevacizumab maintenance [I, A; MCBS 2]\nOr platinum-pemetrexed-bevacizumab followed by pemetrexed-bevacizumab maintenance [I, A]"];
+    i [label="Platinum-doublet ChT [carboplatin preferred: I, A; pemetrexed preferred: II, A]\nMaintenance pemetrexed if improvement to PS 0-1 [MCBS 4]\nSingle-agent ChT (pemetrexed, gemcitabine, vinorelbine, docetaxel) [I, B]"];
+    j [label="Disease progression"];
+    k [label=">= 0 PS and <= 2 PS"];
+    l [label=">= 3 PS and <= 4 PS"];
+    m [label="Pemetrexed [I, B]\nDocetaxel [I, B]\nNintedanib-docetaxel [II, B]\nRamucirumab-docetaxel [I, B; MCBS 1]"];
+    n [label="Best Supportive Care alone [III, A]"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    c -> e;
+    c -> f;
+    c -> g;
+    e -> h;
+    f -> i;
+    h -> j;
+    i -> j;
+    j -> k;
+    j -> l;
+    k -> m;
+    l -> n;
+    g -> n;
+}

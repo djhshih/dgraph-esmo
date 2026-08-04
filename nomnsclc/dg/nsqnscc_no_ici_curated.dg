@@ -1,0 +1,59 @@
+from dgraph.condition import all_of, equals, ge, has, le
+from dgraph.graph import branch, node
+
+bsc = node('Best Supportive Care alone [III, A]')
+second_line = node(
+    'Pemetrexed [I, B]\nDocetaxel [I, B]\nNintedanib-docetaxel [II, B]\nRamucirumab-docetaxel [I, B; MCBS 1]'
+)
+disease_progression = node(
+    'Disease progression',
+    branch(
+        '>= 0 PS and <= 2 PS',
+        # manual_fix,
+        all_of(ge('PS', 0), le('PS', 2)),
+        second_line
+    ),
+    branch(
+        '>= 3 PS and <= 4 PS',
+        # manual_fix,
+        all_of(ge('PS', 3), le('PS', 4)),
+        bsc
+    )
+)
+
+graph = node(
+    'Stage IV NSqNSCC, molecular tests (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2) negative, with contraindication for immunotherapy',
+    branch(
+        'Oligometastatic',
+        has('Oligometastatic'),
+        node('Systemic therapy and LRT [II, B]')
+    ),
+    branch(
+        'not_Oligometastatic',
+        has('not_Oligometastatic'),
+        branch(
+            '>= 0 PS and <= 1 PS',
+            # manual_fix,
+            all_of(ge('PS', 0), le('PS', 1)),
+            node(
+                'Platinum-doublet ChT [I, A] (pemetrexed preferred) [II, A; MCBS 4] followed by pemetrexed maintenance [I, A; MCBS 4]; if pemetrexed switch maintenance [I, B]; if 4 cycles of gemcitabine-cisplatin: gemcitabine continuation maintenance [I, C]\nPlatinum-doublet ChT [I, A] (pemetrexed preferred) [II, A; MCBS 4]\nCarboplatin-paclitaxel-bevacizumab followed by bevacizumab maintenance [I, A; MCBS 2]\nOr platinum-pemetrexed-bevacizumab followed by pemetrexed-bevacizumab maintenance [I, A]',
+                disease_progression
+            )
+        ),
+        branch(
+            '= 2 PS',
+            # manual_fix,
+            equals('PS', 2),
+            node(
+                'Platinum-doublet ChT [carboplatin preferred: I, A; pemetrexed preferred: II, A]\nMaintenance pemetrexed if improvement to PS 0-1 [MCBS 4]\nSingle-agent ChT (pemetrexed, gemcitabine, vinorelbine, docetaxel) [I, B]',
+                disease_progression
+            )
+        ),
+        branch(
+            '>= 3 PS and <= 4 PS',
+            # manual_fix,
+            all_of(ge('PS', 3), le('PS', 4)),
+            bsc
+        )
+    )
+)
