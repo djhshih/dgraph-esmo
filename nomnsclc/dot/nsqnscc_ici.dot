@@ -1,7 +1,7 @@
 digraph G {
     a [label="Stage IV NSqNSCC, molecular tests negative (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2), without contraindication for immunotherapy"];
     b [label="Oligometastatic"];
-    c [label="not_Oligometastatic"];
+    c [label="ECOG_PS_and_PD-L1_expression_level"];
     d [label="Systemic therapy & LRT [II, B]"];
     e [label=">= 0 PS and <= 2 PS and >= 50 pdl1_percent"];
     f [label=">= 0 PS and <= 1 PS and any_expression_of_PD-L1"];

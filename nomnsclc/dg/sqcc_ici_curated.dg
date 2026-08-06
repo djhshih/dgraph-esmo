@@ -1,0 +1,110 @@
+from dgraph.condition import all_of, always, any_of, equals, ge, has, le, lt
+from dgraph.graph import branch, node
+
+best = node('Best Supportive Care alone [III, A]')
+
+graph = node(
+    'Stage IV SqCC without contraindication for immunotherapy',
+    branch(
+        'Never_smoked or light_smoker or smoked_under_15_packyears or long_time_ex_smoker',
+        any_of(has('Never_smoked'), has('light_smoker'), has('smoked_under_15_packyears'), has('long_time_ex_smoker')),
+        node(
+            'Molecular test (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2)',
+            branch(
+                'Molecular_test_positive',
+                has('Molecular_test_positive'),
+                node('Targeted therapy')
+            ),
+            branch(
+                'Molecular_test_negative',
+                has('Molecular_test_negative'),
+                node('Follow recommended treatment in line of ECOG PS and PD-L1 expression level')
+            )
+        )
+    ),
+    branch(
+        'Oligometastatic',
+        has('Oligometastatic'),
+        node('Systemic therapy & LRT [II, B]')
+    ),
+    branch(
+        'ECOG_PS_and_PD-L1_expression_level',
+        # manual_fix,
+        always(),
+        branch(
+            '>= 0 PS and <= 2 PS and >= 50 pdl1_percent',
+            # manual_fix,
+            all_of(ge('PS', 0), le('PS', 2), ge('pdl1_percent', 50)),
+            node(
+                'Pembrolizumab [I, A; MCBS 5]\nAtezolizumab (also for ICs >=10%) [I, A; MCBS 5]\nCemiplimab [I, A; MCBS 4] (for PS 2 for all drugs: [III, B])',
+                node(
+                    'Disease progression',
+                    branch(
+                        '>= 0 PS and <= 2 PS',
+                        # manual_fix,
+                        all_of(ge('PS', 0), le('PS', 2)),
+                        node('Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nIf 4 cycles of gemcitabine-cisplatin, gemcitabine maintenance [I, C]\nRe-challenge ICI [III, B]')
+                    ),
+                    branch(
+                        '>= 3 PS and <= 4 PS',
+                        # manual_fix,
+                        all_of(ge('PS', 3), le('PS', 4)),
+                        best
+                    )
+                )
+            )
+        ),
+        branch(
+            '>= 0 PS and <= 1 PS and any_expression_of_PD-L1',
+            # manual_fix,
+            all_of(ge('PS', 0), le('PS', 1), has('any_expression_of_PD-L1')),
+            node(
+                'Pembrolizumab-carboplatin-(nab)-paclitaxel (4 cycles) followed by pembrolizumab [I, A; MCBS 4]\nNivolumab-ipilimumab + 2 cycles of platinum-doublet ChT followed by nivolumab-ipilimumab [I, A; MCBS 4]\nCemiplimab-platinum-doublet ChT (4 cycles) followed by cemiplimab [I, A]\nDurvalumab-tremelimumab-platinum-doublet ChT (4 cycles) followed by durvalumab-tremelimumab (tremelimumab one additional dose) [I, A; MCBS 4]\nNivolumab-ipilimumab (only for PD-L1 >=1%) [I, A; MCBS 4]',
+                node(
+                    'Disease progression',
+                    branch(
+                        '>= 0 PS and <= 2 PS',
+                        # manual_fix,
+                        all_of(ge('PS', 0), le('PS', 2)),
+                        node('Docetaxel [I, B]\nRamucirumab-docetaxel [I, B; MCBS 1]\nAfatinib [I, C; MCBS 2]\nRe-challenge ICI [III, B]')
+                    ),
+                    branch(
+                        '>= 3 PS and <= 4 PS',
+                        # manual_fix,
+                        all_of(ge('PS', 3), le('PS', 4)),
+                        best
+                    )
+                )
+            )
+        ),
+        branch(
+            '= 2 PS and < 50 pdl1_percent',
+            # manual_fix,
+            all_of(equals('PS', 2), lt('pdl1_percent', 50)),
+            node(
+                'Platinum-doublet (carboplatin preferred) ChT [I, A]\nSingle-agent ChT (gemcitabine, vinorelbine, docetaxel) [I, B]',
+                node(
+                    'Disease progression',
+                    branch(
+                        '>= 0 PS and <= 2 PS',
+                        # manual_fix,
+                        all_of(ge('PS', 0), le('PS', 2)),
+                        node('Nivolumab [I, A; MCBS 5]\nAtezolizumab [I, A; MCBS 5]\nPembrolizumab (PD-L1 >=1%) [I, A; MCBS 5]\nDocetaxel [I, B]\nRamucirumab-docetaxel [I, B; MCBS 1]\nAfatinib [I, C; MCBS 2]')
+                    ),
+                    branch(
+                        '>= 3 PS and <= 4 PS',
+                        # manual_fix,
+                        all_of(ge('PS', 3), le('PS', 4)),
+                        best
+                    )
+                )
+            )
+        ),
+        branch(
+            '>= 3 PS and <= 4 PS',
+            # manual_fix,
+            all_of(ge('PS', 3), le('PS', 4)),
+            best
+        )
+    )
+)

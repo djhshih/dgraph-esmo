@@ -1,4 +1,4 @@
-from dgraph.condition import all_of, equals, ge, has, le, lt
+from dgraph.condition import all_of, always, equals, ge, has, le, lt
 from dgraph.graph import branch, node
 
 bsc = node('Best Supportive Care alone [III, A]')
@@ -14,8 +14,9 @@ graph = node(
         node('Systemic therapy & LRT [II, B]')
     ),
     branch(
-        'not_Oligometastatic',
-        has('not_Oligometastatic'),
+        'ECOG_PS_and_PD-L1_expression_level',
+        # manual_fix,
+        always(),
         branch(
             '>= 0 PS and <= 2 PS and >= 50 pdl1_percent',
             # manual_fix,

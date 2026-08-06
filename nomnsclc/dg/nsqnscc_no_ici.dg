@@ -12,8 +12,8 @@ graph = node(
         node('Systemic therapy and LRT [II, B]')
     ),
     branch(
-        'not_Oligometastatic',
-        has('not_Oligometastatic'),
+        'ECOG_PS',
+        has('ECOG_PS'),
         branch(
             '>= 0 PS and <= 1 PS',
             all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),

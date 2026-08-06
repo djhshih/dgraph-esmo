@@ -2,7 +2,7 @@ SCRIPT = ../../download_image.py
 
 all: sqcc_ici.jpg nsqnscc_ici.jpg sqcc_no_ici.jpg nsqnscc_no_ici.jpg
 
-sqcc-ici.jpg:
+sqcc_ici.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.12.013/asset/bfb068fd-dc7e-45cf-9bf5-b53eb8460c42/main.assets/gr1_lrg.jpg $@
 
 nsqnscc_ici.jpg:
