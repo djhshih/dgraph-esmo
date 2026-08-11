@@ -1,26 +1,24 @@
 digraph G {
-    node [fontname="Arial"];
-
     a [label="Stage IV SqCC with contraindication for immunotherapy"];
-    b [label="Never or former light smoker (<15 pack-years), long-time ex-smoker or age <50 years"];
+    b [label="Never_smoked or light_smoker or smoked_under_15_packyears or long_time_ex_smoker or age_under_50"];
     c [label="Oligometastatic"];
-    d [label="ECOG PS"];
-    e [label="Molecular tests (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2)"];
-    f [label="Positive"];
-    g [label="Negative"];
+    d [label="ECOG_PS"];
+    e [label="Molecular test (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2)"];
+    f [label="Molecular_test_positive"];
+    g [label="Molecular_test_negative"];
     h [label="Targeted therapy"];
     i [label="Follow recommended treatment in line with ECOG PS"];
     j [label="Systemic therapy & LRT [II, B]"];
-    k [label=">= 0 PS <= 1 PS"];
-    l [label=">= 2 PS <= 2 PS"];
-    m [label=">= 3 PS <= 4 PS"];
+    k [label=">= 0 PS and <= 1 PS"];
+    l [label="= 2 PS"];
+    m [label=">= 3 PS and <= 4 PS"];
     n [label="Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nIf 4 cycles of gemcitabine-cisplatin: gemcitabine maintenance [I, C]"];
-    o [label="Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nSingle agent ChT (gemcitabine, vinorelbine, docetaxel) [I, B]"];
-    p [label="Disease_progression"];
-    q [label=">= 0 PS <= 2 PS"];
-    r [label=">= 3 PS <= 4 PS"];
+    o [label="Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nSingle-agent ChT (gemcitabine, vinorelbine, docetaxel) [I, B]"];
+    p [label="Disease progression"];
+    q [label=">= 0 PS and <= 2 PS"];
+    r [label=">= 3 PS and <= 4 PS"];
     s [label="Docetaxel [I, B]\nRamucirumab-docetaxel [I, B; MCBS 1]\nAfatinib [I, C; MCBS 2]"];
-    t [label="BSC alone [III, A]"];
+    t [label="Best Supportive Care alone [III, A]"];
 
     a -> b;
     a -> c;

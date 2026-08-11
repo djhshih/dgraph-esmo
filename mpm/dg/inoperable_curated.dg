@@ -28,6 +28,7 @@ disease = node(
         ),
         branch(
             'Nivolumab [I, A]\nPembrolizumab [II, C]\nNivolumab-ipilimumab [II, C]',
+            # manual_condition_override,
             always(),
             node(
                 'Disease progression after 2nd line treatments',
@@ -47,6 +48,7 @@ disease = node(
         ),
         branch(
             'Gemcitabine-ramucirumab [III, C]',
+            # manual_condition_override,
             always(),
             node(
                 'Disease progression after 2nd line treatments',
@@ -66,6 +68,7 @@ disease = node(
         ),
         branch(
             'Cisplatin-pemetrexed [II, B; MCBS 3]\nCarboplatin-pemetrexed [II, B]',
+            # manual_condition_override,
             always(),
             node(
                 'Disease progression after 2nd line treatments',
@@ -90,6 +93,7 @@ disease = node(
         all_of(ge('PS', 0), le('PS', 2)),
         branch(
             'Vinorelbine [II, B]\nGemcitabine [II, B]\nPemetrexed [III, C]',
+            # manual_condition_override,
             always(),
             node(
                 'Disease progression after 2nd line treatments',
@@ -109,6 +113,7 @@ disease = node(
         ),
         branch(
             'Gemcitabine-ramucirumab [III, C]',
+            # manual_condition_override,
             always(),
             node(
                 'Disease progression after 2nd line treatments',
@@ -174,11 +179,13 @@ graph = node(
                     all_of(ge('PS', 0), le('PS', 2)),
                     branch(
                         'Cisplatin-pemetrexed [I, A; MCBS 3] or Carboplatin-pemetrexed [I, A] followed by maintenance gemcitabine [II, C]',
+                        # manual_condition_override,
                         always(),
                         disease
                     ),
                     branch(
                         'Cisplatin-pemetrexed-bevacizumab followed by maintenance bevacizumab [I, A]',
+                        # manual_condition_override,
                         always(),
                         disease
                     )
@@ -192,13 +199,13 @@ graph = node(
         all_of(ge('PS', 0), le('PS', 2)),
         branch(
             'Cisplatin-pemetrexed [I, A; MCBS 3] or Carboplatin-pemetrexed [I, A] followed by maintenance gemcitabine [II, C]',
-            # manual_fix,
+            # manual_condition_override,
             always(),
             disease
         ),
         branch(
             'Cisplatin-pemetrexed-bevacizumab followed by maintenance bevacizumab [I, A]',
-            # manual_fix,
+            # manual_condition_override,
             always(),
             disease
         )

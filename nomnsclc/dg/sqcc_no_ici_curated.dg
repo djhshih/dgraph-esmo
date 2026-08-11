@@ -1,0 +1,84 @@
+from dgraph.condition import all_of, always, any_of, equals, ge, has, le
+from dgraph.graph import branch, node
+
+best = node('Best Supportive Care alone [III, A]')
+docetaxel = node(
+    'Docetaxel [I, B]\nRamucirumab-docetaxel [I, B; MCBS 1]\nAfatinib [I, C; MCBS 2]'
+)
+disease_progression = node(
+    'Disease progression',
+    branch(
+        '>= 0 PS and <= 2 PS',
+        # manual_fix,
+        all_of(ge('PS', 0), le('PS', 2)),
+        docetaxel
+    ),
+    branch(
+        '>= 3 PS and <= 4 PS',
+        # manual_fix,
+        all_of(ge('PS', 3), le('PS', 4)),
+        best
+    )
+)
+
+graph = node(
+    'Stage IV SqCC with contraindication for immunotherapy',
+    branch(
+        'Never_smoked or light_smoker or smoked_under_15_packyears or long_time_ex_smoker or age_under_50',
+        # manual_fix,
+        any_of(
+            has('Never_smoked'),
+            has('light_smoker'),
+            has('smoked_under_15_packyears'),
+            has('long_time_ex_smoker'),
+            has('age_under_50'),
+        ),
+        node(
+            'Molecular test (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2)',
+            branch(
+                'Molecular_test_positive',
+                has('Molecular_test_positive'),
+                node('Targeted therapy')
+            ),
+            branch(
+                'Molecular_test_negative',
+                has('Molecular_test_negative'),
+                node('Follow recommended treatment in line with ECOG PS')
+            )
+        )
+    ),
+    branch(
+        'Oligometastatic',
+        has('Oligometastatic'),
+        node('Systemic therapy & LRT [II, B]')
+    ),
+    branch(
+        'ECOG_PS',
+        # manual_fix,
+        always(),
+        branch(
+            '>= 0 PS and <= 1 PS',
+            # manual_fix,
+            all_of(ge('PS', 0), le('PS', 1)),
+            node(
+                'Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nIf 4 cycles of gemcitabine-cisplatin: gemcitabine maintenance [I, C]',
+                disease_progression
+            )
+        ),
+        branch(
+            '= 2 PS',
+            # manual_fix,
+            equals('PS', 2),
+            node(
+                'Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nSingle-agent ChT (gemcitabine, vinorelbine, docetaxel) [I, B]',
+                disease_progression
+            )
+        ),
+        branch(
+            '>= 3 PS and <= 4 PS',
+            # manual_fix,
+            all_of(ge('PS', 3), le('PS', 4)),
+            best
+        )
+    )
+)

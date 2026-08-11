@@ -8,7 +8,7 @@ sqcc_ici.jpg:
 nsqnscc_ici.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.12.013/asset/b8e39156-f11f-4584-9a78-75d66469b4ee/main.assets/gr2_lrg.jpg $@
 
-sqcc-no-ici.jpg:
+sqcc_no_ici.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.12.013/asset/10af51ea-4bbc-41c9-93f9-33415eca0dc0/main.assets/gr3_lrg.jpg $@
 
 nsqnscc_no_ici.jpg:

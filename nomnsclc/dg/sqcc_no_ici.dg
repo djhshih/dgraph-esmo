@@ -1,84 +1,80 @@
 from dgraph.condition import all_of, any_of, has
 from dgraph.graph import branch, chain, node
 
-bsc = node('BSC alone [III, A]')
+best = node('Best Supportive Care alone [III, A]')
 docetaxel = node('Docetaxel [I, B]\nRamucirumab-docetaxel [I, B; MCBS 1]\nAfatinib [I, C; MCBS 2]')
 
 graph = node(
-    'root',
-    node('node'),
-    node(
-        'Stage IV SqCC with contraindication for immunotherapy',
+    'Stage IV SqCC with contraindication for immunotherapy',
+    branch(
+        'Never_smoked or light_smoker or smoked_under_15_packyears or long_time_ex_smoker or age_under_50',
+        any_of(any_of(any_of(any_of(has('Never_smoked'), has('light_smoker')), has('smoked_under_15_packyears')), has('long_time_ex_smoker')), has('age_under_50')),
+        node(
+            'Molecular test (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2)',
+            branch(
+                'Molecular_test_positive',
+                has('Molecular_test_positive'),
+                node('Targeted therapy')
+            ),
+            branch(
+                'Molecular_test_negative',
+                has('Molecular_test_negative'),
+                node('Follow recommended treatment in line with ECOG PS')
+            )
+        )
+    ),
+    branch(
+        'Oligometastatic',
+        has('Oligometastatic'),
+        node('Systemic therapy & LRT [II, B]')
+    ),
+    branch(
+        'ECOG_PS',
+        has('ECOG_PS'),
         branch(
-            'Never or former light smoker (<15 pack-years), long-time ex-smoker or age <50 years',
-            any_of(any_of(has('Never'), all_of(all_of(all_of(all_of(all_of(all_of(has('former'), has('light')), has('smoker')), all_of(has('<15'), has('pack-years'))), has(',')), has('long-time')), has('ex-smoker'))), all_of(all_of(has('age'), has('<50')), has('years'))),
+            '>= 0 PS and <= 1 PS',
+            all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
             node(
-                'Molecular tests (EGFR/ALK/ROS1/BRAF/RET/MET/EGFR ex20ins/KRAS G12C/NTRK/HER2)',
-                branch(
-                    'Positive',
-                    has('Positive'),
-                    node('Targeted therapy')
-                ),
-                branch(
-                    'Negative',
-                    has('Negative'),
-                    node('Follow recommended treatment in line with ECOG PS')
+                'Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nIf 4 cycles of gemcitabine-cisplatin: gemcitabine maintenance [I, C]',
+                node(
+                    'Disease progression',
+                    branch(
+                        '>= 0 PS and <= 2 PS',
+                        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+                        docetaxel
+                    ),
+                    branch(
+                        '>= 3 PS and <= 4 PS',
+                        all_of(all_of(all_of(has('>=3'), has('PS')), has('<=4')), has('PS')),
+                        best
+                    )
                 )
             )
         ),
         branch(
-            'Oligometastatic',
-            has('Oligometastatic'),
-            node('Systemic therapy & LRT [II, B]')
+            '= 2 PS',
+            all_of(all_of(has('='), has('2')), has('PS')),
+            node(
+                'Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nSingle-agent ChT (gemcitabine, vinorelbine, docetaxel) [I, B]',
+                node(
+                    'Disease progression',
+                    branch(
+                        '>= 0 PS and <= 2 PS',
+                        all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+                        docetaxel
+                    ),
+                    branch(
+                        '>= 3 PS and <= 4 PS',
+                        all_of(all_of(all_of(has('>=3'), has('PS')), has('<=4')), has('PS')),
+                        best
+                    )
+                )
+            )
         ),
         branch(
-            'ECOG PS',
-            all_of(has('ECOG'), has('PS')),
-            branch(
-                '>= 0 PS <= 1 PS',
-                all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
-                node(
-                    'Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nIf 4 cycles of gemcitabine-cisplatin: gemcitabine maintenance [I, C]',
-                    node(
-                        'Disease_progression',
-                        branch(
-                            '>= 0 PS <= 2 PS',
-                            all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
-                            docetaxel
-                        ),
-                        branch(
-                            '>= 3 PS <= 4 PS',
-                            all_of(all_of(all_of(has('>=3'), has('PS')), has('<=4')), has('PS')),
-                            bsc
-                        )
-                    )
-                )
-            ),
-            branch(
-                '>= 2 PS <= 2 PS',
-                all_of(all_of(all_of(has('>=2'), has('PS')), has('<=2')), has('PS')),
-                node(
-                    'Platinum-doublet ChT (combined with gemcitabine, vinorelbine or taxane) [I, A]\nSingle agent ChT (gemcitabine, vinorelbine, docetaxel) [I, B]',
-                    node(
-                        'Disease_progression',
-                        branch(
-                            '>= 0 PS <= 2 PS',
-                            all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
-                            docetaxel
-                        ),
-                        branch(
-                            '>= 3 PS <= 4 PS',
-                            all_of(all_of(all_of(has('>=3'), has('PS')), has('<=4')), has('PS')),
-                            bsc
-                        )
-                    )
-                )
-            ),
-            branch(
-                '>= 3 PS <= 4 PS',
-                all_of(all_of(all_of(has('>=3'), has('PS')), has('<=4')), has('PS')),
-                bsc
-            )
+            '>= 3 PS and <= 4 PS',
+            all_of(all_of(all_of(has('>=3'), has('PS')), has('<=4')), has('PS')),
+            best
         )
     )
 )
