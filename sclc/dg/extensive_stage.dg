@@ -1,0 +1,26 @@
+from dgraph.condition import all_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Extensive-stage SCLC (i.e. stage IV or stage III SCLC not eligible for treatment of curative intent)',
+    branch(
+        '>= 0 PS and <= 1 PS and No_contraindication_for_IO',
+        all_of(all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')), has('No_contraindication_for_IO')),
+        node('Carboplatin-etoposide-atezolizumab (4 cycles) and maintenance atezolizumab [I, A; MCBS 3]\nPlatinum-etoposide-durvalumab (4 cycles) and maintenance durvalumab [I, A; MCBS 3]')
+    ),
+    branch(
+        '>= 0 PS and <= 1 PS and Contraindications_for_IO',
+        all_of(all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')), has('Contraindications_for_IO')),
+        chain('Carboplatin-etoposide 4-6 cycles [I, A]\nCarboplatin-oral topotecan [II, C]\nCisplatin-irinotecan [II, C]', 'Response and >= 0 PS_after_response and <= 2 PS_after_response', 'Consolidation thoracic RT is an option [II, C]', '< 75 Age', 'PCI [II, B] or MRI surveillance [II, B]')
+    ),
+    branch(
+        '>= 2 PS and due_to_SCLC',
+        all_of(all_of(has('>=2'), has('PS')), has('due_to_SCLC')),
+        chain('Carboplatin-etoposide 4-6 cycles [I, A]\nCarboplatin-gemcitabine 4-6 cycles [II, C]', 'Response and >= 0 PS_after_response and <= 2 PS_after_response', 'Consolidation thoracic RT is an option [II, C]', '< 75 Age', 'PCI [II, B] or MRI surveillance [II, B]')
+    ),
+    branch(
+        '>= 2 PS and due_to_comorbidities',
+        all_of(all_of(has('>=2'), has('PS')), has('due_to_comorbidities')),
+        node('BSC')
+    )
+)

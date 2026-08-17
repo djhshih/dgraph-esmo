@@ -1,0 +1,101 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+pci = node('PCI [I, A]')
+pci_iii = node('PCI [III, B]')
+shared = node('Shared decision making for PCI [V, C]')
+
+graph = node(
+    'Limited-stage SCLC (i.e. stage I-III SCLC eligible for treatment of curative intent)',
+    branch(
+        'Stage_I-II and (cT1 or cT2) and N0',
+        all_of(all_of(has('Stage_I-II'), any_of(has('cT1'), has('cT2'))), has('N0')),
+        node(
+            'Surgical resection [III, B]',
+            branch(
+                '(pT1 or pT2) and (N0 or N1) and R0',
+                all_of(all_of(any_of(has('pT1'), has('pT2')), any_of(has('N0'), has('N1'))), has('R0')),
+                node('Adjuvant cisplatin-etoposide (4 cycles) [IV, A]')
+            ),
+            branch(
+                'N2 or R1 or R2',
+                any_of(any_of(has('N2'), has('R1')), has('R2')),
+                node(
+                    'Concurrent CRT [IV, A]',
+                    node(
+                        'No_progression',
+                        branch(
+                            '>= 0 PS and <= 1 PS and <= 70 Age',
+                            all_of(all_of(all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')), has('<=70')), has('Age')),
+                            pci
+                        ),
+                        branch(
+                            '2 PS and <= 70 Age',
+                            all_of(all_of(all_of(has('2'), has('PS')), has('<=70')), has('Age')),
+                            pci_iii
+                        ),
+                        branch(
+                            '> 70 Age or Frail',
+                            any_of(all_of(has('>70'), has('Age')), has('Frail')),
+                            shared
+                        )
+                    )
+                )
+            )
+        )
+    ),
+    branch(
+        'Stage_I-III and (cT1 or cT2 or cT3 or cT4) and (N0 or N1 or N2 or N3) and M0',
+        all_of(all_of(all_of(has('Stage_I-III'), any_of(any_of(any_of(has('cT1'), has('cT2')), has('cT3')), has('cT4'))), any_of(any_of(any_of(has('N0'), has('N1')), has('N2')), has('N3'))), has('M0')),
+        branch(
+            '>= 0 PS and <= 1 PS',
+            all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')),
+            node(
+                'Concurrent CRT [I, A]',
+                node(
+                    'No_progression',
+                    branch(
+                        '>= 0 PS and <= 1 PS and <= 70 Age',
+                        all_of(all_of(all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')), has('<=70')), has('Age')),
+                        pci
+                    ),
+                    branch(
+                        '2 PS and <= 70 Age',
+                        all_of(all_of(all_of(has('2'), has('PS')), has('<=70')), has('Age')),
+                        pci_iii
+                    ),
+                    branch(
+                        '> 70 Age or Frail',
+                        any_of(all_of(has('>70'), has('Age')), has('Frail')),
+                        shared
+                    )
+                )
+            )
+        ),
+        branch(
+            '>= 2 PS',
+            all_of(has('>=2'), has('PS')),
+            node(
+                'Sequential CRT [V, B]',
+                node(
+                    'No_progression',
+                    branch(
+                        '>= 0 PS and <= 1 PS and <= 70 Age',
+                        all_of(all_of(all_of(all_of(all_of(has('>=0'), has('PS')), has('<=1')), has('PS')), has('<=70')), has('Age')),
+                        pci
+                    ),
+                    branch(
+                        '2 PS and <= 70 Age',
+                        all_of(all_of(all_of(has('2'), has('PS')), has('<=70')), has('Age')),
+                        pci_iii
+                    ),
+                    branch(
+                        '> 70 Age or Frail',
+                        any_of(all_of(has('>70'), has('Age')), has('Frail')),
+                        shared
+                    )
+                )
+            )
+        )
+    )
+)

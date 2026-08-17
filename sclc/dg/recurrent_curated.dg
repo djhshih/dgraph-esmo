@@ -1,0 +1,40 @@
+from dgraph.condition import all_of, any_of, ge, gt, has, le, lt
+from dgraph.graph import branch, node
+
+ps_0_2_tx = node(
+    'Oral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]\nLurbinectedin [III, C; MCBS 1]'
+)
+
+graph = node(
+    'Recurrent SCLC (i.e. second-line therapy and beyond)',
+    branch(
+        '< 3 TFI',
+        # all_of(has('<3'), has('TFI')),
+        # manual_fix
+        lt('TFI', 3),
+        branch(
+            'Refractory or > 2 PS',
+            # any_of(has('Refractory'), all_of(has('>2'), has('PS'))),
+            # manual_fix
+            any_of(has('Refractory'), gt('PS', 2)),
+            node('BSC [II, C]\nLurbinectedin [III, C; MCBS 1]')
+        ),
+        branch(
+            '>= 0 PS and <= 2 PS',
+            # all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+            # manual_fix
+            all_of(ge('PS', 0), le('PS', 2)),
+            ps_0_2_tx
+        )
+    ),
+    branch(
+        '>= 3 TFI',
+        # all_of(has('>=3'), has('TFI')),
+        # manual_fix
+        ge('TFI', 3),
+        node(
+            'Rechallenge with platinum-etoposide [II, B]\nOral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]',
+            ps_0_2_tx
+        )
+    )
+)

@@ -1,0 +1,42 @@
+digraph G {
+    a [label="Limited-stage SCLC (i.e. stage I-III SCLC eligible for treatment of curative intent)"];
+    b [label="Stage_I-II and (cT1 or cT2) and N0"];
+    c [label="Stage_I-III and (cT1 or cT2 or cT3 or cT4) and (N0 or N1 or N2 or N3) and M0"];
+    d [label="Surgical resection [III, B]"];
+    e [label="(pT1 or pT2) and (N0 or N1) and R0"];
+    f [label="N2 or R1 or R2"];
+    g [label="Adjuvant cisplatin-etoposide (4 cycles) [IV, A]"];
+    h [label="Concurrent CRT [IV, A]"];
+    i [label=">= 0 PS and <= 1 PS"];
+    j [label=">= 2 PS"];
+    k [label="Concurrent CRT [I, A]"];
+    l [label="Sequential CRT [V, B]"];
+    m [label="No_progression"];
+    n [label=">= 0 PS and <= 1 PS and <= 70 Age"];
+    o [label="2 PS and <= 70 Age"];
+    p [label="> 70 Age or Frail"];
+    q [label="PCI [I, A]"];
+    r [label="PCI [III, B]"];
+    s [label="Shared decision making for PCI [V, C]"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    d -> e;
+    d -> f;
+    e -> g;
+    f -> h;
+    c -> i;
+    c -> j;
+    i -> k;
+    j -> l;
+    h -> m;
+    k -> m;
+    l -> m;
+    m -> n;
+    m -> o;
+    m -> p;
+    n -> q;
+    o -> r;
+    p -> s;
+}

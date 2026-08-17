@@ -1,0 +1,25 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Recurrent SCLC (i.e. second-line therapy and beyond)',
+    branch(
+        '< 3 TFI',
+        all_of(has('<3'), has('TFI')),
+        branch(
+            'Refractory or > 2 PS',
+            any_of(has('Refractory'), all_of(has('>2'), has('PS'))),
+            node('BSC [II, C]\nLurbinectedin [III, C; MCBS 1]')
+        ),
+        branch(
+            '>= 0 PS and <= 2 PS',
+            all_of(all_of(all_of(has('>=0'), has('PS')), has('<=2')), has('PS')),
+            node('Oral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]\nLurbinectedin [III, C; MCBS 1]')
+        )
+    ),
+    branch(
+        '>= 3 TFI',
+        all_of(has('>=3'), has('TFI')),
+        chain('Rechallenge with platinum-etoposide [II, B]\nOral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]', 'Oral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]\nLurbinectedin [III, C; MCBS 1]')
+    )
+)

@@ -1,0 +1,19 @@
+digraph G {
+    a [label="Recurrent SCLC (i.e. second-line therapy and beyond)"];
+    b [label="< 3 TFI"];
+    c [label=">= 3 TFI"];
+    d [label="Refractory or > 2 PS"];
+    e [label=">= 0 PS and <= 2 PS"];
+    f [label="BSC [II, C]\nLurbinectedin [III, C; MCBS 1]"];
+    g [label="Oral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]\nLurbinectedin [III, C; MCBS 1]"];
+    h [label="Rechallenge with platinum-etoposide [II, B]\nOral or i.v. topotecan [I, A]\nCyclophosphamide-doxorubicin-vincristine [II, B]"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    b -> e;
+    d -> f;
+    e -> g;
+    c -> h;
+    h -> g;
+}

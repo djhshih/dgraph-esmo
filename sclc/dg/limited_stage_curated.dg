@@ -1,0 +1,74 @@
+from dgraph.condition import all_of, any_of, equals, ge, gt, has, le
+from dgraph.graph import branch, node
+
+pci_ia = node('PCI [I, A]')
+pci_iiib = node('PCI [III, B]')
+pci_shared = node('Shared decision making for PCI [V, C]')
+
+ps_0_1 = all_of(ge('PS', 0), le('PS', 1))
+age_le_70 = le('Age', 70)
+
+no_progression = branch(
+    'No_progression',
+    has('No_progression'),
+    branch(
+        '>= 0 PS and <= 1 PS and <= 70 Age',
+        # manual_fix,
+        all_of(ps_0_1, age_le_70),
+        pci_ia
+    ),
+    branch(
+        '2 PS and <= 70 Age',
+        # manual_fix,
+        all_of(equals('PS', 2), age_le_70),
+        pci_iiib
+    ),
+    branch(
+        '> 70 Age or Frail',
+        # manual_fix,
+        any_of(gt('Age', 70), has('Frail')),
+        pci_shared
+    )
+)
+
+graph = node(
+    'Limited-stage SCLC (i.e. stage I-III SCLC eligible for treatment of curative intent)',
+    branch(
+        'Stage_I-II and (cT1 or cT2) and N0',
+        all_of(has('Stage_I-II'), any_of(has('cT1'), has('cT2')), has('N0')),
+        node(
+            'Surgical resection [III, B]',
+            branch(
+                '(pT1 or pT2) and (N0 or N1) and R0',
+                all_of(any_of(has('pT1'), has('pT2')), any_of(has('N0'), has('N1')), has('R0')),
+                node('Adjuvant cisplatin-etoposide (4 cycles) [IV, A]')
+            ),
+            branch(
+                'N2 or R1 or R2',
+                any_of(has('N2'), has('R1'), has('R2')),
+                node('Concurrent CRT [IV, A]', no_progression)
+            )
+        )
+    ),
+    branch(
+        'Stage_I-III and (cT1 or cT2 or cT3 or cT4) and (N0 or N1 or N2 or N3) and M0',
+        all_of(
+            has('Stage_I-III'),
+            any_of(has('cT1'), has('cT2'), has('cT3'), has('cT4')),
+            any_of(has('N0'), has('N1'), has('N2'), has('N3')),
+            has('M0'),
+        ),
+        branch(
+            '>= 0 PS and <= 1 PS',
+            # manual_fix,
+            ps_0_1,
+            node('Concurrent CRT [I, A]', no_progression)
+        ),
+        branch(
+            '>= 2 PS',
+            # manual_fix,
+            ge('PS', 2),
+            node('Sequential CRT [V, B]', no_progression)
+        )
+    )
+)

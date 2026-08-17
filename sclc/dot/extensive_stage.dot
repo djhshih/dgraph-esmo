@@ -1,0 +1,29 @@
+digraph G {
+    a [label="Extensive-stage SCLC (i.e. stage IV or stage III SCLC not eligible for treatment of curative intent)"];
+    b [label=">= 0 PS and <= 1 PS and No_contraindication_for_IO"];
+    c [label=">= 0 PS and <= 1 PS and Contraindications_for_IO"];
+    d [label=">= 2 PS and due_to_SCLC"];
+    e [label=">= 2 PS and due_to_comorbidities"];
+    f [label="Carboplatin-etoposide-atezolizumab (4 cycles) and maintenance atezolizumab [I, A; MCBS 3]\nPlatinum-etoposide-durvalumab (4 cycles) and maintenance durvalumab [I, A; MCBS 3]"];
+    g [label="Carboplatin-etoposide 4-6 cycles [I, A]\nCarboplatin-oral topotecan [II, C]\nCisplatin-irinotecan [II, C]"];
+    h [label="Carboplatin-etoposide 4-6 cycles [I, A]\nCarboplatin-gemcitabine 4-6 cycles [II, C]"];
+    i [label="BSC"];
+    j [label="Response and >= 0 PS_after_response and <= 2 PS_after_response"];
+    k [label="Consolidation thoracic RT is an option [II, C]"];
+    l [label="< 75 Age"];
+    m [label="PCI [II, B] or MRI surveillance [II, B]"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    a -> e;
+    b -> f;
+    c -> g;
+    d -> h;
+    e -> i;
+    g -> j;
+    h -> j;
+    j -> k;
+    k -> l;
+    l -> m;
+}

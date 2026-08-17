@@ -1,11 +1,11 @@
 SCRIPT = ../../download_image.py
 
-all: limited-stage.jpg extensive-stage.jpg recurrent.jpg
+all: limited_stage.jpg extensive_stage.jpg recurrent.jpg
 
-limited-stage.jpg:
+limited_stage.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.03.207/asset/2f28d976-6c42-4fa7-ab62-585f2bc0259b/main.assets/gr1.jpg $@
 
-extensive-stage.jpg:
+extensive_stage.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.03.207/asset/c3a68766-fa8c-44f0-9903-1d52435c18a7/main.assets/gr2.jpg $@
 
 recurrent.jpg:
