@@ -1,0 +1,32 @@
+from dgraph.condition import always, has
+from dgraph.graph import branch, node
+
+follow = node('Follow-up')
+
+graph = node(
+    'Biopsy',
+    node(
+        'Definitive chemotherapy',
+        branch(
+            'Thymic_carcinoma',
+            has('Thymic_carcinoma'),
+            follow
+        ),
+        branch(
+            'Thymoma',
+            has('Thymoma'),
+            branch(
+                'Surgery',
+                # manual_fix: treatment option, not a patient tag
+                always(),
+                node('Postoperative radiotherapy', follow)
+            ),
+            branch(
+                'Definitive_radiotherapy',
+                # manual_fix: treatment option, not a patient tag
+                always(),
+                follow
+            )
+        )
+    )
+)

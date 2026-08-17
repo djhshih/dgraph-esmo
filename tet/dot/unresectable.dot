@@ -1,0 +1,74 @@
+digraph G {
+    label = "Unresectable / Locally Advanced Disease";
+
+    a [label="Biopsy"];
+    b [label="Primary_chemotherapy"];
+    c [label="Chemoradiotherapy"];
+
+    d [label="Unresectable and (Masaoka-Koga_III or Masaoka-Koga_IVA) and (cTNM_IIIA or cTNM_IIIB or cTNM_IVA)"];
+    e [label="Resectable and (Masaoka-Koga_III or Masaoka-Koga_IVA) and (cTNM_IIIA or cTNM_IVA)"];
+
+    // Left arm (Unresectable)
+    f [label="Thymic_carcinoma"];
+    g [label="Thymoma"];
+
+    h [label="Definitive_radiotherapy"];
+    i [label="Chemoradiotherapy"];
+
+    j [label="Chemoradiotherapy"];
+    k [label="Definitive_radiotherapy"];
+
+    // Right arm (Resectable after induction)
+    l [label="Surgery"];
+    m [label="Thymic_carcinoma"];
+    n [label="Thymoma"];
+
+    p [label="Postoperative chemotherapy"];
+
+    q [label="R2"];
+    r [label="R0 or R1"];
+    s [label="Postoperative chemotherapy"];
+
+    t [label="Postoperative radiotherapy"];
+    u [label="Follow-up"];
+
+    a -> b;
+    a -> c;
+
+    b -> d;
+    b -> e;
+
+    // Unresectable paths
+    d -> f;
+    d -> g;
+
+    f -> h;
+    f -> i;
+
+    g -> j;
+    g -> k;
+
+    h -> u;
+    i -> u;
+    j -> u;
+    k -> u;
+
+    c -> u;
+
+    // Resectable paths
+    e -> l;
+    l -> m;
+    l -> n;
+
+    m -> p;
+    p -> t;
+
+    n -> q;
+    n -> r;
+
+    q -> s;
+    s -> t;
+    r -> t;
+
+    t -> u;
+}

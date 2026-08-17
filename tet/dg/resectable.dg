@@ -1,0 +1,93 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+postoperative = chain('Postoperative chemotherapy', 'Postoperative radiotherapy', 'Follow-up')
+postoperative_radiotherapy = chain('Postoperative radiotherapy', 'Follow-up')
+follow = node('Follow-up')
+
+graph = node(
+    'Upfront Surgery',
+    branch(
+        'Thymic_carcinoma',
+        has('Thymic_carcinoma'),
+        branch(
+            'R1',
+            has('R1'),
+            branch(
+                'Masaoka-Koga_IIA or Masaoka-Koga_IIB or Masaoka-Koga_III',
+                any_of(any_of(has('Masaoka-Koga_IIA'), has('Masaoka-Koga_IIB')), has('Masaoka-Koga_III')),
+                postoperative
+            ),
+            branch(
+                'Masaoka-Koga_I',
+                has('Masaoka-Koga_I'),
+                postoperative_radiotherapy
+            )
+        ),
+        branch(
+            'R0',
+            has('R0'),
+            branch(
+                'Masaoka-Koga_III',
+                has('Masaoka-Koga_III'),
+                postoperative
+            ),
+            branch(
+                'Masaoka-Koga_I or Masaoka-Koga_IIA or Masaoka-Koga_IIB',
+                any_of(any_of(has('Masaoka-Koga_I'), has('Masaoka-Koga_IIA')), has('Masaoka-Koga_IIB')),
+                postoperative_radiotherapy
+            )
+        )
+    ),
+    branch(
+        'Thymoma',
+        has('Thymoma'),
+        branch(
+            'R1',
+            has('R1'),
+            postoperative_radiotherapy
+        ),
+        branch(
+            'R0',
+            has('R0'),
+            branch(
+                'Masaoka-Koga_III',
+                has('Masaoka-Koga_III'),
+                postoperative_radiotherapy
+            ),
+            branch(
+                'Masaoka-Koga_IIB',
+                has('Masaoka-Koga_IIB'),
+                branch(
+                    'WHO_B2 or WHO_B3',
+                    any_of(has('WHO_B2'), has('WHO_B3')),
+                    postoperative_radiotherapy
+                ),
+                branch(
+                    'WHO_A or WHO_AB or WHO_B1',
+                    any_of(any_of(has('WHO_A'), has('WHO_AB')), has('WHO_B1')),
+                    follow
+                )
+            ),
+            branch(
+                'Masaoka-Koga_IIA',
+                has('Masaoka-Koga_IIA'),
+                branch(
+                    'WHO_B3',
+                    has('WHO_B3'),
+                    postoperative_radiotherapy
+                ),
+                branch(
+                    'WHO_A or WHO_AB or WHO_B1 or WHO_B2',
+                    any_of(any_of(any_of(has('WHO_A'), has('WHO_AB')), has('WHO_B1')), has('WHO_B2')),
+                    follow
+                )
+            ),
+            branch(
+                'Masaoka-Koga_I',
+                has('Masaoka-Koga_I'),
+                follow
+            )
+        )
+    )
+)

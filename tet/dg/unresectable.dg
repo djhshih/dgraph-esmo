@@ -1,0 +1,76 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+postoperative = chain('Postoperative chemotherapy', 'Postoperative radiotherapy', 'Follow-up')
+follow = node('Follow-up')
+
+graph = node(
+    'Biopsy',
+    branch(
+        'Primary_chemotherapy',
+        has('Primary_chemotherapy'),
+        branch(
+            'Unresectable and (Masaoka-Koga_III or Masaoka-Koga_IVA) and (cTNM_IIIA or cTNM_IIIB or cTNM_IVA)',
+            all_of(all_of(has('Unresectable'), any_of(has('Masaoka-Koga_III'), has('Masaoka-Koga_IVA'))), any_of(any_of(has('cTNM_IIIA'), has('cTNM_IIIB')), has('cTNM_IVA'))),
+            branch(
+                'Thymic_carcinoma',
+                has('Thymic_carcinoma'),
+                branch(
+                    'Definitive_radiotherapy',
+                    has('Definitive_radiotherapy'),
+                    follow
+                ),
+                branch(
+                    'Chemoradiotherapy',
+                    has('Chemoradiotherapy'),
+                    follow
+                )
+            ),
+            branch(
+                'Thymoma',
+                has('Thymoma'),
+                branch(
+                    'Chemoradiotherapy',
+                    has('Chemoradiotherapy'),
+                    follow
+                ),
+                branch(
+                    'Definitive_radiotherapy',
+                    has('Definitive_radiotherapy'),
+                    follow
+                )
+            )
+        ),
+        branch(
+            'Resectable and (Masaoka-Koga_III or Masaoka-Koga_IVA) and (cTNM_IIIA or cTNM_IVA)',
+            all_of(all_of(has('Resectable'), any_of(has('Masaoka-Koga_III'), has('Masaoka-Koga_IVA'))), any_of(has('cTNM_IIIA'), has('cTNM_IVA'))),
+            node(
+                'Surgery',
+                branch(
+                    'Thymic_carcinoma',
+                    has('Thymic_carcinoma'),
+                    postoperative
+                ),
+                branch(
+                    'Thymoma',
+                    has('Thymoma'),
+                    branch(
+                        'R2',
+                        has('R2'),
+                        postoperative
+                    ),
+                    branch(
+                        'R0 or R1',
+                        any_of(has('R0'), has('R1')),
+                        chain('Postoperative radiotherapy', 'Follow-up')
+                    )
+                )
+            )
+        )
+    ),
+    branch(
+        'Chemoradiotherapy',
+        has('Chemoradiotherapy'),
+        follow
+    )
+)

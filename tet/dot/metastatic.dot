@@ -1,0 +1,22 @@
+digraph G {
+    label = "Metastatic / Advanced Disease";
+    
+    a [label="Biopsy"];
+    b [label="Definitive chemotherapy"];
+    c [label="Thymic_carcinoma"];
+    d [label="Thymoma"];
+    e [label="Surgery"];
+    f [label="Definitive_radiotherapy"];
+    g [label="Postoperative radiotherapy"];
+    h [label="Follow-up"];
+
+    a -> b;
+    b -> c;
+    b -> d;
+    c -> h;
+    d -> e;
+    d -> f;
+    e -> g;
+    g -> h;
+    f -> h;
+}

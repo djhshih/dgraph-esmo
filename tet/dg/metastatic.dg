@@ -1,0 +1,30 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+follow = node('Follow-up')
+
+graph = node(
+    'Biopsy',
+    node(
+        'Definitive chemotherapy',
+        branch(
+            'Thymic_carcinoma',
+            has('Thymic_carcinoma'),
+            follow
+        ),
+        branch(
+            'Thymoma',
+            has('Thymoma'),
+            branch(
+                'Surgery',
+                has('Surgery'),
+                chain('Postoperative radiotherapy', 'Follow-up')
+            ),
+            branch(
+                'Definitive_radiotherapy',
+                has('Definitive_radiotherapy'),
+                follow
+            )
+        )
+    )
+)

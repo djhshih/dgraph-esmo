@@ -1,0 +1,94 @@
+from dgraph.condition import all_of, always, any_of, has
+from dgraph.graph import branch, node
+
+follow = node('Follow-up')
+port = node('Postoperative radiotherapy', follow)
+postop_chemo = node('Postoperative chemotherapy', port)
+
+unresectable = all_of(
+    has('Unresectable'),
+    any_of(has('Masaoka-Koga_III'), has('Masaoka-Koga_IVA')),
+    any_of(has('cTNM_IIIA'), has('cTNM_IIIB'), has('cTNM_IVA')),
+)
+resectable = all_of(
+    has('Resectable'),
+    any_of(has('Masaoka-Koga_III'), has('Masaoka-Koga_IVA')),
+    any_of(has('cTNM_IIIA'), has('cTNM_IVA')),
+)
+
+graph = node(
+    'Biopsy',
+    branch(
+        'Primary_chemotherapy',
+        # manual_fix: first-line option, not a patient tag
+        always(),
+        branch(
+            'Unresectable and (Masaoka-Koga_III or Masaoka-Koga_IVA) and (cTNM_IIIA or cTNM_IIIB or cTNM_IVA)',
+            unresectable,
+            branch(
+                'Thymic_carcinoma',
+                has('Thymic_carcinoma'),
+                branch(
+                    'Definitive_radiotherapy',
+                    # manual_fix: treatment option, not a patient tag
+                    always(),
+                    follow
+                ),
+                branch(
+                    'Chemoradiotherapy',
+                    # manual_fix: treatment option, not a patient tag
+                    always(),
+                    follow
+                )
+            ),
+            branch(
+                'Thymoma',
+                has('Thymoma'),
+                branch(
+                    'Chemoradiotherapy',
+                    # manual_fix: treatment option, not a patient tag
+                    always(),
+                    follow
+                ),
+                branch(
+                    'Definitive_radiotherapy',
+                    # manual_fix: treatment option, not a patient tag
+                    always(),
+                    follow
+                )
+            )
+        ),
+        branch(
+            'Resectable and (Masaoka-Koga_III or Masaoka-Koga_IVA) and (cTNM_IIIA or cTNM_IVA)',
+            resectable,
+            node(
+                'Surgery',
+                branch(
+                    'Thymic_carcinoma',
+                    has('Thymic_carcinoma'),
+                    postop_chemo
+                ),
+                branch(
+                    'Thymoma',
+                    has('Thymoma'),
+                    branch(
+                        'R2',
+                        has('R2'),
+                        postop_chemo
+                    ),
+                    branch(
+                        'R0 or R1',
+                        any_of(has('R0'), has('R1')),
+                        port
+                    )
+                )
+            )
+        )
+    ),
+    branch(
+        'Chemoradiotherapy',
+        # manual_fix: first-line option, not a patient tag
+        always(),
+        follow
+    )
+)

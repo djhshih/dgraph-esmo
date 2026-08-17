@@ -1,0 +1,83 @@
+digraph G {
+    label = "Resectable Disease";
+
+    a [label="Upfront Surgery"];
+    b [label="Thymic_carcinoma"];
+    c [label="Thymoma"];
+
+    // Thymic carcinoma branches
+    d [label="R1"];
+    e [label="R0"];
+
+    f [label="Masaoka-Koga_IIA or Masaoka-Koga_IIB or Masaoka-Koga_III"];
+    g [label="Masaoka-Koga_I"];
+    h [label="Masaoka-Koga_III"];
+    i [label="Masaoka-Koga_I or Masaoka-Koga_IIA or Masaoka-Koga_IIB"];
+
+    j [label="Postoperative chemotherapy"];
+
+    // Thymoma branches
+    k [label="R1"];
+    l [label="R0"];
+
+    n [label="Masaoka-Koga_III"];
+    o [label="Masaoka-Koga_IIB"];
+    p [label="Masaoka-Koga_IIA"];
+    q [label="Masaoka-Koga_I"];
+
+    r [label="WHO_B2 or WHO_B3"];
+    s [label="WHO_A or WHO_AB or WHO_B1"];
+    t [label="WHO_B3"];
+    u [label="WHO_A or WHO_AB or WHO_B1 or WHO_B2"];
+
+    v [label="Postoperative radiotherapy"];
+    w [label="Follow-up"];
+
+    a -> b;
+    a -> c;
+
+    // Thymic carcinoma flow
+    b -> d;
+    b -> e;
+
+    d -> f;
+    d -> g;
+    e -> h;
+    e -> i;
+
+    f -> j;
+    j -> v;
+    g -> v;
+
+    h -> j;
+    i -> v;
+
+    // Thymoma flow
+    c -> k;
+    c -> l;
+
+    k -> v;
+
+    l -> n;
+    l -> o;
+    l -> p;
+    l -> q;
+
+    n -> v;
+
+    o -> r;
+    o -> s;
+
+    r -> v;
+    s -> w;
+
+    p -> t;
+    p -> u;
+
+    t -> v;
+    u -> w;
+
+    q -> w;
+
+    v -> w;
+}
