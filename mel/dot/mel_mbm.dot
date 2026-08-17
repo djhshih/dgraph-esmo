@@ -1,0 +1,36 @@
+digraph G {
+    a [label="Patients with MBMs"];
+
+    b [label="LMD"];
+    c [label="Symptomatic_MBMs and > 10 prednisolone_mg_day and Local_treatment_not_an_option"];
+    d [label="Symptomatic_MBMs and < 10 prednisolone_mg_day"];
+    e [label="Asymptomatic_MBMs"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    a -> e;
+
+    f [label="Clinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nIpilimumab-nivolumab [III, B]\nRT [III, B]\nIntrathecal nivolumab [III, C]\nChT (if BRAF-WT) [IV, C]"];
+    g [label="Clinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nIpilimumab-nivolumab [III, B]\nChT (if BRAF-WT) [IV, C]"];
+    h [label="Evaluate possibility of neurosurgery [IV, C]\nClinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nNivolumab-ipilimumab [III, A]"];
+    i [label="Evaluate for SRS [III, B]"];
+    j [label="Clinical trial [V, A]\nOR\nNivolumab-ipilimumab [II, A] (preferred)\nBRAFi-MEKi (if BRAF V600-mutated) [III, B; ESCAT I-A]"];
+
+    b -> f;
+    c -> g;
+    d -> h;
+    d -> i;
+    e -> i;
+    e -> j;
+
+    k [label="Evaluate for SRS [III, B]"];
+    l [label="Best supportive and palliative care [V, A]"];
+
+    f -> l;
+    g -> l;
+    h -> k;
+    j -> k;
+    i -> l;
+    k -> l;
+}

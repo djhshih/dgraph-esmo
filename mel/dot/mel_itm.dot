@@ -1,0 +1,15 @@
+digraph G {
+    a [label="Patients with ITMs"];
+
+    b [label="Resectable_disease"];
+    c [label="Unresectable_disease or (Resectable_disease and < 6 DFI_months)"];
+
+    a -> b;
+    a -> c;
+
+    d [label="Clinical trial [V, A]\nComplete excision with clear margins [IV, B] followed by adjuvant therapy [I, A]\nConsider neoadjuvant nivolumab-ipilimumab [I, A; MCBS A] followed by adjuvant therapy based on pathological response and BRAF status, or neoadjuvant plus adjuvant pembrolizumab [II, A]"];
+    e [label="Clinical trial [V, A]\nConsider local therapy options:\nT-VEC intralesional therapy [I, B; MCBS 3]\nRT [IV, C]\nECT [IV, C]\nLimited palliative excision [IV, C]\nILI or ILP with melphalan (only high-volume centres) [IV, C]"];
+
+    b -> d;
+    c -> e;
+}

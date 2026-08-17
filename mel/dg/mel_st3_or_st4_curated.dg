@@ -1,0 +1,32 @@
+from pathlib import Path
+
+from dgraph.condition import has
+from dgraph.dg_loader import load_dg
+from dgraph.graph import branch, node
+
+# See Figure 4
+_dir = Path(__file__).parent
+fig4 = load_dg(_dir / 'mel_adv_st3_or_st4_curated.dg')
+
+graph = node(
+    'Patients with stage III and clinically or radiologically detectable LN metastasis or resectable stage IV melanoma',
+    branch(
+        'Resectable_disease',
+        has('Resectable_disease'),
+        branch(
+            'Stage_III',
+            has('Stage_III'),
+            node('Clinical trial [V, A]\nFor patients treated with upfront resection, adjuvant anti-PD-1 therapy [I, A] or dabrafenib-trametinib for BRAF V600E-mutated tumours [I, A]\nNeoadjuvant nivolumab-ipilimumab [I, A; MCBS A] followed by adjuvant therapy based on pathological response and BRAF status, or neoadjuvant plus adjuvant pembrolizumab [II, A]\nWide excision of primary tumour [III, B]')
+        ),
+        branch(
+            'Stage_IV',
+            has('Stage_IV'),
+            node('Clinical trial [V, A]\nMetastasectomy or local ablative therapy [III, B] followed by adjuvant anti-PD-1 therapy [I, A]\nAnti-PD-1 therapy [V, A]')
+        )
+    ),
+    branch(
+        'Unresectable_disease',
+        has('Unresectable_disease'),
+        fig4
+    )
+)

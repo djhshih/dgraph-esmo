@@ -1,0 +1,112 @@
+digraph G {
+    a [label="Patients with stage III/IV melanoma according to prior adjuvant treatment received"];
+
+    b [label="Treatment_naive"];
+    c [label="Adjuvant_BRAFi-MEKi"];
+    d [label="Neoadjuvant_anti-PD-1 or Adjuvant_anti-PD-1"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+
+    e [label="Unresectable_disease"];
+    f [label="Resectable_disease"];
+    g [label="Oligometastatic"];
+
+    b -> e;
+    b -> f;
+    b -> g;
+
+    h [label="Systemic treatment according to feasibility of 1st-line ICI administration (preferred) and BRAF status"];
+    i [label="See Figure 2"];
+    j [label="Systemic treatment [I, A]\nAblative treatments [V, C]\nStereotactic RT [V, C]\nSurgery alone [V, C]"];
+
+    e -> h;
+    f -> i;
+    g -> j;
+
+    k [label="Relapse_on_or_within_6_months_of_adjuvant_therapy"];
+    l [label="Relapse_more_than_6_months_after_adjuvant_therapy"];
+
+    c -> k;
+    c -> l;
+
+    n [label="Immediate_or_absolute_contraindication_to_ICI"];
+    o [label="No_contraindication_to_ICI"];
+
+    k -> n;
+    k -> o;
+
+    p [label="BRAFi/MEKi (if >3 months after stopping adjuvant BRAFi/MEKi) [V, A]\nChT [II, C]"];
+    q [label="Nivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]"];
+    r [label="BRAFi-MEKi [II, B; ESCAT I-A]\nTILs [II, B]\nNivolumab-relatlimab [III, B]"];
+    s [label="ICI rechallenge [IV, B]\nChT [IV, C]"];
+
+    n -> p;
+    o -> q;
+    q -> r;
+    r -> s;
+
+    u [label="Immediate_contraindication_to_ICI"];
+    v [label="No_immediate_contraindication_to_ICI"];
+
+    l -> u;
+    l -> v;
+
+    w [label="BRAFi-MEKi [I, A; ESCAT I-A]\nBRAFi-MEKi for 8-12 weeks (as per SECOMBIT arm C or EBIN arm B) [II, C; ESCAT I-A]"];
+    y [label="Pembrolizumab [I, A; MCBS A/4]\nIpilimumab-nivolumab [II, B]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]"];
+    z [label="BRAFi-MEKi rechallenge [IV, C]\nChT [IV, C]"];
+
+    u -> w;
+    v -> q;
+    w -> y;
+    y -> z;
+
+    ac [label="Relapse_on_or_within_6_months_of_adjuvant_therapy"];
+    ad [label="Relapse_more_than_6_months_after_adjuvant_therapy"];
+
+    d -> ac;
+    d -> ad;
+
+    ae [label="BRAF_mutated"];
+    af [label="BRAF_WT"];
+
+    ac -> ae;
+    ac -> af;
+
+    ag [label="BRAFi-MEKi [I, A; ESCAT I-A]\nNivolumab-ipilimumab [II, A; MCBS A/4]\nBRAFi-MEKi for 8-12 weeks (as per SECOMBIT arm C or EBIN arm B) [II, C; ESCAT I-A]"];
+    ah [label="Nivolumab-ipilimumab [II, A; MCBS A/4]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]"];
+
+    ae -> ag;
+    af -> ah;
+
+    ai [label="Ipilimumab-nivolumab [II, B]\nPembrolizumab [II, B; MCBS 3]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]"];
+    aj [label="BRAFi-MEKi rechallenge [IV, C]\nChT [IV, C]"];
+
+    ag -> ai;
+    ai -> aj;
+
+    ak [label="Ipilimumab-nivolumab [II, B]\nPembrolizumab [II, B; MCBS 3]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]"];
+    al [label="Binimetinib (NRAS-mutated) [III, C]\nChT [IV, C]"];
+
+    ah -> ak;
+    ak -> al;
+
+    am [label="BRAF_mutated"];
+    an [label="BRAF_WT"];
+
+    ad -> am;
+    ad -> an;
+
+    ao [label="BRAFi-MEKi [I, A; ESCAT I-A]\nNivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]\nBRAFi-MEKi for 8-12 weeks (as per SECOMBIT arm C or EBIN arm B) [II, C; ESCAT I-A]"];
+    ap [label="Nivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]"];
+
+    am -> ao;
+    an -> ap;
+
+    aq [label="Rechallenge with drug class (BRAFi-MEKi [II, B] or ICI [II, B]) not used in previous line\nTILs [II, B]\nNivolumab-relatlimab [III, B]"];
+
+    ao -> aq;
+
+    ap -> ak;
+}

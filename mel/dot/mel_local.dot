@@ -1,0 +1,28 @@
+digraph G {
+    a [label="Patients with pT1b-pT4b cN0 cM0 melanoma"];
+    b [label="Full depth WLE of primary tumours with safety margins of 1 cm for tumours with a thickness <= 2 mm and 2 cm for tumours with a thickness > 2 mm [III, B]"];
+    c [label="SLNB [II, B]"];
+
+    a -> b;
+    b -> c;
+
+    d [label="SLN-"];
+    e [label="SLN+"];
+
+    c -> d;
+    c -> e;
+
+    f [label="Stage_I-IIA"];
+    g [label="Stage_IIB-IIC"];
+
+    d -> f;
+    d -> g;
+
+    h [label="Clinical trial [V, A]\nStandard follow-up [III, A]"];
+    i [label="Clinical trial [V, A]\nAnti-PD-1 therapy for 12 months [I, A]\nStandard follow-up [III, A]"];
+    j [label="Clinical trial [V, A]\nNivolumab [I, A; MCBS NEB]\nPembrolizumab [I, A; MCBS A]\nDabrafenib-trametinib (BRAF V600E-mutated tumours) [I, A; ESCAT I-A]\nStandard follow-up [III, A]"];
+
+    f -> h;
+    g -> i;
+    e -> j;
+}

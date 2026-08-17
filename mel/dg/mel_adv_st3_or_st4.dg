@@ -1,0 +1,91 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+nivolumab = chain('Nivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]', 'BRAFi-MEKi [II, B; ESCAT I-A]\nTILs [II, B]\nNivolumab-relatlimab [III, B]', 'ICI rechallenge [IV, B]\nChT [IV, C]')
+
+graph = node(
+    'Patients with stage III/IV melanoma according to prior adjuvant treatment received',
+    branch(
+        'Treatment_naive',
+        has('Treatment_naive'),
+        branch(
+            'Unresectable_disease',
+            has('Unresectable_disease'),
+            node('Systemic treatment according to feasibility of 1st-line ICI administration (preferred) and BRAF status')
+        ),
+        branch(
+            'Resectable_disease',
+            has('Resectable_disease'),
+            node('See Figure 2')
+        ),
+        branch(
+            'Oligometastatic',
+            has('Oligometastatic'),
+            node('Systemic treatment [I, A]\nAblative treatments [V, C]\nStereotactic RT [V, C]\nSurgery alone [V, C]')
+        )
+    ),
+    branch(
+        'Adjuvant_BRAFi-MEKi',
+        has('Adjuvant_BRAFi-MEKi'),
+        branch(
+            'Relapse_on_or_within_6_months_of_adjuvant_therapy',
+            has('Relapse_on_or_within_6_months_of_adjuvant_therapy'),
+            branch(
+                'Immediate_or_absolute_contraindication_to_ICI',
+                has('Immediate_or_absolute_contraindication_to_ICI'),
+                node('BRAFi/MEKi (if >3 months after stopping adjuvant BRAFi/MEKi) [V, A]\nChT [II, C]')
+            ),
+            branch(
+                'No_contraindication_to_ICI',
+                has('No_contraindication_to_ICI'),
+                nivolumab
+            )
+        ),
+        branch(
+            'Relapse_more_than_6_months_after_adjuvant_therapy',
+            has('Relapse_more_than_6_months_after_adjuvant_therapy'),
+            branch(
+                'Immediate_contraindication_to_ICI',
+                has('Immediate_contraindication_to_ICI'),
+                chain('BRAFi-MEKi [I, A; ESCAT I-A]\nBRAFi-MEKi for 8-12 weeks (as per SECOMBIT arm C or EBIN arm B) [II, C; ESCAT I-A]', 'Pembrolizumab [I, A; MCBS A/4]\nIpilimumab-nivolumab [II, B]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]', 'BRAFi-MEKi rechallenge [IV, C]\nChT [IV, C]')
+            ),
+            branch(
+                'No_immediate_contraindication_to_ICI',
+                has('No_immediate_contraindication_to_ICI'),
+                nivolumab
+            )
+        )
+    ),
+    branch(
+        'Neoadjuvant_anti-PD-1 or Adjuvant_anti-PD-1',
+        any_of(has('Neoadjuvant_anti-PD-1'), has('Adjuvant_anti-PD-1')),
+        branch(
+            'Relapse_on_or_within_6_months_of_adjuvant_therapy',
+            has('Relapse_on_or_within_6_months_of_adjuvant_therapy'),
+            branch(
+                'BRAF_mutated',
+                has('BRAF_mutated'),
+                chain('BRAFi-MEKi [I, A; ESCAT I-A]\nNivolumab-ipilimumab [II, A; MCBS A/4]\nBRAFi-MEKi for 8-12 weeks (as per SECOMBIT arm C or EBIN arm B) [II, C; ESCAT I-A]', 'Ipilimumab-nivolumab [II, B]\nPembrolizumab [II, B; MCBS 3]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]', 'BRAFi-MEKi rechallenge [IV, C]\nChT [IV, C]')
+            ),
+            branch(
+                'BRAF_WT',
+                has('BRAF_WT'),
+                chain('Nivolumab-ipilimumab [II, A; MCBS A/4]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]', 'Ipilimumab-nivolumab [II, B]\nPembrolizumab [II, B; MCBS 3]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]', 'Binimetinib (NRAS-mutated) [III, C]\nChT [IV, C]')
+            )
+        ),
+        branch(
+            'Relapse_more_than_6_months_after_adjuvant_therapy',
+            has('Relapse_more_than_6_months_after_adjuvant_therapy'),
+            branch(
+                'BRAF_mutated',
+                has('BRAF_mutated'),
+                chain('BRAFi-MEKi [I, A; ESCAT I-A]\nNivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]\nBRAFi-MEKi for 8-12 weeks (as per SECOMBIT arm C or EBIN arm B) [II, C; ESCAT I-A]', 'Rechallenge with drug class (BRAFi-MEKi [II, B] or ICI [II, B]) not used in previous line\nTILs [II, B]\nNivolumab-relatlimab [III, B]')
+            ),
+            branch(
+                'BRAF_WT',
+                has('BRAF_WT'),
+                chain('Nivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]', 'Ipilimumab-nivolumab [II, B]\nPembrolizumab [II, B; MCBS 3]\nNivolumab [II, B]\nIpilimumab [II, B; MCBS 4]\nTILs [II, B]\nNivolumab-relatlimab [III, B]', 'Binimetinib (NRAS-mutated) [III, C]\nChT [IV, C]')
+            )
+        )
+    )
+)

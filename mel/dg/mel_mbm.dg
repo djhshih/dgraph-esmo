@@ -1,0 +1,47 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+evaluate = chain('Evaluate for SRS [III, B]', 'Best supportive and palliative care [V, A]')
+best = node('Best supportive and palliative care [V, A]')
+
+graph = node(
+    'Patients with MBMs',
+    branch(
+        'LMD',
+        has('LMD'),
+        chain('Clinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nIpilimumab-nivolumab [III, B]\nRT [III, B]\nIntrathecal nivolumab [III, C]\nChT (if BRAF-WT) [IV, C]', 'Best supportive and palliative care [V, A]')
+    ),
+    branch(
+        'Symptomatic_MBMs and > 10 prednisolone_mg_day and Local_treatment_not_an_option',
+        all_of(all_of(all_of(has('Symptomatic_MBMs'), has('>10')), has('prednisolone_mg_day')), has('Local_treatment_not_an_option')),
+        chain('Clinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nIpilimumab-nivolumab [III, B]\nChT (if BRAF-WT) [IV, C]', 'Best supportive and palliative care [V, A]')
+    ),
+    branch(
+        'Symptomatic_MBMs and < 10 prednisolone_mg_day',
+        all_of(all_of(has('Symptomatic_MBMs'), has('<10')), has('prednisolone_mg_day')),
+        branch(
+            'Evaluate possibility of neurosurgery [IV, C]\nClinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nNivolumab-ipilimumab [III, A]',
+            any_of(any_of(any_of(any_of(all_of(all_of(all_of(has('Evaluate'), has('possibility')), has('of')), has('neurosurgery')), all_of(has('Clinical'), has('trial'))), has('OR')), all_of(has('BRAFi-MEKi'), all_of(all_of(has('if'), has('BRAF')), has('V600-mutated')))), has('Nivolumab-ipilimumab')),
+            evaluate
+        ),
+        branch(
+            'Evaluate for SRS [III, B]',
+            all_of(all_of(has('Evaluate'), has('for')), has('SRS')),
+            best
+        )
+    ),
+    branch(
+        'Asymptomatic_MBMs',
+        has('Asymptomatic_MBMs'),
+        branch(
+            'Evaluate for SRS [III, B]',
+            all_of(all_of(has('Evaluate'), has('for')), has('SRS')),
+            best
+        ),
+        branch(
+            'Clinical trial [V, A]\nOR\nNivolumab-ipilimumab [II, A] (preferred)\nBRAFi-MEKi (if BRAF V600-mutated) [III, B; ESCAT I-A]',
+            any_of(any_of(any_of(all_of(has('Clinical'), has('trial')), has('OR')), all_of(has('Nivolumab-ipilimumab'), has('preferred'))), all_of(has('BRAFi-MEKi'), all_of(all_of(has('if'), has('BRAF')), has('V600-mutated')))),
+            evaluate
+        )
+    )
+)

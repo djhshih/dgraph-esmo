@@ -1,0 +1,38 @@
+digraph G {
+    a [label="Follow-up of patients with melanoma"];
+    b [label="Self-examination and risk assessment:\nPatients should be advised to avoid sunburn or unprotected solar exposure or any artificial UV exposure; lifelong regular self-examinations of the skin and peripheral LNs is also recommended [III, A]\nPatients must be made aware that family members have an increased melanoma risk [III, B]"];
+    c [label="Follow-up:\nFollow-up should comprise an MDT [V, A]\nPatients should be clinically monitored with whole body examinations, preferentially by a dermatologist, to detect relapse and to recognise additional skin tumours, especially secondary melanomas, as early as possible [III, B]\nThere is no consensus on the optimal follow-up schedule or the utility of imaging and blood tests for patients with resected melanoma; respective national guidelines should be consulted, with adjustment as required, considering available resources, particularly after 3 years of follow-up [IV, B]"];
+    d [label="Suggested follow-up schedule by disease stage"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+
+    e [label="Stage_IA"];
+    f [label="Stage_IB-IIA"];
+    g [label="Stage_IIB-IIIC"];
+    h [label="Stage_IIID"];
+    i [label="Stage_IV_NED_resected_CR"];
+    j [label="Stage_IV_M1a-M1d_distant_metastases"];
+
+    d -> e;
+    d -> f;
+    d -> g;
+    d -> h;
+    d -> i;
+    d -> j;
+
+    k [label="Clinical-dermatological examination: Q6 mo (yr 1-3), Q12 mo (yr 4-10), Q12 mo (yr >10)\nLN US: NA\nLaboratory examination: NA\nCT (or PET-CT) of neck, thorax, abdomen, pelvis; brain MRI: NA [V, B]"];
+    l [label="Clinical-dermatological examination: Q3-6 mo (yr 1-3), Q6 mo (yr 4-10), Q12 mo (yr >10)\nLN US: Q6 mo (yr 1-3)\nLaboratory examination: Q3-6 mo (yr 1-3)\nCT (or PET-CT) of neck, thorax, abdomen, pelvis; brain MRI: NA [V, B]"];
+    m [label="Clinical-dermatological examination: Q3 mo (yr 1-3), Q6 mo (yr 4-10), Q12 mo (yr >10)\nLN US: Q3-6 mo (yr 1-3)\nLaboratory examination: Q3-6 mo (yr 1-3)\nCT (or PET-CT) of neck, thorax, abdomen, pelvis: Q3-6 mo (yr 1-3)\nBrain MRI: Q6 mo (yr 1-3) [V, B]"];
+    n [label="Clinical-dermatological examination: Q3 mo (yr 1-3), Q6 mo (yr 4-10), Q12 mo (yr >10)\nLN US: Q3-6 mo (yr 1-3)\nLaboratory examination: Q3-6 mo (yr 1-3)\nCT (or PET-CT) of neck, thorax, abdomen, pelvis: Q3-6 mo (yr 1-3)\nBrain MRI: Q3-6 mo (yr 1-3) [V, B]"];
+    o [label="Clinical-dermatological examination: Q3 mo (yr 1-3), Q6 mo (yr 4-10), Q12 mo (yr >10)\nLN US: Q3-6 mo (yr 1-3)\nLaboratory examination: Q3-6 mo (yr 1-3)\nCT (or PET-CT) of neck, thorax, abdomen, pelvis: Q3-6 mo (yr 1-3)\nBrain MRI: Q3 mo (yr 1-3) [V, B]"];
+    p [label="Individualised to each patient, depending on therapy and symptoms; otherwise, staging Q12 weeks\nFor patients achieving CR, staging Q12 weeks (yr 1-3) after ICI discontinuation [V, B]"];
+
+    e -> k;
+    f -> l;
+    g -> m;
+    h -> n;
+    i -> o;
+    j -> p;
+}

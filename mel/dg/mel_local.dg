@@ -1,0 +1,31 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Patients with pT1b-pT4b cN0 cM0 melanoma',
+    node(
+        'Full depth WLE of primary tumours with safety margins of 1 cm for tumours with a thickness <= 2 mm and 2 cm for tumours with a thickness > 2 mm [III, B]',
+        node(
+            'SLNB [II, B]',
+            branch(
+                'SLN-',
+                has('SLN-'),
+                branch(
+                    'Stage_I-IIA',
+                    has('Stage_I-IIA'),
+                    node('Clinical trial [V, A]\nStandard follow-up [III, A]')
+                ),
+                branch(
+                    'Stage_IIB-IIC',
+                    has('Stage_IIB-IIC'),
+                    node('Clinical trial [V, A]\nAnti-PD-1 therapy for 12 months [I, A]\nStandard follow-up [III, A]')
+                )
+            ),
+            branch(
+                'SLN+',
+                has('SLN+'),
+                node('Clinical trial [V, A]\nNivolumab [I, A; MCBS NEB]\nPembrolizumab [I, A; MCBS A]\nDabrafenib-trametinib (BRAF V600E-mutated tumours) [I, A; ESCAT I-A]\nStandard follow-up [III, A]')
+            )
+        )
+    )
+)

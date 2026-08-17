@@ -1,0 +1,73 @@
+from dgraph.condition import all_of, always, gt, has, lt
+from dgraph.graph import branch, node
+
+best = node('Best supportive and palliative care [V, A]')
+srs_after = node('Evaluate for SRS [III, B]', best)
+srs_option = branch(
+    'Evaluate for SRS [III, B]',
+    # manual_fix: treatment option, not a patient tag
+    always(),
+    best,
+)
+
+lmd_tx = (
+    'Clinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\n'
+    'Ipilimumab-nivolumab [III, B]\nRT [III, B]\nIntrathecal nivolumab [III, C]\n'
+    'ChT (if BRAF-WT) [IV, C]'
+)
+high_dose_tx = (
+    'Clinical trial [V, A]\nOR\nBRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\n'
+    'Ipilimumab-nivolumab [III, B]\nChT (if BRAF-WT) [IV, C]'
+)
+neuro_tx = (
+    'Evaluate possibility of neurosurgery [IV, C]\nClinical trial [V, A]\nOR\n'
+    'BRAFi-MEKi (if BRAF V600-mutated) [III, A; ESCAT I-A]\nNivolumab-ipilimumab [III, A]'
+)
+asymp_sys_tx = (
+    'Clinical trial [V, A]\nOR\nNivolumab-ipilimumab [II, A] (preferred)\n'
+    'BRAFi-MEKi (if BRAF V600-mutated) [III, B; ESCAT I-A]'
+)
+
+graph = node(
+    'Patients with MBMs',
+    branch(
+        'LMD',
+        has('LMD'),
+        node(lmd_tx, best)
+    ),
+    branch(
+        'Symptomatic_MBMs and > 10 prednisolone_mg_day and Local_treatment_not_an_option',
+        # all_of(all_of(all_of(has('Symptomatic_MBMs'), has('>10')), has('prednisolone_mg_day')), has('Local_treatment_not_an_option')),
+        # manual_fix
+        all_of(
+            has('Symptomatic_MBMs'),
+            gt('prednisolone_mg_day', 10),
+            has('Local_treatment_not_an_option'),
+        ),
+        node(high_dose_tx, best)
+    ),
+    branch(
+        'Symptomatic_MBMs and < 10 prednisolone_mg_day',
+        # all_of(all_of(has('Symptomatic_MBMs'), has('<10')), has('prednisolone_mg_day')),
+        # manual_fix
+        all_of(has('Symptomatic_MBMs'), lt('prednisolone_mg_day', 10)),
+        branch(
+            neuro_tx,
+            # manual_fix: treatment option, not a patient tag
+            always(),
+            srs_after
+        ),
+        srs_option
+    ),
+    branch(
+        'Asymptomatic_MBMs',
+        has('Asymptomatic_MBMs'),
+        srs_option,
+        branch(
+            asymp_sys_tx,
+            # manual_fix: treatment option, not a patient tag
+            always(),
+            srs_after
+        )
+    )
+)

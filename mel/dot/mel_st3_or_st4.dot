@@ -1,0 +1,23 @@
+digraph G {
+    a [label="Patients with stage III and clinically or radiologically detectable LN metastasis or resectable stage IV melanoma"];
+
+    b [label="Resectable_disease"];
+    c [label="Unresectable_disease"];
+
+    a -> b;
+    a -> c;
+
+    d [label="Stage_III"];
+    e [label="Stage_IV"];
+
+    b -> d;
+    b -> e;
+
+    f [label="Clinical trial [V, A]\nFor patients treated with upfront resection, adjuvant anti-PD-1 therapy [I, A] or dabrafenib-trametinib for BRAF V600E-mutated tumours [I, A]\nNeoadjuvant nivolumab-ipilimumab [I, A; MCBS A] followed by adjuvant therapy based on pathological response and BRAF status, or neoadjuvant plus adjuvant pembrolizumab [II, A]\nWide excision of primary tumour [III, B]"];
+    g [label="Clinical trial [V, A]\nMetastasectomy or local ablative therapy [III, B] followed by adjuvant anti-PD-1 therapy [I, A]\nAnti-PD-1 therapy [V, A]"];
+    h [label="See Figure 4"];
+
+    d -> f;
+    e -> g;
+    c -> h;
+}
