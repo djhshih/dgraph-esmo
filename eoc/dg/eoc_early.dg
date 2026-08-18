@@ -1,0 +1,24 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Suspected early EOC (FIGO stage I-II)',
+    node(
+        'Surgical staging [III, A]',
+        branch(
+            'LGSC_FIGO_stage_IA or Low-grade_EC_FIGO_stage_IA or Expansile_MC_FIGO_stage_IA-IB',
+            any_of(any_of(has('LGSC_FIGO_stage_IA'), has('Low-grade_EC_FIGO_stage_IA')), has('Expansile_MC_FIGO_stage_IA-IB')),
+            node('Observation')
+        ),
+        branch(
+            'LGSC_FIGO_stage_IB-IC or CCC_FIGO_stage_IA-IC1 or Low-grade_EC_FIGO_stage_IB-IC or Expansile_MC_FIGO_stage_IC or Infiltrative_MC_FIGO_stage_IA',
+            any_of(any_of(any_of(any_of(has('LGSC_FIGO_stage_IB-IC'), has('CCC_FIGO_stage_IA-IC1')), has('Low-grade_EC_FIGO_stage_IB-IC')), has('Expansile_MC_FIGO_stage_IC')), has('Infiltrative_MC_FIGO_stage_IA')),
+            node('Adjuvant ChT optional [III, C]: paclitaxel-carboplatin [I, B] (minimum 3 cycles or 6 cycles if FIGO stage IC [II, B]) or carboplatin alone (6 cycles) [I, A]')
+        ),
+        branch(
+            'HGSC_any_FIGO_stage or high-grade_EC_any_FIGO_stage or CCC_FIGO_stage_IC2-IC3 or Infiltrative_MC_FIGO_stage_IB-IC3 or Any_histotype_FIGO_stage_II',
+            any_of(any_of(any_of(any_of(has('HGSC_any_FIGO_stage'), has('high-grade_EC_any_FIGO_stage')), has('CCC_FIGO_stage_IC2-IC3')), has('Infiltrative_MC_FIGO_stage_IB-IC3')), has('Any_histotype_FIGO_stage_II')),
+            node('Adjuvant ChT [II, A]: paclitaxel-carboplatin [I, B] (6 cycles; 3 cycles are acceptable unless HGSC/high-grade EC or FIGO stage IC-II [II, B]) or carboplatin alone (6 cycles) [I, A]')
+        )
+    )
+)

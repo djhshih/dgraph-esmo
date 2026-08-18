@@ -1,0 +1,98 @@
+from dgraph.condition import all_of, has
+from dgraph.graph import branch, chain, node
+
+bevacizumab = node('Bevacizumab or niraparib (3 years) [I, B; MCBS 3] maintenance')
+niraparib = node('Niraparib (3 years) [I, A; MCBS 3; ESCAT I-A]\nor olaparib-bevacizumab (2 years) [I, A; MCBS 3; ESCAT I-A] maintenance')
+olaparib = node('Olaparib (2 years) [I, A; MCBS 4; ESCAT I-A]\nor niraparib (3 years) [I, A; MCBS 3; ESCAT I-A]\nor olaparib-bevacizumab (2 years) [I, A; MCBS 3; ESCAT I-A] maintenance')
+
+graph = node(
+    'Newly diagnosed EOC (FIGO stage III-IV)',
+    node(
+        'Likelihood of complete cytoreduction [III, A]',
+        branch(
+            'Low_likelihood_of_complete_cytoreduction',
+            has('Low_likelihood_of_complete_cytoreduction'),
+            node(
+                'Adequate biopsy tissue for histology and molecular testing [III, A]',
+                node(
+                    'BRCA1/BRCA2 (germline and/or somatic) and HRD status testing [I, A]',
+                    node(
+                        '3 cycles of neoadjuvant paclitaxel-carboplatin alone [I, A] or with bevacizumab [II, B]',
+                        branch(
+                            'Interval_cytoreductive_surgery_possible',
+                            has('Interval_cytoreductive_surgery_possible'),
+                            node(
+                                'Interval cytoreductive surgery [I, A], followed by 3 cycles of paclitaxel-carboplatin alone [I, A] or with bevacizumab [II, A]',
+                                branch(
+                                    'BRCA1/BRCA2_mutated',
+                                    has('BRCA1/BRCA2_mutated'),
+                                    olaparib
+                                ),
+                                branch(
+                                    'BRCA1/BRCA2_wt and HRD_positive',
+                                    all_of(has('BRCA1/BRCA2_wt'), has('HRD_positive')),
+                                    niraparib
+                                ),
+                                branch(
+                                    'BRCA1/BRCA2_wt and HRD_negative',
+                                    all_of(has('BRCA1/BRCA2_wt'), has('HRD_negative')),
+                                    bevacizumab
+                                )
+                            )
+                        ),
+                        branch(
+                            'Interval_cytoreductive_surgery_not_possible and No_overt_disease_progression',
+                            all_of(has('Interval_cytoreductive_surgery_not_possible'), has('No_overt_disease_progression')),
+                            node(
+                                '3 cycles of paclitaxel-carboplatin alone [I, A] or with bevacizumab [II, B]',
+                                branch(
+                                    'BRCA1/BRCA2_mutated',
+                                    has('BRCA1/BRCA2_mutated'),
+                                    olaparib
+                                ),
+                                branch(
+                                    'BRCA1/BRCA2_wt and HRD_positive',
+                                    all_of(has('BRCA1/BRCA2_wt'), has('HRD_positive')),
+                                    niraparib
+                                ),
+                                branch(
+                                    'BRCA1/BRCA2_wt and HRD_negative',
+                                    all_of(has('BRCA1/BRCA2_wt'), has('HRD_negative')),
+                                    bevacizumab
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ),
+        branch(
+            'High_likelihood_of_complete_cytoreduction',
+            has('High_likelihood_of_complete_cytoreduction'),
+            node(
+                'Primary cytoreductive surgery [III, A]',
+                node(
+                    'BRCA1/BRCA2 (germline and/or somatic) and HRD status testing [I, A]',
+                    node(
+                        '6 cycles of paclitaxel-carboplatin alone or with bevacizumab [I, A; MCBS 3; MCBS 4 in high-risk patients]',
+                        branch(
+                            'BRCA1/BRCA2_mutated',
+                            has('BRCA1/BRCA2_mutated'),
+                            olaparib
+                        ),
+                        branch(
+                            'BRCA1/BRCA2_wt and HRD_positive',
+                            all_of(has('BRCA1/BRCA2_wt'), has('HRD_positive')),
+                            niraparib
+                        ),
+                        branch(
+                            'BRCA1/BRCA2_wt and HRD_negative',
+                            all_of(has('BRCA1/BRCA2_wt'), has('HRD_negative')),
+                            bevacizumab
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

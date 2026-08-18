@@ -1,0 +1,57 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+platinum = node('Platinum-based doublet (PLD preferred) + PARPi maintenance, if responsive and PARPi-naive [I, A] (preferred option if BRCA1/BRCA2-mutated) or platinum-based doublet (PLD preferred) + bevacizumab [I, A] (if no contraindication or previous exposure to bevacizumab)')
+platinum_based = node('Platinum-based doublet (PLD preferred) + bevacizumab [V, A]')
+
+graph = node(
+    'Recurrent EOC',
+    node(
+        "Assessment of the following factors [I-II, A]:\nHistotype\nBRCA1/BRCA2 status\nNumber of prior lines\nExposure and response to prior treatment\nTFIp\nPotential for surgery\nResidual toxicity\nPatient's general condition\nPatient preference",
+        branch(
+            'Unfit_or_not_willing_to_receive_anticancer_therapy',
+            has('Unfit_or_not_willing_to_receive_anticancer_therapy'),
+            node('BSC')
+        ),
+        branch(
+            'Progression_during_platinum or Early_symptomatic_progression or Platinum_intolerance',
+            any_of(any_of(has('Progression_during_platinum'), has('Early_symptomatic_progression')), has('Platinum_intolerance')),
+            node('Early palliative care [I, A]\nSingle agent (non-platinum) [I, B] + bevacizumab, if not contraindicated or previously exposed [I, A; MCBS 4]\nTrabectedin-PLD (if TFIp > 6 months and platinum intolerant) [II, C; MCBS 2]')
+        ),
+        branch(
+            'Prior_response_to_platinum and No_contraindication_to_platinum',
+            all_of(has('Prior_response_to_platinum'), has('No_contraindication_to_platinum')),
+            branch(
+                'First_relapse and Positive_AGO_score',
+                all_of(has('First_relapse'), has('Positive_AGO_score')),
+                node(
+                    'Consider surgery by expert team [I, A]',
+                    branch(
+                        'No_priority_for_symptomatic_response',
+                        has('No_priority_for_symptomatic_response'),
+                        platinum
+                    ),
+                    branch(
+                        'Priority_for_symptomatic_response and No_contraindication_to_bevacizumab',
+                        all_of(has('Priority_for_symptomatic_response'), has('No_contraindication_to_bevacizumab')),
+                        platinum_based
+                    )
+                )
+            ),
+            branch(
+                'Not_first_relapse_or_negative_AGO_score',
+                has('Not_first_relapse_or_negative_AGO_score'),
+                branch(
+                    'No_priority_for_symptomatic_response',
+                    has('No_priority_for_symptomatic_response'),
+                    platinum
+                ),
+                branch(
+                    'Priority_for_symptomatic_response and No_contraindication_to_bevacizumab',
+                    all_of(has('Priority_for_symptomatic_response'), has('No_contraindication_to_bevacizumab')),
+                    platinum_based
+                )
+            )
+        )
+    )
+)

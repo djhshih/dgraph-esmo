@@ -1,0 +1,48 @@
+digraph EOC_Advanced {
+    a [label="Newly diagnosed EOC (FIGO stage III-IV)"];
+    b [label="Likelihood of complete cytoreduction [III, A]"];
+    c [label="Low_likelihood_of_complete_cytoreduction"];
+    d [label="High_likelihood_of_complete_cytoreduction"];
+    e [label="Adequate biopsy tissue for histology and molecular testing [III, A]"];
+    f [label="BRCA1/BRCA2 (germline and/or somatic) and HRD status testing [I, A]"];
+    g [label="3 cycles of neoadjuvant paclitaxel-carboplatin alone [I, A] or with bevacizumab [II, B]"];
+    h [label="Primary cytoreductive surgery [III, A]"];
+    i [label="BRCA1/BRCA2 (germline and/or somatic) and HRD status testing [I, A]"];
+    j [label="Interval_cytoreductive_surgery_possible"];
+    k [label="Interval_cytoreductive_surgery_not_possible and No_overt_disease_progression"];
+    l [label="Interval cytoreductive surgery [I, A], followed by 3 cycles of paclitaxel-carboplatin alone [I, A] or with bevacizumab [II, A]"];
+    m [label="3 cycles of paclitaxel-carboplatin alone [I, A] or with bevacizumab [II, B]"];
+    n [label="6 cycles of paclitaxel-carboplatin alone or with bevacizumab [I, A; MCBS 3; MCBS 4 in high-risk patients]"];
+    o [label="BRCA1/BRCA2_mutated"];
+    p [label="BRCA1/BRCA2_wt and HRD_positive"];
+    q [label="BRCA1/BRCA2_wt and HRD_negative"];
+    r [label="Olaparib (2 years) [I, A; MCBS 4; ESCAT I-A]\nor niraparib (3 years) [I, A; MCBS 3; ESCAT I-A]\nor olaparib-bevacizumab (2 years) [I, A; MCBS 3; ESCAT I-A] maintenance"];
+    s [label="Niraparib (3 years) [I, A; MCBS 3; ESCAT I-A]\nor olaparib-bevacizumab (2 years) [I, A; MCBS 3; ESCAT I-A] maintenance"];
+    t [label="Bevacizumab or niraparib (3 years) [I, B; MCBS 3] maintenance"];
+
+    a -> b;
+    b -> c;
+    b -> d;
+    c -> e;
+    e -> f;
+    f -> g;
+    d -> h;
+    h -> i;
+    i -> n;
+    g -> j;
+    g -> k;
+    j -> l;
+    k -> m;
+    l -> o;
+    l -> p;
+    l -> q;
+    m -> o;
+    m -> p;
+    m -> q;
+    n -> o;
+    n -> p;
+    n -> q;
+    o -> r;
+    p -> s;
+    q -> t;
+}
