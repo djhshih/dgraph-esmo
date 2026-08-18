@@ -1,0 +1,37 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Metastatic UM',
+    node(
+        'Staging: liver MRI, TAP CT, LFTs and LDH +/- FDG-PET-CT\nHLA-A*02:01 status',
+        branch(
+            'Liver_only_metastases',
+            has('Liver_only_metastases'),
+            branch(
+                'Oligometastatic',
+                has('Oligometastatic'),
+                node('Local treatment:\nSurgery (metastasectomy) [IV, B]\nThermal ablation (RFA or MWA) [IV, B]\nCryoablation [IV, B]\nSRT [IV, B]')
+            ),
+            branch(
+                'Multifocal_metastases',
+                has('Multifocal_metastases'),
+                node('Regional treatment:\nPHP [II, B]\nIHP [II, B]\nHAI [II, B]\nTACE [II, B]\nTARE [II, B]\nAnd/or systemic treatment according to HLA status:\nIf HLA-A*02:01 positive:\nTebentafusp [I, A; MCBS: 3]\nIf HLA-A*02:01 negative:\nAnti-PD-1-based immunotherapy [V, B]\nClinical trial [V, B]')
+            )
+        ),
+        branch(
+            'Extra-liver_metastases',
+            has('Extra-liver_metastases'),
+            branch(
+                'HLA-A*02:01_positive',
+                has('HLA-A*02:01_positive'),
+                chain('Tebentafusp [I, A; MCBS: 3]', 'PD', 'Liver-directed treatment [V, B]\nAnti-PD-1-based immunotherapy [V, B]\nClinical trial [V, B]')
+            ),
+            branch(
+                'HLA-A*02:01_negative',
+                has('HLA-A*02:01_negative'),
+                node('Liver-directed treatment [V, B]\nAnti-PD-1-based immunotherapy [V, B]\nClinical trial [V, B]')
+            )
+        )
+    )
+)

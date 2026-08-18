@@ -1,0 +1,16 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Localised primary UM',
+    branch(
+        'Eye-preservation_possible',
+        has('Eye-preservation_possible'),
+        chain('Inform patients of high risk of RT-induced side-effects and the risk of vision loss [III, A]', 'RT [III, A]', 'Intravitreal anti-VEGF therapy [IV, B]', 'Routine ophthalmologic exams every 6 months for 2-5 years, then annually [II, A]', 'Local_recurrences', 'TTT, re-RT or enucleation [V, B]')
+    ),
+    branch(
+        'Large_tumours or tumours_with_extrascleral_extension',
+        any_of(has('Large_tumours'), has('tumours_with_extrascleral_extension')),
+        chain('Enucleation [II, A]', 'Adjuvant external beam RT [II, B]')
+    )
+)

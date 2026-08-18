@@ -1,0 +1,36 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, node
+
+graph = node(
+    'Patients with localised UM',
+    node(
+        'Completion of the following:\nSurveillance at reference centres [III, A]\nAJCC Cancer Staging Manual, eighth edition\nPrognostic biopsy, if feasible\nLifelong surveillance tailored to the individual risk [III, A]\nRegular assessment of QoL [III, A]',
+        branch(
+            '(T1a or T1b or T1c or T1d or T2a) and ((No_alterations_in_chromosome_3 and No_alterations_in_chromosome_8) or GEP_class_1)',
+            # manual_fix: flatten nested compiler all_of/any_of
+            all_of(
+                any_of(has('T1a'), has('T1b'), has('T1c'), has('T1d'), has('T2a')),
+                any_of(
+                    all_of(has('No_alterations_in_chromosome_3'), has('No_alterations_in_chromosome_8')),
+                    has('GEP_class_1'),
+                ),
+            ),
+            node('Liver US every 6-12 months for >=5 years [III, A]')
+        ),
+        branch(
+            '(T2b or T2c or T2d or T3 or T4) or Alterations_in_chromosome_3 or Alterations_in_chromosome_8 or GEP_class_2',
+            # manual_fix: flatten nested compiler any_of
+            any_of(
+                has('T2b'),
+                has('T2c'),
+                has('T2d'),
+                has('T3'),
+                has('T4'),
+                has('Alterations_in_chromosome_3'),
+                has('Alterations_in_chromosome_8'),
+                has('GEP_class_2'),
+            ),
+            node('Liver MRI every 4-6 months for >=10 years [III, A]')
+        )
+    )
+)

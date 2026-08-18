@@ -1,8 +1,8 @@
 SCRIPT = ../../download_image.py
 
-all: staging-risk.jpg primary.jpg metastatic.jpg surveillance.jpg
+all: staging_risk.jpg primary.jpg metastatic.jpg surveillance.jpg
 
-staging-risk.jpg:
+staging_risk.jpg:
 	python $(SCRIPT) https://www.esmoopen.com/cms/10.1016/j.esmoop.2026.106888/asset/4f5392c2-3967-47f5-825a-301951df2702/main.assets/gr1_lrg.jpg $@
 
 primary.jpg:

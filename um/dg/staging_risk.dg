@@ -1,0 +1,19 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Suspected or confirmed UM',
+    node(
+        'Completion of the following:\nLocal extension (ciliary body and extrascleral) and extraocular extension assessment with ocular imaging and orbit MRI\nClassification with AJCC Cancer Staging Manual, eighth edition\nScreening for distant metastases: Liver US or MRI with diffusion-weighted sequences, supplemented by PET-CT or TAP-CT\nPrognostic analysis on primary tumour biopsy, if feasible [III, B]: Copy number alterations in chromosomes 3, 6 and 8; GEP; Mutational status of BAP1, SF3B1, EIF1AX; Immunohistochemistry for BAP1 and PRAME expression',
+        branch(
+            'Localised_disease',
+            has('Localised_disease'),
+            chain('HLA-A*02 : 01 testing to facilitate access to adjuvant clinical trials [V, B]', 'Management of localised UM')
+        ),
+        branch(
+            'Metastatic_disease',
+            has('Metastatic_disease'),
+            chain('HLA-A*02 : 01 testing [I, A]', 'Assessment of GNAQ, GNA11, SF3B1 and MBD4 mutational status [IV, C]', 'Management of advanced and metastatic UM')
+        )
+    )
+)

@@ -1,0 +1,14 @@
+digraph G {
+    a [label="Patients with localised UM"];
+    b [label="Completion of the following:\nSurveillance at reference centres [III, A]\nAJCC Cancer Staging Manual, eighth edition\nPrognostic biopsy, if feasible\nLifelong surveillance tailored to the individual risk [III, A]\nRegular assessment of QoL [III, A]"];
+    c [label="(T1a or T1b or T1c or T1d or T2a) and ((No_alterations_in_chromosome_3 and No_alterations_in_chromosome_8) or GEP_class_1)"];
+    d [label="(T2b or T2c or T2d or T3 or T4) or Alterations_in_chromosome_3 or Alterations_in_chromosome_8 or GEP_class_2"];
+    e [label="Liver US every 6-12 months for >=5 years [III, A]"];
+    f [label="Liver MRI every 4-6 months for >=10 years [III, A]"];
+
+    a -> b;
+    b -> c;
+    b -> d;
+    c -> e;
+    d -> f;
+}

@@ -1,0 +1,24 @@
+digraph G {
+    a [label="Localised primary UM"];
+    b [label="Eye-preservation_possible"];
+    c [label="Large_tumours or tumours_with_extrascleral_extension"];
+    d [label="Inform patients of high risk of RT-induced side-effects and the risk of vision loss [III, A]"];
+    e [label="RT [III, A]"];
+    f [label="Intravitreal anti-VEGF therapy [IV, B]"];
+    g [label="Routine ophthalmologic exams every 6 months for 2-5 years, then annually [II, A]"];
+    h [label="Local_recurrences"];
+    i [label="TTT, re-RT or enucleation [V, B]"];
+    j [label="Enucleation [II, A]"];
+    k [label="Adjuvant external beam RT [II, B]"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    d -> e;
+    e -> f;
+    f -> g;
+    g -> h;
+    h -> i;
+    c -> j;
+    j -> k;
+}

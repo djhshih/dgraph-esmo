@@ -1,0 +1,29 @@
+digraph G {
+    a [label="Metastatic UM"];
+    b [label="Staging: liver MRI, TAP CT, LFTs and LDH +/- FDG-PET-CT\nHLA-A*02:01 status"];
+    c [label="Liver_only_metastases"];
+    d [label="Extra-liver_metastases"];
+    e [label="Oligometastatic"];
+    f [label="Multifocal_metastases"];
+    g [label="Local treatment:\nSurgery (metastasectomy) [IV, B]\nThermal ablation (RFA or MWA) [IV, B]\nCryoablation [IV, B]\nSRT [IV, B]"];
+    h [label="Regional treatment:\nPHP [II, B]\nIHP [II, B]\nHAI [II, B]\nTACE [II, B]\nTARE [II, B]\nAnd/or systemic treatment according to HLA status:\nIf HLA-A*02:01 positive:\nTebentafusp [I, A; MCBS: 3]\nIf HLA-A*02:01 negative:\nAnti-PD-1-based immunotherapy [V, B]\nClinical trial [V, B]"];
+    i [label="HLA-A*02:01_positive"];
+    j [label="HLA-A*02:01_negative"];
+    k [label="Tebentafusp [I, A; MCBS: 3]"];
+    l [label="PD"];
+    m [label="Liver-directed treatment [V, B]\nAnti-PD-1-based immunotherapy [V, B]\nClinical trial [V, B]"];
+
+    a -> b;
+    b -> c;
+    b -> d;
+    c -> e;
+    c -> f;
+    e -> g;
+    f -> h;
+    d -> i;
+    d -> j;
+    i -> k;
+    k -> l;
+    l -> m;
+    j -> m;
+}
