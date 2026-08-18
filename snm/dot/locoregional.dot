@@ -1,0 +1,52 @@
+digraph locoregional {
+    rankdir=TB;
+
+    a [label="Local and locoregional disease"];
+
+    b [label="Stage_I-II"];
+    c [label="Stage_III-IV_resectable"];
+    d [label="High-grade_poorly_differentiated_stage_III-IV_resectable"];
+    e [label="Stage_IV_unresectable"];
+
+    f [label="Surgery [III, A]"];
+    g [label="RT [IV, C] +/- ChT [IV, C]"];
+
+    h [label="Surgery [III, B]"];
+    i [label="RT [IV, A] +/- ChT [IV, C]"];
+
+    j [label="NACT [III, A]"];
+    k [label="Evaluation of response and restaging [IV, A]"];
+
+    l [label="PR or CR"];
+    m [label="SD or PD"];
+
+    n [label="Definitive RT +/- systemic therapy [IV, B]"];
+
+    q [label="NACT [III, C]"];
+    r [label="Evaluation of response and restaging [IV, A]"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    a -> e;
+
+    b -> f;
+    f -> g;
+
+    c -> h;
+    h -> i;
+
+    d -> j;
+    j -> k;
+
+    k -> l;
+    k -> m;
+
+    l -> n;
+
+    m -> h;
+
+    e -> q;
+    q -> r;
+    r -> n;
+}

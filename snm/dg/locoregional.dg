@@ -1,0 +1,43 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+surgery = chain('Surgery [III, B]', 'RT [IV, A] +/- ChT [IV, C]')
+
+graph = node(
+    'Local and locoregional disease',
+    branch(
+        'Stage_I-II',
+        has('Stage_I-II'),
+        chain('Surgery [III, A]', 'RT [IV, C] +/- ChT [IV, C]')
+    ),
+    branch(
+        'Stage_III-IV_resectable',
+        has('Stage_III-IV_resectable'),
+        surgery
+    ),
+    branch(
+        'High-grade_poorly_differentiated_stage_III-IV_resectable',
+        has('High-grade_poorly_differentiated_stage_III-IV_resectable'),
+        node(
+            'NACT [III, A]',
+            node(
+                'Evaluation of response and restaging [IV, A]',
+                branch(
+                    'PR or CR',
+                    any_of(has('PR'), has('CR')),
+                    node('Definitive RT +/- systemic therapy [IV, B]')
+                ),
+                branch(
+                    'SD or PD',
+                    any_of(has('SD'), has('PD')),
+                    surgery
+                )
+            )
+        )
+    ),
+    branch(
+        'Stage_IV_unresectable',
+        has('Stage_IV_unresectable'),
+        chain('NACT [III, C]', 'Evaluation of response and restaging [IV, A]', 'Definitive RT +/- systemic therapy [IV, B]')
+    )
+)

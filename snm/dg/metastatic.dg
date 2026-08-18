@@ -1,0 +1,16 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Metastatic disease',
+    branch(
+        'Newly_diagnosed',
+        has('Newly_diagnosed'),
+        chain('First-line systemic therapy', 'PR or CR', 'Local RT on T, N or M lesions [V, C]')
+    ),
+    branch(
+        'Not_newly_diagnosed',
+        has('Not_newly_diagnosed'),
+        node('First-line systemic therapy')
+    )
+)

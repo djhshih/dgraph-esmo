@@ -1,0 +1,25 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Local or regional recurrence',
+    branch(
+        'Amenable_to_salvage_therapy',
+        has('Amenable_to_salvage_therapy'),
+        chain('Surgery [IV, A]', 'reRT [IV, B]')
+    ),
+    branch(
+        'Not_amenable_to_salvage_therapy',
+        has('Not_amenable_to_salvage_therapy'),
+        branch(
+            'Amenable_to_reRT',
+            has('Amenable_to_reRT'),
+            node('reRT [IV, B]')
+        ),
+        branch(
+            'Not_amenable_to_reRT',
+            has('Not_amenable_to_reRT'),
+            node('First-line systemic therapy')
+        )
+    )
+)

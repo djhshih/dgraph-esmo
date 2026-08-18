@@ -1,0 +1,23 @@
+digraph metastatic {
+    rankdir=TB;
+
+    a [label="Metastatic disease"];
+
+    b [label="Newly_diagnosed"];
+    c [label="Not_newly_diagnosed"];
+
+    d [label="First-line systemic therapy"];
+    e [label="PR or CR"];
+    f [label="Local RT on T, N or M lesions [V, C]"];
+
+    g [label="First-line systemic therapy"];
+
+    a -> b;
+    a -> c;
+
+    b -> d;
+    d -> e;
+    e -> f;
+
+    c -> g;
+}

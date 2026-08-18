@@ -1,0 +1,28 @@
+digraph recurrence {
+    rankdir=TB;
+
+    a [label="Local or regional recurrence"];
+
+    b [label="Amenable_to_salvage_therapy"];
+    c [label="Not_amenable_to_salvage_therapy"];
+
+    d [label="Surgery [IV, A]"];
+    e [label="reRT [IV, B]"];
+
+    f [label="Amenable_to_reRT"];
+    g [label="Not_amenable_to_reRT"];
+
+    h [label="First-line systemic therapy"];
+
+    a -> b;
+    a -> c;
+
+    b -> d;
+    d -> e;
+
+    c -> f;
+    c -> g;
+
+    f -> e;
+    g -> h;
+}

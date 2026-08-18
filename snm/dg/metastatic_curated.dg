@@ -1,0 +1,24 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, node
+
+graph = node(
+    'Metastatic disease',
+    branch(
+        'Newly_diagnosed',
+        has('Newly_diagnosed'),
+        node(
+            'First-line systemic therapy',
+            branch(
+                'PR or CR',
+                # manual_fix: compiler chains PR or CR as structural
+                any_of(has('PR'), has('CR')),
+                node('Local RT on T, N or M lesions [V, C]')
+            )
+        )
+    ),
+    branch(
+        'Not_newly_diagnosed',
+        has('Not_newly_diagnosed'),
+        node('First-line systemic therapy')
+    )
+)
