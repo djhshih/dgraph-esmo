@@ -1,0 +1,53 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+cht = node('ChT\nDoxorubicin [IV, C]\nPaclitaxel [IV, C]')
+ici = node('ICI dostarlimab [III, B; MCBS 3] or pembrolizumab-lenvatinib [I, A; MCBS 4]')
+pembrolizumab = node('Pembrolizumab-lenvatinib [I, A; MCBS 4]')
+rechallenge = node('Rechallenge with platinum-based therapy [IV, C]')
+
+graph = node(
+    'Recurrent /metastatic EC',
+    branch(
+        'Low-grade_carcinomas_with_endometrioid_histology or Low-volume_indolent_disease',
+        any_of(has('Low-grade_carcinomas_with_endometrioid_histology'), has('Low-volume_indolent_disease')),
+        node(
+            'Hormonal therapy\nProgestins [II, A]\nAIs [III, C]\nTamoxifen [III, C]\nFulvestrant [III, C]',
+            node(
+                'ChT\nCarboplatin AUC 5-6 + paclitaxel 175 mg/m2 every 21 days for 6 cycles [I, A]',
+                branch(
+                    'MSI-H or dMMR',
+                    any_of(has('MSI-H'), has('dMMR')),
+                    rechallenge,
+                    cht,
+                    ici
+                ),
+                branch(
+                    'MSS or pMMR',
+                    any_of(has('MSS'), has('pMMR')),
+                    rechallenge,
+                    cht,
+                    pembrolizumab
+                )
+            )
+        )
+    ),
+    branch(
+        'ChT\nCarboplatin AUC 5-6 + paclitaxel 175 mg/m2 every 21 days for 6 cycles [I, A]',
+        any_of(has('ChT'), all_of(all_of(all_of(all_of(all_of(all_of(all_of(all_of(all_of(all_of(all_of(all_of(has('Carboplatin'), has('AUC')), has('5-6')), has('+')), has('paclitaxel')), has('175')), has('mg/m2')), has('every')), has('21')), has('days')), has('for')), has('6')), has('cycles'))),
+        branch(
+            'MSI-H or dMMR',
+            any_of(has('MSI-H'), has('dMMR')),
+            rechallenge,
+            cht,
+            ici
+        ),
+        branch(
+            'MSS or pMMR',
+            any_of(has('MSS'), has('pMMR')),
+            rechallenge,
+            cht,
+            pembrolizumab
+        )
+    )
+)

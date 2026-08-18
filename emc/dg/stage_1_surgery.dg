@@ -1,0 +1,31 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+minimally = node('Minimally invasive surgery [I, A; for G1-G2] [II, A; for G3]\nSentinel LNE can be considered as a strategy for nodal assessment [II, A]')
+
+graph = node(
+    'Stage I EC: surgery',
+    node(
+        'Hysterectomy with bilateral salpingo-oophorectomy [I, A]',
+        branch(
+            'Stage_I and (G1 or G2)',
+            all_of(has('Stage_I'), any_of(has('G1'), has('G2'))),
+            branch(
+                'Stage_IA and G1 and EEC and premenopausal',
+                all_of(all_of(all_of(has('Stage_IA'), has('G1')), has('EEC')), has('premenopausal')),
+                node('Ovarian preservation [IV, A]')
+            ),
+            minimally
+        ),
+        branch(
+            'Stage_I and G3',
+            all_of(has('Stage_I'), has('G3')),
+            minimally
+        ),
+        branch(
+            'Stage_I and (serous_EC or carcinosarcomas)',
+            all_of(has('Stage_I'), any_of(has('serous_EC'), has('carcinosarcomas'))),
+            node('Full surgical staging including omentectomy, peritoneal biopsies and lymph node staging [IV, B]')
+        )
+    )
+)

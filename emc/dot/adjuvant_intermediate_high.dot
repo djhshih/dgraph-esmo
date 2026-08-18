@@ -1,0 +1,39 @@
+digraph G {
+    a [label="Stage I-IVA EC: adjuvant therapy for high-intermediate risk and high-risk patients"];
+    b [label="High-intermediate_risk"];
+    c [label="pN0"];
+    d [label="without_lymph_node_staging"];
+    e [label="(Stage_IA or Stage_IB) and substantial_LVSI"];
+    f [label="Stage_IB and G3"];
+    g [label="Stage_II and G1 and substantial_LVSI"];
+    h [label="Stage_II and (G2 or G3) and (dMMR or NSMP)"];
+    i [label="Adjuvant EBRT is recommended [I, A]\nAdding (concomitant and/or sequential) ChT to EBRT could be considered, especially for G3 and/or substantial LVSI [II, C]"];
+    j [label="High_risk"];
+    k [label="p53-abn and myometrial_invasion"];
+    l [label="(serous_EC or undifferentiated_carcinoma or carcinosarcomas) and myometrial_invasion"];
+    m [label="(Stage_III or Stage_IVA) and no_residual_tumour"];
+    n [label="Adjuvant EBRT + concurrent ChT [I, A]\nSequential ChT and RT [I, B]\nChT alone [I, B]"];
+
+    a -> b;
+    b -> c;
+    b -> d;
+    c -> e;
+    c -> f;
+    c -> g;
+    c -> h;
+    d -> e;
+    d -> f;
+    d -> g;
+    d -> h;
+    e -> i;
+    f -> i;
+    g -> i;
+    h -> i;
+    a -> j;
+    j -> k;
+    j -> l;
+    j -> m;
+    k -> n;
+    l -> n;
+    m -> n;
+}

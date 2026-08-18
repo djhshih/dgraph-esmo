@@ -1,0 +1,20 @@
+digraph G {
+    a [label="Locoregional recurrent EC"];
+    b [label="Patients_who_received_only_VBT"];
+    c [label="EBRT [IV, A]"];
+    d [label="Patients_who_did_not_receive_RT"];
+    e [label="EBRT +/- VBT [IV, A]"];
+    f [label="Patients_who_received_prior_RT"];
+    g [label="Surgery only if a complete debulking with acceptable morbidity is anticipated [IV, C]"];
+    h [label="Systemic therapy [IV, C]"];
+
+    a -> b;
+    b -> c;
+    c -> h;
+    a -> d;
+    d -> e;
+    e -> h;
+    a -> f;
+    f -> g;
+    g -> h;
+}

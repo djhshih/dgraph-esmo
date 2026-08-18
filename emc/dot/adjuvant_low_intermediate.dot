@@ -1,0 +1,31 @@
+digraph G {
+    a [label="Stage I-IVA EC: adjuvant therapy for low- and intermediate-risk patients"];
+    b [label="Low_risk"];
+    c [label="Stage_IA and (G1 or G2) and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)"];
+    d [label="Adjuvant therapy is not recommended [I, E]"];
+    e [label="(Stage_I or Stage_II) and POLEmut"];
+    f [label="Adjuvant therapy is not recommended [III, D]"];
+    g [label="Intermediate_risk"];
+    h [label="Stage_IA and G3 and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)"];
+    i [label="Adjuvant VBT is recommended [I, A]\nOmission of adjuvant brachytherapy can be considered, especially for patients aged <60 years [III, C]"];
+    j [label="Stage_IB and (G1 or G2) and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)"];
+    l [label="Stage_II and G1 and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)"];
+    m [label="Adjuvant VBT is recommended [II, B]\nOmission of adjuvant brachytherapy can be considered, especially for patients aged <60 years [III, C]"];
+    n [label="Stage_IA and p53-abn and (not_infiltrating_the_myometrium or restricted_to_a_polyp)"];
+    o [label="Adjuvant therapy is not recommended [III, E]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    b -> e;
+    e -> f;
+    a -> g;
+    g -> h;
+    h -> i;
+    g -> j;
+    j -> i;
+    g -> l;
+    l -> m;
+    g -> n;
+    n -> o;
+}

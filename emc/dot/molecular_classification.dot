@@ -1,0 +1,24 @@
+digraph G {
+    a [label="EC (histological subtype independent)"];
+    b [label="POLE_pathogenic"];
+    c [label="EC, POLEmut"];
+    d [label="POLE_wild_type or POLE_non-pathogenic"];
+    e [label="dMMR"];
+    f [label="EC, dMMR"];
+    g [label="pMMR"];
+    h [label="p53_wild_type"];
+    i [label="EC, NSMP"];
+    j [label="p53-mut"];
+    k [label="EC, p53-mut"];
+
+    a -> b;
+    b -> c;
+    a -> d;
+    d -> e;
+    e -> f;
+    d -> g;
+    g -> h;
+    h -> i;
+    g -> j;
+    j -> k;
+}

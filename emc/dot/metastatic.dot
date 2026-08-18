@@ -1,0 +1,25 @@
+digraph G {
+    a [label="Recurrent /metastatic EC"];
+    b [label="Low-grade_carcinomas_with_endometrioid_histology or Low-volume_indolent_disease"];
+    c [label="Hormonal therapy\nProgestins [II, A]\nAIs [III, C]\nTamoxifen [III, C]\nFulvestrant [III, C]"];
+    d [label="ChT\nCarboplatin AUC 5-6 + paclitaxel 175 mg/m2 every 21 days for 6 cycles [I, A]"];
+    e [label="MSI-H or dMMR"];
+    f [label="Rechallenge with platinum-based therapy [IV, C]"];
+    g [label="ChT\nDoxorubicin [IV, C]\nPaclitaxel [IV, C]"];
+    h [label="ICI dostarlimab [III, B; MCBS 3] or pembrolizumab-lenvatinib [I, A; MCBS 4]"];
+    i [label="MSS or pMMR"];
+    l [label="Pembrolizumab-lenvatinib [I, A; MCBS 4]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    a -> d;
+    d -> e;
+    e -> f;
+    e -> g;
+    e -> h;
+    d -> i;
+    i -> f;
+    i -> g;
+    i -> l;
+}

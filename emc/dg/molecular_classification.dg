@@ -1,0 +1,34 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'EC (histological subtype independent)',
+    branch(
+        'POLE_pathogenic',
+        has('POLE_pathogenic'),
+        node('EC, POLEmut')
+    ),
+    branch(
+        'POLE_wild_type or POLE_non-pathogenic',
+        any_of(has('POLE_wild_type'), has('POLE_non-pathogenic')),
+        branch(
+            'dMMR',
+            has('dMMR'),
+            node('EC, dMMR')
+        ),
+        branch(
+            'pMMR',
+            has('pMMR'),
+            branch(
+                'p53_wild_type',
+                has('p53_wild_type'),
+                node('EC, NSMP')
+            ),
+            branch(
+                'p53-mut',
+                has('p53-mut'),
+                node('EC, p53-mut')
+            )
+        )
+    )
+)

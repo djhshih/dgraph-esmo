@@ -1,0 +1,21 @@
+digraph G {
+    a [label="Stage I EC: surgery"];
+    b [label="Hysterectomy with bilateral salpingo-oophorectomy [I, A]"];
+    c [label="Stage_I and (G1 or G2)"];
+    d [label="Stage_IA and G1 and EEC and premenopausal"];
+    e [label="Ovarian preservation [IV, A]"];
+    f [label="Minimally invasive surgery [I, A; for G1-G2] [II, A; for G3]\nSentinel LNE can be considered as a strategy for nodal assessment [II, A]"];
+    g [label="Stage_I and G3"];
+    h [label="Stage_I and (serous_EC or carcinosarcomas)"];
+    i [label="Full surgical staging including omentectomy, peritoneal biopsies and lymph node staging [IV, B]"];
+
+    a -> b;
+    b -> c;
+    c -> d;
+    d -> e;
+    c -> f;
+    b -> g;
+    g -> f;
+    b -> h;
+    h -> i;
+}

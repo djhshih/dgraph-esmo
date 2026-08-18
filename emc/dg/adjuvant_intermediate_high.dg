@@ -1,0 +1,80 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+adjuvant = node('Adjuvant EBRT + concurrent ChT [I, A]\nSequential ChT and RT [I, B]\nChT alone [I, B]')
+adjuvant_ebrt = node('Adjuvant EBRT is recommended [I, A]\nAdding (concomitant and/or sequential) ChT to EBRT could be considered, especially for G3 and/or substantial LVSI [II, C]')
+
+graph = node(
+    'Stage I-IVA EC: adjuvant therapy for high-intermediate risk and high-risk patients',
+    branch(
+        'High-intermediate_risk',
+        has('High-intermediate_risk'),
+        branch(
+            'pN0',
+            has('pN0'),
+            branch(
+                '(Stage_IA or Stage_IB) and substantial_LVSI',
+                all_of(any_of(has('Stage_IA'), has('Stage_IB')), has('substantial_LVSI')),
+                adjuvant_ebrt
+            ),
+            branch(
+                'Stage_IB and G3',
+                all_of(has('Stage_IB'), has('G3')),
+                adjuvant_ebrt
+            ),
+            branch(
+                'Stage_II and G1 and substantial_LVSI',
+                all_of(all_of(has('Stage_II'), has('G1')), has('substantial_LVSI')),
+                adjuvant_ebrt
+            ),
+            branch(
+                'Stage_II and (G2 or G3) and (dMMR or NSMP)',
+                all_of(all_of(has('Stage_II'), any_of(has('G2'), has('G3'))), any_of(has('dMMR'), has('NSMP'))),
+                adjuvant_ebrt
+            )
+        ),
+        branch(
+            'without_lymph_node_staging',
+            has('without_lymph_node_staging'),
+            branch(
+                '(Stage_IA or Stage_IB) and substantial_LVSI',
+                all_of(any_of(has('Stage_IA'), has('Stage_IB')), has('substantial_LVSI')),
+                adjuvant_ebrt
+            ),
+            branch(
+                'Stage_IB and G3',
+                all_of(has('Stage_IB'), has('G3')),
+                adjuvant_ebrt
+            ),
+            branch(
+                'Stage_II and G1 and substantial_LVSI',
+                all_of(all_of(has('Stage_II'), has('G1')), has('substantial_LVSI')),
+                adjuvant_ebrt
+            ),
+            branch(
+                'Stage_II and (G2 or G3) and (dMMR or NSMP)',
+                all_of(all_of(has('Stage_II'), any_of(has('G2'), has('G3'))), any_of(has('dMMR'), has('NSMP'))),
+                adjuvant_ebrt
+            )
+        )
+    ),
+    branch(
+        'High_risk',
+        has('High_risk'),
+        branch(
+            'p53-abn and myometrial_invasion',
+            all_of(has('p53-abn'), has('myometrial_invasion')),
+            adjuvant
+        ),
+        branch(
+            '(serous_EC or undifferentiated_carcinoma or carcinosarcomas) and myometrial_invasion',
+            all_of(any_of(any_of(has('serous_EC'), has('undifferentiated_carcinoma')), has('carcinosarcomas')), has('myometrial_invasion')),
+            adjuvant
+        ),
+        branch(
+            '(Stage_III or Stage_IVA) and no_residual_tumour',
+            all_of(any_of(has('Stage_III'), has('Stage_IVA')), has('no_residual_tumour')),
+            adjuvant
+        )
+    )
+)

@@ -1,0 +1,21 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Locoregional recurrent EC',
+    branch(
+        'Patients_who_received_only_VBT',
+        has('Patients_who_received_only_VBT'),
+        chain('EBRT [IV, A]', 'Systemic therapy [IV, C]')
+    ),
+    branch(
+        'Patients_who_did_not_receive_RT',
+        has('Patients_who_did_not_receive_RT'),
+        chain('EBRT +/- VBT [IV, A]', 'Systemic therapy [IV, C]')
+    ),
+    branch(
+        'Patients_who_received_prior_RT',
+        has('Patients_who_received_prior_RT'),
+        chain('Surgery only if a complete debulking with acceptable morbidity is anticipated [IV, C]', 'Systemic therapy [IV, C]')
+    )
+)

@@ -1,0 +1,46 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+adjuvant = node('Adjuvant VBT is recommended [I, A]\nOmission of adjuvant brachytherapy can be considered, especially for patients aged <60 years [III, C]')
+
+graph = node(
+    'Stage I-IVA EC: adjuvant therapy for low- and intermediate-risk patients',
+    branch(
+        'Low_risk',
+        has('Low_risk'),
+        branch(
+            'Stage_IA and (G1 or G2) and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)',
+            all_of(all_of(all_of(all_of(has('Stage_IA'), any_of(has('G1'), has('G2'))), has('EEC')), any_of(has('dMMR'), has('NSMP'))), any_of(has('no_LVSI'), has('focal_LVSI'))),
+            node('Adjuvant therapy is not recommended [I, E]')
+        ),
+        branch(
+            '(Stage_I or Stage_II) and POLEmut',
+            all_of(any_of(has('Stage_I'), has('Stage_II')), has('POLEmut')),
+            node('Adjuvant therapy is not recommended [III, D]')
+        )
+    ),
+    branch(
+        'Intermediate_risk',
+        has('Intermediate_risk'),
+        branch(
+            'Stage_IA and G3 and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)',
+            all_of(all_of(all_of(all_of(has('Stage_IA'), has('G3')), has('EEC')), any_of(has('dMMR'), has('NSMP'))), any_of(has('no_LVSI'), has('focal_LVSI'))),
+            adjuvant
+        ),
+        branch(
+            'Stage_IB and (G1 or G2) and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)',
+            all_of(all_of(all_of(all_of(has('Stage_IB'), any_of(has('G1'), has('G2'))), has('EEC')), any_of(has('dMMR'), has('NSMP'))), any_of(has('no_LVSI'), has('focal_LVSI'))),
+            adjuvant
+        ),
+        branch(
+            'Stage_II and G1 and EEC and (dMMR or NSMP) and (no_LVSI or focal_LVSI)',
+            all_of(all_of(all_of(all_of(has('Stage_II'), has('G1')), has('EEC')), any_of(has('dMMR'), has('NSMP'))), any_of(has('no_LVSI'), has('focal_LVSI'))),
+            node('Adjuvant VBT is recommended [II, B]\nOmission of adjuvant brachytherapy can be considered, especially for patients aged <60 years [III, C]')
+        ),
+        branch(
+            'Stage_IA and p53-abn and (not_infiltrating_the_myometrium or restricted_to_a_polyp)',
+            all_of(all_of(has('Stage_IA'), has('p53-abn')), any_of(has('not_infiltrating_the_myometrium'), has('restricted_to_a_polyp'))),
+            node('Adjuvant therapy is not recommended [III, E]')
+        )
+    )
+)
