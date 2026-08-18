@@ -1,0 +1,118 @@
+from dgraph.condition import all_of, always, any_of, has
+from dgraph.graph import branch, node
+
+no = node('No additional treatment')
+rt = node('RT [IV, A]')
+
+graph = node(
+    'Suspected minor or sublingual salivary gland malignancy (clinical, incisional biopsy, imaging)',
+    branch(
+        'Resectable',
+        has('Resectable'),
+        branch(
+            'Primary',
+            # manual_fix: concurrent with Neck, not a patient tag
+            always(),
+            node('Open approach [IV, A]'),
+            node('Selected transoral/endoscopic/robotic [V, A]')
+        ),
+        branch(
+            'Neck',
+            # manual_fix: concurrent with Primary, not a patient tag
+            always(),
+            branch(
+                'cN+',
+                has('cN+'),
+                node(
+                    'ND I-V [IV, A]',
+                    branch(
+                        'pN0',
+                        has('pN0'),
+                        no
+                    ),
+                    branch(
+                        'pN+',
+                        has('pN+'),
+                        rt
+                    )
+                )
+            ),
+            branch(
+                'cN0',
+                has('cN0'),
+                branch(
+                    'Oral_cavity_primary',
+                    has('Oral_cavity_primary'),
+                    node(
+                        'END I-IV [IV, B]',
+                        branch(
+                            'pN0',
+                            has('pN0'),
+                            no
+                        ),
+                        branch(
+                            'pN+',
+                            has('pN+'),
+                            rt
+                        )
+                    )
+                ),
+                branch(
+                    'Oropharynx_primary',
+                    has('Oropharynx_primary'),
+                    node(
+                        'END II-IV [IV, B]',
+                        branch(
+                            'pN0',
+                            has('pN0'),
+                            no
+                        ),
+                        branch(
+                            'pN+',
+                            has('pN+'),
+                            rt
+                        )
+                    )
+                ),
+                branch(
+                    'Other_primary and (high_grade or neck_entered_to_approach_primary)',
+                    all_of(has('Other_primary'), any_of(has('high_grade'), has('neck_entered_to_approach_primary'))),
+                    node(
+                        'END according to site of primary [IV, A]',
+                        branch(
+                            'pN0',
+                            has('pN0'),
+                            no
+                        ),
+                        branch(
+                            'pN+',
+                            has('pN+'),
+                            rt
+                        )
+                    )
+                )
+            )
+        )
+    ),
+    branch(
+        'Unresectable',
+        has('Unresectable'),
+        branch(
+            'M0',
+            has('M0'),
+            node('RT')
+        ),
+        branch(
+            'M1',
+            has('M1'),
+            node('RT (palliative)'),
+            branch(
+                'Systemic_treatment',
+                # manual_fix: treatment option, not a patient tag
+                always(),
+                node('ChT [III, B]'),
+                node('Targeted therapy')
+            )
+        )
+    )
+)

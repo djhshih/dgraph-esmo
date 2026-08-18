@@ -1,0 +1,85 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Suspected parotid malignancy (clinical, FNA, CNB, imaging)',
+    branch(
+        'Resectable',
+        has('Resectable'),
+        branch(
+            'Primary',
+            has('Primary'),
+            branch(
+                'nVII_normal',
+                has('nVII_normal'),
+                branch(
+                    '(cT1 or cT2) and low_grade_in_superficial_lobe',
+                    all_of(any_of(has('cT1'), has('cT2')), has('low_grade_in_superficial_lobe')),
+                    chain('Partial parotidectomy [IV, A]', 'No high-risk factors: RT to primary [IV, A]')
+                ),
+                branch(
+                    'All_other',
+                    has('All_other'),
+                    chain('Total conservative parotidectomy [IV, A]', 'RT to primary [IV, A]')
+                )
+            ),
+            branch(
+                'nVII_paretic',
+                has('nVII_paretic'),
+                chain('Radical parotidectomy [IV, A]', 'RT to primary [IV, A]')
+            )
+        ),
+        branch(
+            'Neck',
+            has('Neck'),
+            branch(
+                'cN+',
+                has('cN+'),
+                chain('ND I-V [IV, A]', 'RT to level I-V [IV, A]')
+            ),
+            branch(
+                'cN0',
+                has('cN0'),
+                branch(
+                    '(cT1 or cT2) and low_intermediate_grade',
+                    all_of(any_of(has('cT1'), has('cT2')), has('low_intermediate_grade')),
+                    node(
+                        'ND II + frozen section',
+                        branch(
+                            'pN+',
+                            has('pN+'),
+                            chain('ND I-V [IV, A]', 'RT to neck')
+                        ),
+                        branch(
+                            'pN0',
+                            has('pN0'),
+                            node('No additional treatment [IV, A]')
+                        )
+                    )
+                ),
+                branch(
+                    '(cT3 or cT4) or high_grade',
+                    any_of(any_of(has('cT3'), has('cT4')), has('high_grade')),
+                    branch(
+                        'END II-IV (I and V on indication) [IV, B]',
+                        all_of(all_of(has('END'), has('II-IV')), all_of(all_of(all_of(has('I'), has('V')), has('on')), has('indication'))),
+                        chain('pN+ and No_high-risk_factors', 'RT to level I-V [IV, A]')
+                    ),
+                    node('ENI I-V [IV, B]')
+                )
+            )
+        )
+    ),
+    branch(
+        'Unresectable',
+        has('Unresectable'),
+        node('Observation'),
+        node('RT'),
+        branch(
+            'Systemic_treatment',
+            has('Systemic_treatment'),
+            node('ChT [III, B]'),
+            node('Targeted therapy')
+        )
+    )
+)

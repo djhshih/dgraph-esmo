@@ -1,0 +1,72 @@
+digraph sgc {
+    rankdir=LR;
+
+    a [label="Clinical findings suggesting malignancy?"];
+    b [label="Clinical_findings_suggesting_malignancy"];
+    c [label="No_clinical_findings_suggesting_malignancy"];
+
+    d [label="Ultrasound: Nodule confined to the gland?"];
+    e [label="Nodule_confined_to_the_gland"];
+    f [label="Nodule_not_confined_to_the_gland"];
+
+    g [label="MRI (gland and neck) [IV, A] + ultrasound-FNA cytology/CNB"];
+
+    h [label="(cT3 or cT4) and N0 or AdCC_any_stage"];
+    i [label="(cT3 or cT4) and N+"];
+    j [label="(cT1 or cT2) and N+"];
+
+    k [label="CT of the chest"];
+    l [label="CT of the chest / FDG-PET-CT [III, A]"];
+
+    m [label="Ultrasound of the neck"];
+    n [label="Lymph_node_metastasis"];
+    o [label="No_lymph_node_metastasis"];
+
+    p [label="MRI (gland and neck) + ultrasound-FNA cytology/CNB"];
+
+    q [label="Ultrasound-FNA cytology/CNB [III, A]"];
+    r [label="Positive_cytology"];
+    s [label="(cT1 or cT2) and N0"];
+
+    t [label="Salivary_lesion_with_uncertain_malignancy_potential"];
+    u [label="> 15 T"];
+    v [label="< 15 T"];
+
+    w [label="FNA biopsy (21- or 28-gauge needle)/CNB"];
+    x [label="MRI"];
+
+    a -> b;
+    a -> c;
+
+    c -> d;
+    d -> e;
+    d -> f;
+
+    b -> g;
+    f -> g;
+
+    g -> h;
+    g -> i;
+
+    h -> k;
+    i -> l;
+
+    e -> m;
+    m -> n;
+    m -> o;
+
+    n -> p;
+    p -> j;
+    j -> l;
+
+    o -> q;
+    q -> r;
+    r -> s;
+
+    q -> t;
+    t -> u;
+    t -> v;
+
+    u -> w;
+    v -> x;
+}

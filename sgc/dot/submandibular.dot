@@ -1,0 +1,66 @@
+digraph submandibular {
+    rankdir=LR;
+
+    a [label="Suspected submandibular malignancy (clinical, FNA, CNB, imaging)"];
+    b [label="Resectable"];
+    c [label="Unresectable"];
+
+    d [label="Neck"];
+    e [label="cN+"];
+    f [label="cN0"];
+
+    g [label="Comprehensive ND I-V including the primary [IV, A]"];
+    h [label="RT to level I-V [IV, A]"];
+
+    i [label="Primary_low_grade and intraglandular"];
+    j [label="Primary_high_grade or extraglandular"];
+
+    k [label="Resection of submandibular gland and level Ib [IV, B]"];
+    l [label="Resection of submandibular gland within ND I-III [IV, B]"];
+
+    m [label="pN0"];
+    n [label="pN+"];
+
+    o [label="No additional treatment"];
+
+    q [label="M0"];
+    r [label="M1"];
+
+    s [label="RT"];
+    t [label="RT (palliative)"];
+    u [label="Systemic_treatment"];
+    v [label="ChT [III, B]"];
+    w [label="Targeted therapy"];
+
+    a -> b;
+    a -> c;
+
+    b -> d;
+    d -> e;
+    d -> f;
+
+    e -> g;
+    g -> h;
+
+    f -> i;
+    f -> j;
+
+    i -> k;
+    j -> l;
+
+    l -> m;
+    l -> n;
+
+    m -> o;
+    n -> h;
+
+    c -> q;
+    c -> r;
+
+    q -> s;
+    r -> t;
+    r -> u;
+
+    u -> v;
+    u -> w;
+}

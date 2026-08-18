@@ -1,0 +1,87 @@
+digraph sublingual {
+    rankdir=LR;
+
+    a [label="Suspected minor or sublingual salivary gland malignancy (clinical, incisional biopsy, imaging)"];
+    b [label="Resectable"];
+    c [label="Unresectable"];
+
+    d [label="Primary"];
+    e [label="Neck"];
+
+    f [label="Open approach [IV, A]"];
+    g [label="Selected transoral/endoscopic/robotic [V, A]"];
+
+    h [label="cN+"];
+    i [label="cN0"];
+
+    j [label="ND I-V [IV, A]"];
+
+    k [label="Oral_cavity_primary"];
+    l [label="Oropharynx_primary"];
+    m [label="Other_primary and (high_grade or neck_entered_to_approach_primary)"];
+
+    n [label="END I-IV [IV, B]"];
+    o [label="END II-IV [IV, B]"];
+    p [label="END according to site of primary [IV, A]"];
+
+    q [label="pN0"];
+    r [label="pN+"];
+
+    s [label="No additional treatment"];
+    t [label="RT [IV, A]"];
+
+    u [label="M0"];
+    v [label="M1"];
+
+    w [label="RT"];
+    x [label="RT (palliative)"];
+    y [label="Systemic_treatment"];
+    z [label="ChT [III, B]"];
+    aa [label="Targeted therapy"];
+
+    a -> b;
+    a -> c;
+
+    b -> d;
+    b -> e;
+
+    d -> f;
+    d -> g;
+
+    e -> h;
+    e -> i;
+
+    h -> j;
+    j -> q;
+    j -> r;
+
+    i -> k;
+    i -> l;
+    i -> m;
+
+    k -> n;
+    l -> o;
+    m -> p;
+
+    n -> q;
+    n -> r;
+
+    o -> q;
+    o -> r;
+
+    p -> q;
+    p -> r;
+
+    q -> s;
+    r -> t;
+
+    c -> u;
+    c -> v;
+
+    u -> w;
+    v -> x;
+    v -> y;
+
+    y -> z;
+    y -> aa;
+}

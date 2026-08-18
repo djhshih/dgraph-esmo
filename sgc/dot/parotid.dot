@@ -1,0 +1,102 @@
+digraph parotid {
+    rankdir=LR;
+
+    a [label="Suspected parotid malignancy (clinical, FNA, CNB, imaging)"];
+    b [label="Resectable"];
+    c [label="Unresectable"];
+
+    d [label="Primary"];
+    e [label="Neck"];
+
+    f [label="nVII_normal"];
+    g [label="nVII_paretic"];
+
+    h [label="(cT1 or cT2) and low_grade_in_superficial_lobe"];
+    i [label="All_other"];
+
+    j [label="Partial parotidectomy [IV, A]"];
+    k [label="Total conservative parotidectomy [IV, A]"];
+    l [label="Radical parotidectomy [IV, A]"];
+
+    n [label="No high-risk factors: RT to primary [IV, A]"];
+    o [label="RT to primary [IV, A]"];
+
+    p [label="cN+"];
+    q [label="cN0"];
+
+    r [label="ND I-V [IV, A]"];
+    s [label="RT to level I-V [IV, A]"];
+
+    t [label="(cT1 or cT2) and low_intermediate_grade"];
+    u [label="(cT3 or cT4) or high_grade"];
+
+    v [label="ND II + frozen section"];
+    w [label="pN+"];
+    x [label="pN0"];
+
+    y [label="ND I-V [IV, A]"];
+    z [label="RT to neck"];
+    aa [label="No additional treatment [IV, A]"];
+
+    ab [label="END II-IV (I and V on indication) [IV, B]"];
+    ac [label="pN+ and No_high-risk_factors"];
+
+    ae [label="ENI I-V [IV, B]"];
+
+    af [label="Observation"];
+    ag [label="RT"];
+    ah [label="Systemic_treatment"];
+    ai [label="ChT [III, B]"];
+    aj [label="Targeted therapy"];
+
+    a -> b;
+    a -> c;
+
+    b -> d;
+    b -> e;
+
+    d -> f;
+    d -> g;
+
+    f -> h;
+    f -> i;
+
+    h -> j;
+    j -> n;
+
+    i -> k;
+    k -> o;
+
+    g -> l;
+    l -> o;
+
+    e -> p;
+    e -> q;
+
+    p -> r;
+    r -> s;
+
+    q -> t;
+    q -> u;
+
+    t -> v;
+    v -> w;
+    v -> x;
+
+    w -> y;
+    y -> z;
+    x -> aa;
+
+    u -> ab;
+    ab -> ac;
+    ac -> s;
+
+    u -> ae;
+
+    c -> af;
+    c -> ag;
+    c -> ah;
+
+    ah -> ai;
+    ah -> aj;
+}

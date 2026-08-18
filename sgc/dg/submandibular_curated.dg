@@ -1,0 +1,65 @@
+from dgraph.condition import all_of, always, any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Suspected submandibular malignancy (clinical, FNA, CNB, imaging)',
+    branch(
+        'Resectable',
+        has('Resectable'),
+        node(
+            'Neck',
+            branch(
+                'cN+',
+                has('cN+'),
+                chain('Comprehensive ND I-V including the primary [IV, A]', 'RT to level I-V [IV, A]')
+            ),
+            branch(
+                'cN0',
+                has('cN0'),
+                branch(
+                    'Primary_low_grade and intraglandular',
+                    all_of(has('Primary_low_grade'), has('intraglandular')),
+                    node('Resection of submandibular gland and level Ib [IV, B]')
+                ),
+                branch(
+                    'Primary_high_grade or extraglandular',
+                    any_of(has('Primary_high_grade'), has('extraglandular')),
+                    node(
+                        'Resection of submandibular gland within ND I-III [IV, B]',
+                        branch(
+                            'pN0',
+                            has('pN0'),
+                            node('No additional treatment')
+                        ),
+                        branch(
+                            'pN+',
+                            has('pN+'),
+                            node('RT to level I-V [IV, A]')
+                        )
+                    )
+                )
+            )
+        )
+    ),
+    branch(
+        'Unresectable',
+        has('Unresectable'),
+        branch(
+            'M0',
+            has('M0'),
+            node('RT')
+        ),
+        branch(
+            'M1',
+            has('M1'),
+            node('RT (palliative)'),
+            branch(
+                'Systemic_treatment',
+                # manual_fix: treatment option, not a patient tag
+                always(),
+                node('ChT [III, B]'),
+                node('Targeted therapy')
+            )
+        )
+    )
+)

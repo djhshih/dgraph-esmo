@@ -1,0 +1,75 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+mri = node(
+    'MRI (gland and neck) [IV, A] + ultrasound-FNA cytology/CNB',
+    branch(
+        '(cT3 or cT4) and N0 or AdCC_any_stage',
+        any_of(all_of(any_of(has('cT3'), has('cT4')), has('N0')), has('AdCC_any_stage')),
+        node('CT of the chest')
+    ),
+    branch(
+        '(cT3 or cT4) and N+',
+        all_of(any_of(has('cT3'), has('cT4')), has('N+')),
+        node('CT of the chest / FDG-PET-CT [III, A]')
+    )
+)
+
+graph = node(
+    'Clinical findings suggesting malignancy?',
+    branch(
+        'Clinical_findings_suggesting_malignancy',
+        has('Clinical_findings_suggesting_malignancy'),
+        mri
+    ),
+    branch(
+        'No_clinical_findings_suggesting_malignancy',
+        has('No_clinical_findings_suggesting_malignancy'),
+        node(
+            'Ultrasound: Nodule confined to the gland?',
+            branch(
+                'Nodule_confined_to_the_gland',
+                has('Nodule_confined_to_the_gland'),
+                node(
+                    'Ultrasound of the neck',
+                    branch(
+                        'Lymph_node_metastasis',
+                        has('Lymph_node_metastasis'),
+                        chain('MRI (gland and neck) + ultrasound-FNA cytology/CNB', '(cT1 or cT2) and N+', 'CT of the chest / FDG-PET-CT [III, A]')
+                    ),
+                    branch(
+                        'No_lymph_node_metastasis',
+                        has('No_lymph_node_metastasis'),
+                        node(
+                            'Ultrasound-FNA cytology/CNB [III, A]',
+                            branch(
+                                'Positive_cytology',
+                                has('Positive_cytology'),
+                                node('(cT1 or cT2) and N0')
+                            ),
+                            branch(
+                                'Salivary_lesion_with_uncertain_malignancy_potential',
+                                has('Salivary_lesion_with_uncertain_malignancy_potential'),
+                                branch(
+                                    '> 15 T',
+                                    all_of(has('>15'), has('T')),
+                                    node('FNA biopsy (21- or 28-gauge needle)/CNB')
+                                ),
+                                branch(
+                                    '< 15 T',
+                                    all_of(has('<15'), has('T')),
+                                    node('MRI')
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            branch(
+                'Nodule_not_confined_to_the_gland',
+                has('Nodule_not_confined_to_the_gland'),
+                mri
+            )
+        )
+    )
+)
