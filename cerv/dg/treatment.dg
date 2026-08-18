@@ -1,0 +1,64 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Positive Pap-smear / HPV-high risk positive / suspected cervix',
+    node(
+        'Colposcopy / Biopsy',
+        branch(
+            'CIN2 or CIN3',
+            any_of(has('CIN2'), has('CIN3')),
+            node('Conisation')
+        ),
+        branch(
+            'Invasive_cervical_cancer',
+            has('Invasive_cervical_cancer'),
+            node(
+                'Early_disease',
+                branch(
+                    'FIGO_IA1',
+                    has('FIGO_IA1'),
+                    branch(
+                        'No_LVSI',
+                        has('No_LVSI'),
+                        node('Simple hysterectomy\nFrozen section: conisation only if negative margins')
+                    ),
+                    branch(
+                        'With_LVSI',
+                        has('With_LVSI'),
+                        node('Simple hysterectomy + PLND +/- PALND\nTrachelectomy')
+                    )
+                ),
+                branch(
+                    'FIGO_IA2',
+                    has('FIGO_IA2'),
+                    chain('Radical hysterectomy\nSimple hysterectomy\nTrachelectomy + PLND +/- PALND\nSLN', 'Adjuvant treatment depending on risk factors')
+                ),
+                branch(
+                    'FIGO_IB1 or FIGO_IIA1',
+                    any_of(has('FIGO_IB1'), has('FIGO_IIA1')),
+                    chain('Radical hysterectomy + PLND +/- PALND\nSLN\nFrozen section: trachelectomy\nCRT', 'Adjuvant treatment depending on risk factors')
+                )
+            )
+        ),
+        branch(
+            'Locally_advanced_disease',
+            has('Locally_advanced_disease'),
+            branch(
+                'FIGO_IB2 or FIGO_IIB or FIGO_IIIB',
+                any_of(any_of(has('FIGO_IB2'), has('FIGO_IIB')), has('FIGO_IIIB')),
+                node('CRT\nTailoring of radiation according to surgical staging or PET-CT\n\nNeoadjuvant chemotherapy followed by surgery or RT')
+            ),
+            branch(
+                'FIGO_IVA',
+                has('FIGO_IVA'),
+                node('Chemotherapy\n(C)RT\nPelvic exenteration')
+            )
+        ),
+        branch(
+            'Metastatic_disease',
+            has('Metastatic_disease'),
+            chain('FIGO_IVB', 'Chemotherapy + bevacizumab\nRT')
+        )
+    )
+)
