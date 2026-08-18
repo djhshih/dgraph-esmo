@@ -1,0 +1,21 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Oral cavity cancer (excluding lip carcinoma)',
+    branch(
+        '(cT1 or cT2) and cN0 and cM0',
+        all_of(all_of(any_of(has('cT1'), has('cT2')), has('cN0')), has('cM0')),
+        node('Standard:\nSurgery (T and N) followed by postoperative RT or CRT if indicated [IV, A]\n\nOptions:\nRadical RT (T and N) [IV, B]\nBrachytherapy for primary (selected T1) [III, B]')
+    ),
+    branch(
+        '((cT3 or cT4a) and (cN0 or cN1 or cN2 or cN3) and cM0) or ((cT1 or cT2 or cT3 or cT4a) and (cN1 or cN2 or cN3) and cM0)',
+        any_of(all_of(all_of(any_of(has('cT3'), has('cT4a')), any_of(any_of(any_of(has('cN0'), has('cN1')), has('cN2')), has('cN3'))), has('cM0')), all_of(all_of(any_of(any_of(any_of(has('cT1'), has('cT2')), has('cT3')), has('cT4a')), any_of(any_of(has('cN1'), has('cN2')), has('cN3'))), has('cM0'))),
+        node('Standard:\nSurgery (T and N) followed by postoperative RT or CRT if indicated [IV, A]\n\nOption:\nDefinitive CRT (T and N) (contraindications to surgery, including functional unresectability) [IV, B]')
+    ),
+    branch(
+        '(cT4b or unresectable_lymph_nodes) and cM0',
+        all_of(any_of(has('cT4b'), has('unresectable_lymph_nodes')), has('cM0')),
+        node('Options:\nConcomitant CRT (T and N) [III or IV, B]\nInduction ChT followed by RT or CRT for responders (T and N) [IV, B]\nPalliative treatment: systemic ChT/immunotherapy and/or palliative RT and/or BSC [IV, B]')
+    )
+)

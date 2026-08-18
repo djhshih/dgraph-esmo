@@ -1,0 +1,31 @@
+from dgraph.condition import all_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Metastatic or recurrent/persistent disease not amenable to curative RT or surgery',
+    branch(
+        '>= 6 TFI and PD-L1_positive',
+        all_of(all_of(has('>=6'), has('TFI')), has('PD-L1_positive')),
+        node('Standard:\nPembrolizumab monotherapy [I, A; MCBS 4]\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\n\nOptions:\nPlatinum/5-FU/cetuximab if contraindication to immunotherapy and fit for platinum-based therapy [I, A; MCBS 3]\nMethotrexate or taxane or cetuximab and/or BSC if contraindication to immunotherapy and unfit for platinum-based therapy [III, C]')
+    ),
+    branch(
+        '>= 6 TFI and PD-L1_untested',
+        all_of(all_of(has('>=6'), has('TFI')), has('PD-L1_untested')),
+        node('Standard:\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\n\nOptions:\nPlatinum/5-FU/cetuximab if contraindication to immunotherapy and fit for platinum-based therapy [I, A; MCBS 3]\nMethotrexate or taxane or cetuximab and/or BSC if contraindication to immunotherapy and unfit for platinum-based therapy [III, C]')
+    ),
+    branch(
+        '>= 6 TFI and PD-L1_negative',
+        all_of(all_of(has('>=6'), has('TFI')), has('PD-L1_negative')),
+        node('Standard:\nPlatinum/5-FU/cetuximab [I, A; MCBS 3]\n\nOptions:\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\nTPeX [II, B]\nMethotrexate or taxane or cetuximab and/or BSC in case of contraindication to immunotherapy and unfit for platinum-based therapy [III, C]')
+    ),
+    branch(
+        '< 6 TFI and Immunotherapy_naive',
+        all_of(all_of(has('<6'), has('TFI')), has('Immunotherapy_naive')),
+        node('Standard:\nNivolumab [I, A; MCBS 4] or pembrolizumab [I, A; MCBS 4]\n\nOption:\nTaxane or methotrexate or cetuximab and/or BSC if contraindication to immunotherapy [III, C]')
+    ),
+    branch(
+        '< 6 TFI and Prior_immunotherapy',
+        all_of(all_of(has('<6'), has('TFI')), has('Prior_immunotherapy')),
+        node('Option:\nTaxane or methotrexate or cetuximab and/or BSC [III, C]')
+    )
+)

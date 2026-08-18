@@ -1,0 +1,26 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Hypopharyngeal cancer',
+    branch(
+        '(cT1 or cT2) and cN0 and cM0 and Larynx-preserving_surgery_feasible',
+        all_of(all_of(all_of(any_of(has('cT1'), has('cT2')), has('cN0')), has('cM0')), has('Larynx-preserving_surgery_feasible')),
+        node('Standard:\nRT (T and N) [IV, A]\nConservation larynx surgery (T and N) followed by RT or CRT if indicated [IV, A]')
+    ),
+    branch(
+        '((cT1 or cT2) and (cN1 or cN2 or cN3) and cM0) or (cT3 and (cN0 or cN1 or cN2 or cN3) and cM0)',
+        any_of(all_of(all_of(any_of(has('cT1'), has('cT2')), any_of(any_of(has('cN1'), has('cN2')), has('cN3'))), has('cM0')), all_of(all_of(has('cT3'), any_of(any_of(any_of(has('cN0'), has('cN1')), has('cN2')), has('cN3'))), has('cM0'))),
+        node('Standard:\nConcomitant CRT (T and N) [IV, A]\nIf laryngectomy necessary, concomitant CRT (T and N) or induction ChT followed by (i) RT (T and N) in case of complete or partial response after induction or (ii) surgery (T and N) in case of stable or progressive disease after induction [I, A]\n\nOption:\nSurgery (T and N) followed by RT or CRT if indicated [IV, A]')
+    ),
+    branch(
+        'cT4a and (cN0 or cN1 or cN2 or cN3) and cM0',
+        all_of(all_of(has('cT4a'), any_of(any_of(any_of(has('cN0'), has('cN1')), has('cN2')), has('cN3'))), has('cM0')),
+        node('Standard:\nSurgery (T and N) followed by RT or CRT if indicated [IV, A]\n\nOptions:\nCRT (T and N) [IV, B]\nInduction ChT followed by (i) RT (T and N) in case of complete or partial response after induction or (ii) surgery (T and N) in case of stable or progressive disease after induction [I, A]')
+    ),
+    branch(
+        'cT4b and (cN0 or cN1 or cN2 or cN3) and cM0',
+        all_of(all_of(has('cT4b'), any_of(any_of(any_of(has('cN0'), has('cN1')), has('cN2')), has('cN3'))), has('cM0')),
+        node('Options:\nInduction ChT followed by RT for responders (T and N) [IV, B]\nConcomitant CRT (T and N) [IV, B]\nPalliative treatment: systemic ChT/immunotherapy and/or palliative RT and/or BSC [IV, B]')
+    )
+)

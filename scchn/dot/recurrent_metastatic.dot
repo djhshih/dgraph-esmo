@@ -1,0 +1,33 @@
+digraph RecurrentMetastaticHeadAndNeck {
+    rankdir=TB;
+
+    root [label="Metastatic or recurrent/persistent disease not amenable to curative RT or surgery"];
+
+    c1 [label=">= 6 TFI and PD-L1_positive"];
+    c2 [label=">= 6 TFI and PD-L1_untested"];
+    c3 [label=">= 6 TFI and PD-L1_negative"];
+    c4 [label="< 6 TFI and Immunotherapy_naive"];
+    c5 [label="< 6 TFI and Prior_immunotherapy"];
+
+    t1 [label="Standard:\nPembrolizumab monotherapy [I, A; MCBS 4]\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\n\nOptions:\nPlatinum/5-FU/cetuximab if contraindication to immunotherapy and fit for platinum-based therapy [I, A; MCBS 3]\nMethotrexate or taxane or cetuximab and/or BSC if contraindication to immunotherapy and unfit for platinum-based therapy [III, C]"];
+
+    t2 [label="Standard:\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\n\nOptions:\nPlatinum/5-FU/cetuximab if contraindication to immunotherapy and fit for platinum-based therapy [I, A; MCBS 3]\nMethotrexate or taxane or cetuximab and/or BSC if contraindication to immunotherapy and unfit for platinum-based therapy [III, C]"];
+
+    t3 [label="Standard:\nPlatinum/5-FU/cetuximab [I, A; MCBS 3]\n\nOptions:\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\nTPeX [II, B]\nMethotrexate or taxane or cetuximab and/or BSC in case of contraindication to immunotherapy and unfit for platinum-based therapy [III, C]"];
+
+    t4 [label="Standard:\nNivolumab [I, A; MCBS 4] or pembrolizumab [I, A; MCBS 4]\n\nOption:\nTaxane or methotrexate or cetuximab and/or BSC if contraindication to immunotherapy [III, C]"];
+
+    t5 [label="Option:\nTaxane or methotrexate or cetuximab and/or BSC [III, C]"];
+
+    root -> c1;
+    root -> c2;
+    root -> c3;
+    root -> c4;
+    root -> c5;
+
+    c1 -> t1;
+    c2 -> t2;
+    c3 -> t3;
+    c4 -> t4;
+    c5 -> t5;
+}

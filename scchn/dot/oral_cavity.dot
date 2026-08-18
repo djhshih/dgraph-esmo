@@ -1,0 +1,23 @@
+digraph OralCavityCancer {
+    rankdir=TB;
+
+    root [label="Oral cavity cancer (excluding lip carcinoma)"];
+
+    c1 [label="(cT1 or cT2) and cN0 and cM0"];
+    c2 [label="((cT3 or cT4a) and (cN0 or cN1 or cN2 or cN3) and cM0) or ((cT1 or cT2 or cT3 or cT4a) and (cN1 or cN2 or cN3) and cM0)"];
+    c3 [label="(cT4b or unresectable_lymph_nodes) and cM0"];
+
+    t1 [label="Standard:\nSurgery (T and N) followed by postoperative RT or CRT if indicated [IV, A]\n\nOptions:\nRadical RT (T and N) [IV, B]\nBrachytherapy for primary (selected T1) [III, B]"];
+
+    t2 [label="Standard:\nSurgery (T and N) followed by postoperative RT or CRT if indicated [IV, A]\n\nOption:\nDefinitive CRT (T and N) (contraindications to surgery, including functional unresectability) [IV, B]"];
+
+    t3 [label="Options:\nConcomitant CRT (T and N) [III or IV, B]\nInduction ChT followed by RT or CRT for responders (T and N) [IV, B]\nPalliative treatment: systemic ChT/immunotherapy and/or palliative RT and/or BSC [IV, B]"];
+
+    root -> c1;
+    root -> c2;
+    root -> c3;
+
+    c1 -> t1;
+    c2 -> t2;
+    c3 -> t3;
+}

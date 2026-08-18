@@ -1,0 +1,28 @@
+digraph LarynxCancer {
+    rankdir=TB;
+
+    root [label="Larynx cancer"];
+
+    c1 [label="(cT1 or cT2 or cT3) and (cN0 or cN1 or cN2 or cN3) and cM0"];
+    c2 [label="((cT1 or cT2) and (cN2 or cN3) and cM0) or (cT3b and (cN0 or cN1 or cN2 or cN3) and cM0)"];
+    c3 [label="cT4a and (cN0 or cN1 or cN2 or cN3) and cM0"];
+    c4 [label="cT4b and (cN0 or cN1 or cN2 or cN3) and cM0"];
+
+    t1 [label="Standard:\nConservative (laser) surgery (T and N) followed by RT or CRT if indicated [IV, A]\nRT (T1-2, N0) (T and N) or CRT (T3 or N1-3) (T and N) [IV, A]"];
+
+    t2 [label="Standard:\nConcomitant CRT (T and N) [I, A]\nIf total laryngectomy is necessary, concomitant CRT (T and N) or induction ChT followed by (i) RT (T and N) in case of complete or partial response after induction or (ii) surgery in case of stable or progressive disease after induction [I, A]\n\nOption:\nSurgery (T and N) and lymph node dissection followed by RT or CRT if indicated [IV, B]"];
+
+    t3 [label="Standard:\nSurgery (T and N) followed by RT or CRT [IV, A]\n\nOption:\nConcomitant CRT (T and N) [IV, B]"];
+
+    t4 [label="Options:\nInduction ChT followed by RT (T and N) [IV, B]\nConcomitant CRT (T and N) [IV, B]\nPalliative treatment: systemic ChT/immunotherapy and/or palliative RT and/or BSC [IV, B]"];
+
+    root -> c1;
+    root -> c2;
+    root -> c3;
+    root -> c4;
+
+    c1 -> t1;
+    c2 -> t2;
+    c3 -> t3;
+    c4 -> t4;
+}

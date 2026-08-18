@@ -1,0 +1,28 @@
+digraph HypopharyngealCancer {
+    rankdir=TB;
+
+    root [label="Hypopharyngeal cancer"];
+
+    c1 [label="(cT1 or cT2) and cN0 and cM0 and Larynx-preserving_surgery_feasible"];
+    c2 [label="((cT1 or cT2) and (cN1 or cN2 or cN3) and cM0) or (cT3 and (cN0 or cN1 or cN2 or cN3) and cM0)"];
+    c3 [label="cT4a and (cN0 or cN1 or cN2 or cN3) and cM0"];
+    c4 [label="cT4b and (cN0 or cN1 or cN2 or cN3) and cM0"];
+
+    t1 [label="Standard:\nRT (T and N) [IV, A]\nConservation larynx surgery (T and N) followed by RT or CRT if indicated [IV, A]"];
+
+    t2 [label="Standard:\nConcomitant CRT (T and N) [IV, A]\nIf laryngectomy necessary, concomitant CRT (T and N) or induction ChT followed by (i) RT (T and N) in case of complete or partial response after induction or (ii) surgery (T and N) in case of stable or progressive disease after induction [I, A]\n\nOption:\nSurgery (T and N) followed by RT or CRT if indicated [IV, A]"];
+
+    t3 [label="Standard:\nSurgery (T and N) followed by RT or CRT if indicated [IV, A]\n\nOptions:\nCRT (T and N) [IV, B]\nInduction ChT followed by (i) RT (T and N) in case of complete or partial response after induction or (ii) surgery (T and N) in case of stable or progressive disease after induction [I, A]"];
+
+    t4 [label="Options:\nInduction ChT followed by RT for responders (T and N) [IV, B]\nConcomitant CRT (T and N) [IV, B]\nPalliative treatment: systemic ChT/immunotherapy and/or palliative RT and/or BSC [IV, B]"];
+
+    root -> c1;
+    root -> c2;
+    root -> c3;
+    root -> c4;
+
+    c1 -> t1;
+    c2 -> t2;
+    c3 -> t3;
+    c4 -> t4;
+}

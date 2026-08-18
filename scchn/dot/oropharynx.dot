@@ -1,0 +1,18 @@
+digraph OropharyngealCancer {
+    rankdir=TB;
+
+    root [label="Oropharyngeal cancer p16-negative or p16-positive"];
+
+    c1 [label="(cT1 or cT2) and (cN0 or cN1) and cM0"];
+    c2 [label="((cT3 or cT4) and cN0 and cM0) or ((cT1 or cT2 or cT3 or cT4) and (cN1 or cN2 or cN3) and cM0)"];
+
+    t1 [label="Standard:\nRT (T and N) [IV, A]\nTransoral surgery (T and N) followed by RT or CRT if indicated [IV, A]"];
+
+    t2 [label="Standard:\nConcomitant CRT (T and N) [IV, A]\n\nOption:\nSurgery (T and N) followed by RT or CRT if indicated [IV, B]"];
+
+    root -> c1;
+    root -> c2;
+
+    c1 -> t1;
+    c2 -> t2;
+}

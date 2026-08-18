@@ -1,8 +1,8 @@
 SCRIPT = ../../download_image.py
 
-all: oral-cavity.jpg larynx.jpg oropharynx.jpg hypopharynx.jpg recurrent-metastatic.jpg
+all: oral_cavity.jpg larynx.jpg oropharynx.jpg hypopharynx.jpg recurrent_metastatic.jpg
 
-oral-cavity.jpg:
+oral_cavity.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2020.07.011/asset/1852883d-e7af-4ac1-9f9b-393498ccd844/main.assets/gr1.jpg $@
 
 larynx.jpg:
@@ -14,5 +14,5 @@ oropharynx.jpg:
 hypopharynx.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2020.07.011/asset/d068d99b-0c3a-45fe-affb-d088b99e1678/main.assets/gr4.jpg $@
 
-recurrent-metastatic.jpg:
+recurrent_metastatic.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2020.07.011/asset/21effd89-d89f-4ef9-85f1-317c7158e0a8/main.assets/gr5.jpg $@

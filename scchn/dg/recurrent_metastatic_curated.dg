@@ -1,0 +1,36 @@
+from dgraph.condition import all_of, ge, has, lt
+from dgraph.graph import branch, node
+
+graph = node(
+    'Metastatic or recurrent/persistent disease not amenable to curative RT or surgery',
+    branch(
+        '>= 6 TFI and PD-L1_positive',
+        # manual_fix: platinum-free interval in months (compiler emits >=6 / TFI tags)
+        all_of(ge('TFI', 6), has('PD-L1_positive')),
+        node('Standard:\nPembrolizumab monotherapy [I, A; MCBS 4]\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\n\nOptions:\nPlatinum/5-FU/cetuximab if contraindication to immunotherapy and fit for platinum-based therapy [I, A; MCBS 3]\nMethotrexate or taxane or cetuximab and/or BSC if contraindication to immunotherapy and unfit for platinum-based therapy [III, C]')
+    ),
+    branch(
+        '>= 6 TFI and PD-L1_untested',
+        # manual_fix: platinum-free interval in months (compiler emits >=6 / TFI tags)
+        all_of(ge('TFI', 6), has('PD-L1_untested')),
+        node('Standard:\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\n\nOptions:\nPlatinum/5-FU/cetuximab if contraindication to immunotherapy and fit for platinum-based therapy [I, A; MCBS 3]\nMethotrexate or taxane or cetuximab and/or BSC if contraindication to immunotherapy and unfit for platinum-based therapy [III, C]')
+    ),
+    branch(
+        '>= 6 TFI and PD-L1_negative',
+        # manual_fix: platinum-free interval in months (compiler emits >=6 / TFI tags)
+        all_of(ge('TFI', 6), has('PD-L1_negative')),
+        node('Standard:\nPlatinum/5-FU/cetuximab [I, A; MCBS 3]\n\nOptions:\nPembrolizumab plus platinum/5-FU [I, A; MCBS 4]\nTPeX [II, B]\nMethotrexate or taxane or cetuximab and/or BSC in case of contraindication to immunotherapy and unfit for platinum-based therapy [III, C]')
+    ),
+    branch(
+        '< 6 TFI and Immunotherapy_naive',
+        # manual_fix: platinum-free interval in months (compiler emits <6 / TFI tags)
+        all_of(lt('TFI', 6), has('Immunotherapy_naive')),
+        node('Standard:\nNivolumab [I, A; MCBS 4] or pembrolizumab [I, A; MCBS 4]\n\nOption:\nTaxane or methotrexate or cetuximab and/or BSC if contraindication to immunotherapy [III, C]')
+    ),
+    branch(
+        '< 6 TFI and Prior_immunotherapy',
+        # manual_fix: platinum-free interval in months (compiler emits <6 / TFI tags)
+        all_of(lt('TFI', 6), has('Prior_immunotherapy')),
+        node('Option:\nTaxane or methotrexate or cetuximab and/or BSC [III, C]')
+    )
+)
