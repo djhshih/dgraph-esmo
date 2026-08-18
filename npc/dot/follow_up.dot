@@ -1,0 +1,21 @@
+
+digraph follow_up {
+    rankdir=LR;
+
+    a [label="Imaging"];
+    b [label="Three months after IMRT, then every 6 months up to the 3rd year (for T2-T4 diseases) [V, B]\nMRI [II, B]\nPET (higher specificity) [II, B]"];
+
+    c [label="Nasal examination"];
+    d [label="Endoscopic assessment every 3 months in the first year, every 6 months in the second and third years and annually thereafter for the first 5 years [V, B]"];
+
+    e [label="Plasma EBV DNA"];
+    f [label="One to four weeks after IMRT [II, B] then every year [V, B]"];
+
+    g [label="Thyroid and pituitary assessment"];
+    h [label="Thyroid function assessment every year [V, B]\nPituitary function assessment in case of signs/symptoms [V, B]"];
+
+    a -> b;
+    c -> d;
+    e -> f;
+    g -> h;
+}

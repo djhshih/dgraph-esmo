@@ -1,0 +1,10 @@
+from dgraph.graph import chain, node
+
+graph = node(
+    # manual_fix: replace compiler synthetic root
+    'Follow-up',
+    chain('Imaging', 'Three months after IMRT, then every 6 months up to the 3rd year (for T2-T4 diseases) [V, B]\nMRI [II, B]\nPET (higher specificity) [II, B]'),
+    chain('Nasal examination', 'Endoscopic assessment every 3 months in the first year, every 6 months in the second and third years and annually thereafter for the first 5 years [V, B]'),
+    chain('Plasma EBV DNA', 'One to four weeks after IMRT [II, B] then every year [V, B]'),
+    chain('Thyroid and pituitary assessment', 'Thyroid function assessment every year [V, B]\nPituitary function assessment in case of signs/symptoms [V, B]')
+)

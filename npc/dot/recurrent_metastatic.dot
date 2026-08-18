@@ -1,0 +1,32 @@
+digraph recurrent_metastatic {
+    rankdir=TB;
+
+    m [label="Recurrent or metastatic NPC"];
+    a [label="Local_or_regional_recurrence"];
+    c [label="Amenable_to_salvage_surgery_or_re-irradiation"];
+    d [label="Not_amenable_to_salvage_surgery_or_re-irradiation"];
+    e [label="Surgery +/- IMRT or IMRT +/- ChT [III, A]"];
+
+    f [label="Metastatic_disease"];
+    h [label="Newly_diagnosed"];
+    i [label="Not_newly_diagnosed"];
+    j [label="First line:\nChT followed by RT on T and N sites [II, A]"];
+
+    k [label="First line:\nGemcitabine-cisplatin [I, A]\nCamrelizumab-gemcitabine-cisplatin [II, A; MCBS 3]\nToripalimab-gemcitabine-cisplatin [II, A; MCBS 3]"];
+    l [label="Second line:\nNivolumab, pembrolizumab, camrelizumab [III, B];\nChT (paclitaxel, docetaxel, 5-FU, capecitabine, irinotecan, vinorelbine, ifosfamide, doxorubicin, oxaliplatin, cetuximab) [III-IV, B]"];
+
+    m -> a;
+    m -> f;
+
+    a -> c;
+    a -> d;
+    c -> e;
+    d -> k;
+
+    f -> h;
+    f -> i;
+    h -> j;
+    i -> k;
+
+    k -> l;
+}

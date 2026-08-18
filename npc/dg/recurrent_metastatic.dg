@@ -1,0 +1,36 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+first = chain('First line:\nGemcitabine-cisplatin [I, A]\nCamrelizumab-gemcitabine-cisplatin [II, A; MCBS 3]\nToripalimab-gemcitabine-cisplatin [II, A; MCBS 3]', 'Second line:\nNivolumab, pembrolizumab, camrelizumab [III, B];\nChT (paclitaxel, docetaxel, 5-FU, capecitabine, irinotecan, vinorelbine, ifosfamide, doxorubicin, oxaliplatin, cetuximab) [III-IV, B]')
+
+graph = node(
+    'Recurrent or metastatic NPC',
+    branch(
+        'Local_or_regional_recurrence',
+        has('Local_or_regional_recurrence'),
+        branch(
+            'Amenable_to_salvage_surgery_or_re-irradiation',
+            has('Amenable_to_salvage_surgery_or_re-irradiation'),
+            node('Surgery +/- IMRT or IMRT +/- ChT [III, A]')
+        ),
+        branch(
+            'Not_amenable_to_salvage_surgery_or_re-irradiation',
+            has('Not_amenable_to_salvage_surgery_or_re-irradiation'),
+            first
+        )
+    ),
+    branch(
+        'Metastatic_disease',
+        has('Metastatic_disease'),
+        branch(
+            'Newly_diagnosed',
+            has('Newly_diagnosed'),
+            node('First line:\nChT followed by RT on T and N sites [II, A]')
+        ),
+        branch(
+            'Not_newly_diagnosed',
+            has('Not_newly_diagnosed'),
+            first
+        )
+    )
+)

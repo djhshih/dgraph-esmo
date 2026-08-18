@@ -1,0 +1,71 @@
+digraph locoregional {
+    rankdir=LR;
+
+    u [label="Locoregional NPC"];
+    a [label="Stage_I"];
+    b [label="Stage_II"];
+    c [label="Stage_III"];
+    d [label="Stage_IVA"];
+
+    e [label="IMRT [II, A]"];
+    f [label="IMRT-ChT [II, B]"];
+
+    g [label="(T0 or T1 or T2) and N2 and M0"];
+    h [label="T3 and N0 and M0"];
+    i [label="T3 and N1 and M0"];
+    j [label="T3 and N2 and M0"];
+
+    k [label="IMRT-ChT [I, A]"];
+    l [label="ICT + IMRT-ChT [I, A]"];
+    m [label="IMRT-ChT + AC [I, B]"];
+
+    n [label="T4 and N0 and M0"];
+    o [label="T4 and (N1 or N2) and M0"];
+    p [label="N3 and M0"];
+
+    r [label="ICT + IMRT-ChT [II, B]"];
+    s [label="IMRT-ChT + AC [II, C]"];
+
+    u -> a;
+    u -> b;
+    u -> c;
+    u -> d;
+
+    a -> e;
+
+    b -> e;
+    b -> f;
+
+    c -> g;
+    c -> h;
+    c -> i;
+    c -> j;
+
+    g -> k;
+    g -> l;
+    g -> m;
+
+    h -> k;
+
+    i -> k;
+    i -> l;
+
+    j -> l;
+    j -> k;
+    j -> m;
+
+    d -> n;
+    d -> o;
+    d -> p;
+
+    n -> k;
+    n -> r;
+    n -> s;
+
+    o -> l;
+    o -> k;
+    o -> m;
+
+    p -> l;
+    p -> m;
+}

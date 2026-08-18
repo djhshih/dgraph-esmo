@@ -1,0 +1,81 @@
+from dgraph.condition import all_of, any_of, has
+from dgraph.graph import branch, node
+
+ict = node('ICT + IMRT-ChT [I, A]')
+imrt = node('IMRT [II, A]')
+imrt_cht = node('IMRT-ChT + AC [I, B]')
+imrt_cht_i = node('IMRT-ChT [I, A]')
+
+graph = node(
+    'Locoregional NPC',
+    branch(
+        'Stage_I',
+        has('Stage_I'),
+        imrt
+    ),
+    branch(
+        'Stage_II',
+        has('Stage_II'),
+        imrt,
+        node('IMRT-ChT [II, B]')
+    ),
+    branch(
+        'Stage_III',
+        has('Stage_III'),
+        branch(
+            '(T0 or T1 or T2) and N2 and M0',
+            # manual_fix: flatten nested compiler all_of/any_of
+            all_of(any_of(has('T0'), has('T1'), has('T2')), has('N2'), has('M0')),
+            imrt_cht_i,
+            ict,
+            imrt_cht
+        ),
+        branch(
+            'T3 and N0 and M0',
+            # manual_fix: flatten nested compiler all_of
+            all_of(has('T3'), has('N0'), has('M0')),
+            imrt_cht_i
+        ),
+        branch(
+            'T3 and N1 and M0',
+            # manual_fix: flatten nested compiler all_of
+            all_of(has('T3'), has('N1'), has('M0')),
+            imrt_cht_i,
+            ict
+        ),
+        branch(
+            'T3 and N2 and M0',
+            # manual_fix: flatten nested compiler all_of
+            all_of(has('T3'), has('N2'), has('M0')),
+            ict,
+            imrt_cht_i,
+            imrt_cht
+        )
+    ),
+    branch(
+        'Stage_IVA',
+        has('Stage_IVA'),
+        branch(
+            'T4 and N0 and M0',
+            # manual_fix: flatten nested compiler all_of
+            all_of(has('T4'), has('N0'), has('M0')),
+            imrt_cht_i,
+            node('ICT + IMRT-ChT [II, B]'),
+            node('IMRT-ChT + AC [II, C]')
+        ),
+        branch(
+            'T4 and (N1 or N2) and M0',
+            # manual_fix: flatten nested compiler all_of
+            all_of(has('T4'), any_of(has('N1'), has('N2')), has('M0')),
+            ict,
+            imrt_cht_i,
+            imrt_cht
+        ),
+        branch(
+            'N3 and M0',
+            all_of(has('N3'), has('M0')),
+            ict,
+            imrt_cht
+        )
+    )
+)
