@@ -1,11 +1,11 @@
 SCRIPT = ../../download_image.py
 
-all: staging.jpg treatment-intent.jpg multimodality.jpg inoperable.jpg
+all: staging.jpg treatment_intent.jpg multimodality.jpg inoperable.jpg
 
 staging.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.11.005/asset/83c09a4b-a2d3-45b6-8bee-e09c3220b719/main.assets/gr1_lrg.jpg $@
 
-treatment-intent.jpg:
+treatment_intent.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.11.005/asset/7f1eee7d-78bf-4377-bda5-519768901a5b/main.assets/gr2_lrg.jpg $@
 
 multimodality.jpg:

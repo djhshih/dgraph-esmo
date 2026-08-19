@@ -1,5 +1,3 @@
-
-
 all: pdf/resectable.pdf pdf/unresectable.pdf pdf/metastatic.pdf
 
 pdf/%.pdf: %.dot
@@ -7,4 +5,3 @@ pdf/%.pdf: %.dot
 
 clean:
 	rm -f pdf/*.pdf
-

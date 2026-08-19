@@ -1,5 +1,3 @@
-
-
 all: pdf/locoregional.pdf pdf/recurrent_metastatic.pdf pdf/follow_up.pdf
 
 pdf/%.pdf: %.dot
@@ -7,4 +5,3 @@ pdf/%.pdf: %.dot
 
 clean:
 	rm -f pdf/*.pdf
-

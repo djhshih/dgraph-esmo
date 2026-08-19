@@ -1,8 +1,8 @@
 SCRIPT = ../../download_image.py
 
-all: early-intermediate.jpg advanced.jpg
+all: early_intermediate.jpg advanced.jpg
 
-early-intermediate.jpg:
+early_intermediate.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2025.02.006/asset/cdaf927e-1954-4e29-ad20-ac263f0c1d4c/main.assets/gr1_lrg.jpg $@
 
 advanced.jpg:

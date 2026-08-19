@@ -1,11 +1,11 @@
 SCRIPT = ../../download_image.py
 
-all: diagnosis.jpg first-line.jpg pvrl.jpg rr.jpg
+all: diagnosis.jpg first_line.jpg pvrl.jpg rr.jpg
 
 diagnosis.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2023.11.010/asset/f4c2a112-6b7a-4b44-a569-de10a8037f53/main.assets/gr1_lrg.jpg $@
 
-first-line.jpg:
+first_line.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2023.11.010/asset/86f2713d-2836-4427-a563-140a7aaa8b21/main.assets/gr2_lrg.jpg $@
 
 pvrl.jpg:

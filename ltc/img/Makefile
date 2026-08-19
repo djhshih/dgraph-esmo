@@ -1,14 +1,14 @@
 SCRIPT = ../../download_image.py
 
-all: lung-adjuvant.jpg thymic-adjuvant.jpg functioning-syndrome.jpg advanced.jpg
+all: lung_adjuvant.jpg thymic_adjuvant.jpg functioning_syndrome.jpg advanced.jpg
 
-lung-adjuvant.jpg:
+lung_adjuvant.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.01.003/asset/993aa45a-8e31-454d-b5c4-b7755460fd3c/main.assets/gr1.jpg $@
 
-thymic-adjuvant.jpg:
+thymic_adjuvant.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.01.003/asset/df353d6c-2c9d-4b9a-8fb8-87f567ef4169/main.assets/gr2.jpg $@
 
-functioning-syndrome.jpg:
+functioning_syndrome.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2021.01.003/asset/c2b14ab3-5be6-4b66-9998-8cdd22c9a6ba/main.assets/gr3.jpg $@
 
 advanced.jpg:

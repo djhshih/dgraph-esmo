@@ -1,14 +1,9 @@
-
 indir = ../dot
 
-# excluded treatment-intent.dg because the decisions associated with branching are not clear
-all: staging.dg inoperable.dg multimodality.dg 
-	
+all: staging.dg treatment_intent.dg multimodality.dg inoperable.dg
 
 %.dg: $(indir)/%.dot
 	dot2dg.py -o $@ $<
 
 clean:
 	rm -f *.dg
-
- 

@@ -1,8 +1,8 @@
 SCRIPT = ../../download_image.py
 
-all: first-line.jpg rr.jpg
+all: first_line.jpg rr.jpg
 
-first-line.jpg:
+first_line.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1093/annonc/mdy146/asset/de8d7c2d-9595-4d7d-968d-59e9858e58a9/main.assets/gr1_lrg.jpg $@
 
 rr.jpg:

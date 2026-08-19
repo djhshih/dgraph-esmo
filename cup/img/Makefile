@@ -1,8 +1,8 @@
 SCRIPT = ../../download_image.py
 
-all: cup_vs_-ve_nsclc.jpg cup_vs_+ve_nsclc.jpg cup_vs_cca.jpg cup_vs_ovarian.jpg cup_vs_rcc.jpg cup_vs_sgc.jpg cup_vs_breast.jpg
+all: cup_vs__ve_nsclc.jpg cup_vs_+ve_nsclc.jpg cup_vs_cca.jpg cup_vs_ovarian.jpg cup_vs_rcc.jpg cup_vs_sgc.jpg cup_vs_breast.jpg
 
-cup_vs_-ve_nsclc.jpg:
+cup_vs__ve_nsclc.jpg:
 	python $(SCRIPT) https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.11.013/asset/2ceded9a-4e9e-47dd-8d03-e0c10d110c1a/main.assets/gr1_lrg.jpg $@
 
 cup_vs_+ve_nsclc.jpg:
