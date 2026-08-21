@@ -1,0 +1,40 @@
+// Image 5: scst_sertoli_leydig.jpg
+digraph Sertoli_Leydig_cell_tumour {
+    a [label="Sertoli-Leydig cell tumour"];
+    b [label="Stage_IA"];
+    c [label="Greater_than_Stage_IA"];
+    e [label="Young_patients"];
+    f [label="Not_young_patients"];
+    g [label="Fertility-sparing surgery\nStaging [III, A]"];
+    h [label="TAH/BSO\nStaging [III, A]"];
+    i [label="With_poorly_differentiated or Heterologous_elements"];
+    r [label="Not_poorly_differentiated_or_heterologous_elements"];
+    l [label="Adjuvant ChT [IV, B]\nBEP\nEP if > 40 years [III, A] or Carboplatin/paclitaxel x 6 cycles [III, B]"];
+    s [label="Selected_cases"];
+    t [label="Not_selected_cases"];
+    n [label="Fertility-sparing surgery [III, A]"];
+    o [label="TAH/BSO\nStaging\nDebulking [III, A]"];
+    p [label="Adjuvant ChT [III, B]\nBEP x 3-4 cycles\nEP if > 40 years or Carboplatin/paclitaxel x 6 cycles"];
+    q [label="Standard follow-up"];
+
+    a -> b;
+    a -> c;
+    b -> e;
+    b -> f;
+    e -> g;
+    f -> h;
+    g -> i;
+    g -> r;
+    h -> i;
+    h -> r;
+    i -> l;
+    r -> q;
+    c -> s;
+    c -> t;
+    s -> n;
+    t -> o;
+    n -> p;
+    o -> p;
+    l -> q;
+    p -> q;
+}

@@ -1,0 +1,51 @@
+from dgraph.condition import all_of, any_of, gt, has, le
+from dgraph.graph import branch, chain, node
+
+bep = chain('BEP x 3-4 cycles [III, A]', 'Standard follow-up')
+
+graph = node(
+    'Dysgerminoma',
+    branch(
+        'Stage_IA',
+        has('Stage_IA'),
+        chain('Fertility-sparing surgery\nSurgical staging [III, A]', 'Active_surveillance')
+    ),
+    branch(
+        'Stage_IB-IC',
+        has('Stage_IB-IC'),
+        node(
+            'Fertility-sparing surgery\nSurgical staging [III, A]',
+            branch(
+                'Properly-staged',
+                has('Properly-staged'),
+                node('Active_surveillance')
+            ),
+            branch(
+                'Not_properly-staged',
+                has('Not_properly-staged'),
+                bep
+            )
+        )
+    ),
+    branch(
+        'Stage_IIA-IV',
+        has('Stage_IIA-IV'),
+        node(
+            'Debulking/Staging [III, A] or Fertility-sparing surgery when indicated [IV, B]',
+            branch(
+                '<= 40 Age',
+                # all_of(has('<=40'), has('Age')),
+                # manual_fix: prefix Age comparison
+                le('Age', 40),
+                bep
+            ),
+            branch(
+                '> 40 Age or Pulmonary_disease',
+                # any_of(all_of(has('>40'), has('Age')), has('Pulmonary_disease')),
+                # manual_fix: prefix Age comparison
+                any_of(gt('Age', 40), has('Pulmonary_disease')),
+                chain('EP x 3-4 cycles [III, A]', 'Standard follow-up')
+            )
+        )
+    )
+)

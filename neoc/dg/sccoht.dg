@@ -1,0 +1,108 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+hdct = node(
+    'HDCT + ASCT in selected cases [II, C]',
+    branch(
+        'Pelvic_RT',
+        has('Pelvic_RT'),
+        chain('Pelvic RT [IV, C]', 'RELAPSE:\nCyclophosphamide/doxorubicin/vincristine [V, B]\nTopotecan [V, C]\nPhase I trial')
+    ),
+    node('RELAPSE:\nCyclophosphamide/doxorubicin/vincristine [V, B]\nTopotecan [V, C]\nPhase I trial')
+)
+pelvic = chain('Pelvic RT [IV, C]', 'RELAPSE:\nCyclophosphamide/doxorubicin/vincristine [V, B]\nTopotecan [V, C]\nPhase I trial')
+
+graph = node(
+    'SCCOHT',
+    branch(
+        'Stage_I-II',
+        has('Stage_I-II'),
+        node(
+            'TAH/BSO/Staging [IV, A]',
+            node(
+                'Adjuvant ChT [III, B]\nCisplatin-etoposide-based',
+                branch(
+                    'HDCT_ASCT',
+                    has('HDCT_ASCT'),
+                    hdct
+                ),
+                branch(
+                    'Pelvic_RT',
+                    has('Pelvic_RT'),
+                    pelvic
+                )
+            )
+        )
+    ),
+    branch(
+        'Stage_III-IV',
+        has('Stage_III-IV'),
+        node(
+            'TAH/BSO/Staging [IV, A]',
+            branch(
+                'Debulking_feasible',
+                has('Debulking_feasible'),
+                node(
+                    'Debulking [IV, A]',
+                    node(
+                        'Adjuvant ChT [III, B]\nCisplatin-etoposide-based',
+                        node(
+                            'Complete response / resection',
+                            branch(
+                                'Complete_response or Resection',
+                                any_of(has('Complete_response'), has('Resection')),
+                                hdct
+                            ),
+                            branch(
+                                'Not_complete_response_or_resection',
+                                has('Not_complete_response_or_resection'),
+                                branch(
+                                    'Pelvic_RT',
+                                    has('Pelvic_RT'),
+                                    pelvic
+                                ),
+                                branch(
+                                    'HDCT_ASCT',
+                                    has('HDCT_ASCT'),
+                                    hdct
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            branch(
+                'Debulking_not_feasible',
+                has('Debulking_not_feasible'),
+                node(
+                    'Neoadjuvant ChT [IV, C]\nCisplatin-etoposide-based',
+                    node(
+                        'Debulking [IV, A]',
+                        node(
+                            'Complete response / resection',
+                            branch(
+                                'Complete_response or Resection',
+                                any_of(has('Complete_response'), has('Resection')),
+                                hdct
+                            ),
+                            branch(
+                                'Not_complete_response_or_resection',
+                                has('Not_complete_response_or_resection'),
+                                branch(
+                                    'Pelvic_RT',
+                                    has('Pelvic_RT'),
+                                    pelvic
+                                ),
+                                branch(
+                                    'HDCT_ASCT',
+                                    has('HDCT_ASCT'),
+                                    hdct
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

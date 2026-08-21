@@ -1,0 +1,24 @@
+// Image 3: gct_yolk_sac.jpg
+digraph Yolk_sac_tumour {
+    a [label="Yolk sac tumour"];
+    b [label="Stage_IA-IB"];
+    c [label="Stage_IC-IV"];
+    d [label="Fertility-sparing surgery\nStaging [III, A]"];
+    e [label="Debulking/Staging [III, A] or Fertility-sparing surgery\nStaging [IV, B]"];
+    f [label="Properly-staged and negative_postoperative_tumour_markers"];
+    q [label="Adjuvant_ChT"];
+    g [label="BEP x 3-4 cycles [III, A]"];
+    h [label="Active_surveillance [GoR C]"];
+    i [label="Standard follow-up"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    c -> e;
+    d -> f;
+    f -> h;
+    d -> q;
+    q -> g;
+    e -> g;
+    g -> i;
+}

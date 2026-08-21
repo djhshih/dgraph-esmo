@@ -1,0 +1,36 @@
+// Image 1: gct_dysgerminoma.jpg
+digraph Dysgerminoma {
+    a [label="Dysgerminoma"];
+    b [label="Stage_IA"];
+    c [label="Stage_IB-IC"];
+    d [label="Stage_IIA-IV"];
+    e [label="Fertility-sparing surgery\nSurgical staging [III, A]"];
+    f [label="Fertility-sparing surgery\nSurgical staging [III, A]"];
+    g [label="Debulking/Staging [III, A] or Fertility-sparing surgery when indicated [IV, B]"];
+    h [label="Properly-staged"];
+    i [label="Not_properly-staged"];
+    k [label="<= 40 Age"];
+    l [label="> 40 Age or Pulmonary_disease"];
+    m [label="BEP x 3-4 cycles [III, A]"];
+    n [label="EP x 3-4 cycles [III, A]"];
+    o [label="Active_surveillance"];
+    p [label="Standard follow-up"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    b -> e;
+    c -> f;
+    d -> g;
+    e -> o;
+    f -> h;
+    f -> i;
+    h -> o;
+    i -> m;
+    g -> k;
+    g -> l;
+    k -> m;
+    l -> n;
+    m -> p;
+    n -> p;
+}

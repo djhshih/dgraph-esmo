@@ -1,0 +1,49 @@
+// Image 6: sccoht.jpg
+digraph SCCOHT {
+    a [label="SCCOHT"];
+    b [label="Stage_I-II"];
+    c [label="Stage_III-IV"];
+    d [label="TAH/BSO/Staging [IV, A]"];
+    e [label="TAH/BSO/Staging [IV, A]"];
+    f [label="Adjuvant ChT [III, B]\nCisplatin-etoposide-based"];
+    g [label="Debulking_feasible"];
+    h [label="Debulking_not_feasible"];
+    j [label="Debulking [IV, A]"];
+    k [label="Neoadjuvant ChT [IV, C]\nCisplatin-etoposide-based"];
+    l [label="Adjuvant ChT [III, B]\nCisplatin-etoposide-based"];
+    m [label="Debulking [IV, A]"];
+    v [label="HDCT_ASCT"];
+    w [label="Pelvic_RT"];
+    n [label="HDCT + ASCT in selected cases [II, C]"];
+    t [label="Pelvic RT [IV, C]"];
+    o [label="Complete response / resection"];
+    p [label="Complete_response or Resection"];
+    q [label="Not_complete_response_or_resection"];
+    u [label="RELAPSE:\nCyclophosphamide/doxorubicin/vincristine [V, B]\nTopotecan [V, C]\nPhase I trial"];
+
+    a -> b;
+    a -> c;
+    b -> d;
+    d -> f;
+    f -> v;
+    f -> w;
+    v -> n;
+    w -> t;
+    n -> w;
+    n -> u;
+    t -> u;
+    c -> e;
+    e -> g;
+    e -> h;
+    g -> j;
+    h -> k;
+    j -> l;
+    k -> m;
+    l -> o;
+    m -> o;
+    o -> p;
+    o -> q;
+    p -> n;
+    q -> w;
+    q -> v;
+}

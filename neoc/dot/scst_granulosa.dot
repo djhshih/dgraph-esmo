@@ -1,0 +1,35 @@
+// Image 4: scst_granulosa.jpg
+digraph Granulosa_cell_tumour {
+    a [label="Granulosa cell tumour"];
+    b [label="Stage_IA"];
+    c [label="Stage_IC1"];
+    d [label="Stage_IC2-3"];
+    e [label="Stage_IIA-IV"];
+    f [label="Fertility-sparing surgery\nStaging [III, A]"];
+    g [label="TAH/BSO\nStaging\nDebulking or Fertility-sparing surgery in selected cases [III, A]"];
+    h [label="TAH/BSO\nStaging\nDebulking or Fertility-sparing surgery in selected cases [III, A]"];
+    i [label="TAH/BSO\nStaging\nDebulking [III, A]"];
+    j [label="Active_surveillance"];
+    k [label="Adjuvant_ChT"];
+    n [label="Adjuvant ChT [IV, C]\nBEP x 3 cycles\nEP if > 40 years [III, A] or Carboplatin/paclitaxel x 6 cycles [III, B] or Platinum agent alone [III, A]"];
+    l [label="Adjuvant ChT [III, A]\nBEP x 3 cycles\nEP if > 40 years or Carboplatin/paclitaxel x 6 cycles"];
+    m [label="Standard follow-up"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    a -> e;
+    b -> f;
+    c -> g;
+    d -> h;
+    e -> i;
+    h -> j;
+    h -> k;
+    k -> n;
+    i -> l;
+    f -> m;
+    g -> m;
+    j -> m;
+    n -> m;
+    l -> m;
+}

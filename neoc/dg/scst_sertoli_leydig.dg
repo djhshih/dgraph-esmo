@@ -1,0 +1,61 @@
+from dgraph.condition import any_of, has
+from dgraph.graph import branch, chain, node
+
+adjuvant = chain('Adjuvant ChT [IV, B]\nBEP\nEP if > 40 years [III, A] or Carboplatin/paclitaxel x 6 cycles [III, B]', 'Standard follow-up')
+standard = node('Standard follow-up')
+
+graph = node(
+    'Sertoli-Leydig cell tumour',
+    branch(
+        'Stage_IA',
+        has('Stage_IA'),
+        branch(
+            'Young_patients',
+            has('Young_patients'),
+            node(
+                'Fertility-sparing surgery\nStaging [III, A]',
+                branch(
+                    'With_poorly_differentiated or Heterologous_elements',
+                    any_of(has('With_poorly_differentiated'), has('Heterologous_elements')),
+                    adjuvant
+                ),
+                branch(
+                    'Not_poorly_differentiated_or_heterologous_elements',
+                    has('Not_poorly_differentiated_or_heterologous_elements'),
+                    standard
+                )
+            )
+        ),
+        branch(
+            'Not_young_patients',
+            has('Not_young_patients'),
+            node(
+                'TAH/BSO\nStaging [III, A]',
+                branch(
+                    'With_poorly_differentiated or Heterologous_elements',
+                    any_of(has('With_poorly_differentiated'), has('Heterologous_elements')),
+                    adjuvant
+                ),
+                branch(
+                    'Not_poorly_differentiated_or_heterologous_elements',
+                    has('Not_poorly_differentiated_or_heterologous_elements'),
+                    standard
+                )
+            )
+        )
+    ),
+    branch(
+        'Greater_than_Stage_IA',
+        has('Greater_than_Stage_IA'),
+        branch(
+            'Selected_cases',
+            has('Selected_cases'),
+            chain('Fertility-sparing surgery [III, A]', 'Adjuvant ChT [III, B]\nBEP x 3-4 cycles\nEP if > 40 years or Carboplatin/paclitaxel x 6 cycles', 'Standard follow-up')
+        ),
+        branch(
+            'Not_selected_cases',
+            has('Not_selected_cases'),
+            chain('TAH/BSO\nStaging\nDebulking [III, A]', 'Adjuvant ChT [III, B]\nBEP x 3-4 cycles\nEP if > 40 years or Carboplatin/paclitaxel x 6 cycles', 'Standard follow-up')
+        )
+    )
+)

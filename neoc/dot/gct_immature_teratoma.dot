@@ -1,0 +1,39 @@
+// Image 2: gct_immature_teratoma.jpg
+digraph Immature_teratoma {
+    a [label="Immature teratoma"];
+    b [label="Stage_IA_G1"];
+    c [label="Stage_IA_G2-G3"];
+    d [label="Stage_IB-IC"];
+    e [label="Stage_IIA-IV"];
+    f [label="Fertility-sparing surgery when indicated\nSurgical staging [III, A]"];
+    n [label="Fertility-sparing surgery when indicated\nSurgical staging [III, A]"];
+    p [label="Fertility-sparing surgery when indicated\nSurgical staging [III, A]"];
+    g [label="Debulking/Staging [III, A]\nFertility-sparing surgery in some cases [IV, B]"];
+    h [label="Properly-staged and negative_postoperative_tumour_markers"];
+    q [label="Adjuvant_ChT"];
+    i [label="BEP x 3-4 cycles [III, A]"];
+    j [label="Selected_cases"];
+    k [label="Cytoreductive surgery if residual disease [III, A]"];
+    l [label="Active_surveillance"];
+    m [label="Standard follow-up"];
+
+    a -> b;
+    a -> c;
+    a -> d;
+    a -> e;
+    b -> f;
+    f -> l;
+    c -> n;
+    n -> h;
+    h -> l;
+    n -> q;
+    q -> i;
+    d -> p;
+    p -> i;
+    e -> g;
+    g -> i;
+    i -> j;
+    j -> k;
+    i -> m;
+    k -> m;
+}

@@ -1,0 +1,71 @@
+from dgraph.condition import all_of, has
+from dgraph.graph import branch, chain, node
+
+cytoreductive = chain('Cytoreductive surgery if residual disease [III, A]', 'Standard follow-up')
+standard = node('Standard follow-up')
+
+graph = node(
+    'Immature teratoma',
+    branch(
+        'Stage_IA_G1',
+        has('Stage_IA_G1'),
+        chain('Fertility-sparing surgery when indicated\nSurgical staging [III, A]', 'Active_surveillance')
+    ),
+    branch(
+        'Stage_IA_G2-G3',
+        has('Stage_IA_G2-G3'),
+        node(
+            'Fertility-sparing surgery when indicated\nSurgical staging [III, A]',
+            branch(
+                'Properly-staged and negative_postoperative_tumour_markers',
+                all_of(has('Properly-staged'), has('negative_postoperative_tumour_markers')),
+                node('Active_surveillance')
+            ),
+            branch(
+                'Adjuvant_ChT',
+                has('Adjuvant_ChT'),
+                node(
+                    'BEP x 3-4 cycles [III, A]',
+                    branch(
+                        'Selected_cases',
+                        has('Selected_cases'),
+                        cytoreductive
+                    ),
+                    standard
+                )
+            )
+        )
+    ),
+    branch(
+        'Stage_IB-IC',
+        has('Stage_IB-IC'),
+        node(
+            'Fertility-sparing surgery when indicated\nSurgical staging [III, A]',
+            node(
+                'BEP x 3-4 cycles [III, A]',
+                branch(
+                    'Selected_cases',
+                    has('Selected_cases'),
+                    cytoreductive
+                ),
+                standard
+            )
+        )
+    ),
+    branch(
+        'Stage_IIA-IV',
+        has('Stage_IIA-IV'),
+        node(
+            'Debulking/Staging [III, A]\nFertility-sparing surgery in some cases [IV, B]',
+            node(
+                'BEP x 3-4 cycles [III, A]',
+                branch(
+                    'Selected_cases',
+                    has('Selected_cases'),
+                    cytoreductive
+                ),
+                standard
+            )
+        )
+    )
+)

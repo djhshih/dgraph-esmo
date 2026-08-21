@@ -1,0 +1,38 @@
+from dgraph.condition import has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Granulosa cell tumour',
+    branch(
+        'Stage_IA',
+        has('Stage_IA'),
+        chain('Fertility-sparing surgery\nStaging [III, A]', 'Standard follow-up')
+    ),
+    branch(
+        'Stage_IC1',
+        has('Stage_IC1'),
+        chain('TAH/BSO\nStaging\nDebulking or Fertility-sparing surgery in selected cases [III, A]', 'Standard follow-up')
+    ),
+    branch(
+        'Stage_IC2-3',
+        has('Stage_IC2-3'),
+        node(
+            'TAH/BSO\nStaging\nDebulking or Fertility-sparing surgery in selected cases [III, A]',
+            branch(
+                'Active_surveillance',
+                has('Active_surveillance'),
+                node('Standard follow-up')
+            ),
+            branch(
+                'Adjuvant_ChT',
+                has('Adjuvant_ChT'),
+                chain('Adjuvant ChT [IV, C]\nBEP x 3 cycles\nEP if > 40 years [III, A] or Carboplatin/paclitaxel x 6 cycles [III, B] or Platinum agent alone [III, A]', 'Standard follow-up')
+            )
+        )
+    ),
+    branch(
+        'Stage_IIA-IV',
+        has('Stage_IIA-IV'),
+        chain('TAH/BSO\nStaging\nDebulking [III, A]', 'Adjuvant ChT [III, A]\nBEP x 3 cycles\nEP if > 40 years or Carboplatin/paclitaxel x 6 cycles', 'Standard follow-up')
+    )
+)

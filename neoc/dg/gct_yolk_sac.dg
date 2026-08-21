@@ -1,0 +1,28 @@
+from dgraph.condition import all_of, has
+from dgraph.graph import branch, chain, node
+
+graph = node(
+    'Yolk sac tumour',
+    branch(
+        'Stage_IA-IB',
+        has('Stage_IA-IB'),
+        node(
+            'Fertility-sparing surgery\nStaging [III, A]',
+            branch(
+                'Properly-staged and negative_postoperative_tumour_markers',
+                all_of(has('Properly-staged'), has('negative_postoperative_tumour_markers')),
+                node('Active_surveillance [GoR C]')
+            ),
+            branch(
+                'Adjuvant_ChT',
+                has('Adjuvant_ChT'),
+                chain('BEP x 3-4 cycles [III, A]', 'Standard follow-up')
+            )
+        )
+    ),
+    branch(
+        'Stage_IC-IV',
+        has('Stage_IC-IV'),
+        chain('Debulking/Staging [III, A] or Fertility-sparing surgery\nStaging [IV, B]', 'BEP x 3-4 cycles [III, A]', 'Standard follow-up')
+    )
+)
