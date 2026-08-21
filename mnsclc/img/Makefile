@@ -1,6 +1,6 @@
-all: mnsclc-mol-pos.jpg mnsclc_egfr.jpg mnsclc_alk.jpg mnsclc_ros1.jpg mnsclc_braf.jpg
+all: mnsclc_mol_pos.jpg mnsclc_egfr.jpg mnsclc_alk.jpg mnsclc_ros1.jpg mnsclc_braf.jpg
 
-mnsclc-mol-pos.jpg:
+mnsclc_mol_pos.jpg:
 	../../download.sh https://www.annalsofoncology.org/cms/10.1016/j.annonc.2022.12.009/asset/7dbc4276-e7f8-4289-b92e-1c31c514bd17/main.assets/gr1_lrg.jpg $@
 
 mnsclc_egfr.jpg:

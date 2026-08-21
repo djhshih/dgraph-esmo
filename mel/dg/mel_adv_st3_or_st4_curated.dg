@@ -1,13 +1,5 @@
-from pathlib import Path
-
 from dgraph.condition import any_of, has
-from dgraph.dg_loader import load_dg
 from dgraph.graph import branch, chain, node
-
-# See Figure 2: load compiler st3 to avoid a circular curated import
-# (st3_curated loads this file as Figure 4).
-_dir = Path(__file__).parent
-fig2 = load_dg(_dir / 'mel_st3_or_st4.dg')
 
 nivolumab = chain('Nivolumab-ipilimumab [I, A; MCBS A/4]\nAnti-PD-1 monotherapy [I, A]\nNivolumab-relatlimab (for PD-L1 <1%) [I, B; MCBS 3]', 'BRAFi-MEKi [II, B; ESCAT I-A]\nTILs [II, B]\nNivolumab-relatlimab [III, B]', 'ICI rechallenge [IV, B]\nChT [IV, C]')
 
@@ -21,10 +13,21 @@ graph = node(
             has('Unresectable_disease'),
             node('Systemic treatment according to feasibility of 1st-line ICI administration (preferred) and BRAF status')
         ),
+        # See Figure 2: inlined resectable Stage III/IV subgraph (do not load_dg
+        # mel_st3_or_st4_curated.dg — that file loads this one as Figure 4).
         branch(
             'Resectable_disease',
             has('Resectable_disease'),
-            fig2
+            branch(
+                'Stage_III',
+                has('Stage_III'),
+                node('Clinical trial [V, A]\nFor patients treated with upfront resection, adjuvant anti-PD-1 therapy [I, A] or dabrafenib-trametinib for BRAF V600E-mutated tumours [I, A]\nNeoadjuvant nivolumab-ipilimumab [I, A; MCBS A] followed by adjuvant therapy based on pathological response and BRAF status, or neoadjuvant plus adjuvant pembrolizumab [II, A]\nWide excision of primary tumour [III, B]')
+            ),
+            branch(
+                'Stage_IV',
+                has('Stage_IV'),
+                node('Clinical trial [V, A]\nMetastasectomy or local ablative therapy [III, B] followed by adjuvant anti-PD-1 therapy [I, A]\nAnti-PD-1 therapy [V, A]')
+            )
         ),
         branch(
             'Oligometastatic',
